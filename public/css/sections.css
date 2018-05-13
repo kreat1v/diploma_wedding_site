@@ -1,0 +1,15 @@
+.sections {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.sections .filter {
+    display: block;
+    width: 30%;
+}
+
+.sections .info {
+    display: block;
+    width: 70%;
+}

@@ -6,9 +6,14 @@ use \App\Core\Config;
 
 $router = \App\Core\App::getRouter();
 ?>
-<div class="main">
-    <div>
+<div class="sections">
 
+    <div class="info">
+        <?php print_r($data['info']) ?>
+        <?php print_r($data['get']) ?>
+    </div>
+
+    <div class="filter">
         <form class="" method="get" id="filter-clothes">
             <div class="">
                 <label>
@@ -43,7 +48,6 @@ $router = \App\Core\App::getRouter();
                     /><?=$value['brand']?>
                 </label>
                 <br>
-                <br />
                 <?php endforeach; ?>
             </div>
             <input id='brand' type='hidden' name='brand' />
@@ -71,10 +75,8 @@ $router = \App\Core\App::getRouter();
                 <a href="<?=$router->buildUri('.clothes')?>">Reset</a>
             </div>
         </form>
-        <pre>
-        <?php print_r($data['info']) ?>
-        <?php print_r($data['get']) ?>
     </div>
+
 </div>
 
 <script type="text/javascript" src="/js/filter-clothes.js"></script>
