@@ -1,0 +1,179 @@
+.progress-bar .clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.progress-bar .clearfix:after {
+    clear: both;
+}
+
+.progress-bar .clearfix {
+    *zoom: 1;
+}
+
+.progress-bar h1, .progress-bar h2, .progress-bar p {
+    line-height: 1.75;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.progress-bar h1, .progress-bar h2 {
+    font-weight: 400;
+    font-size: 250%;
+    line-height: 1.5;
+}
+
+.progress-bar h1 {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    color: #FAB900;
+}
+
+.progress-bar h2 {
+    margin-top: 2em;
+    margin-botttom: 1em;
+    color: #3CA6C7;
+}
+
+.progress-bar p {
+    font-weight: 300;
+    font-size: 100%;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.progress-bar .progressbar {
+    display: none;
+    margin: 4em 0;
+}
+
+@media only screen and (min-width: 650px) {
+    .progress-bar .progressbar {
+        display: block;
+    }
+}
+
+.progress-bar .progressbar .shim {
+    display: none;
+    width: 100%;
+}
+
+.progress-bar .progressbar .holder {
+    position: relative;
+    font-size: 85%;
+    padding: 1.8em 0 0 0;
+    background-color: #F0F0FF;
+    box-shadow: 0 0.5em 1.5em 1.5em #F0F0FF;
+}
+
+@media only screen and (min-width: 750px) {
+    .progress-bar .progressbar .holder {
+        font-size: 90%;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .progress-bar .progressbar .holder {
+        font-size: 95%;
+    }
+}
+
+.progress-bar .progressbar .holder .bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #80E1FF;
+}
+
+.progress-bar .progressbar .holder .bar .indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #3CA6C7;
+}
+
+.progress-bar .progressbar .holder .labels {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2em;
+    text-align: center;
+}
+
+.progress-bar .progressbar .holder .labels i {
+    display: block;
+    position: relative;
+    float: left;
+    cursor: pointer;
+}
+
+.progress-bar .progressbar .holder .labels i::before {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    display: block;
+    content: '';
+    width: .9em;
+    height: .9em;
+    border-radius: 50%;
+    border: solid 3px #80E1FF;
+    background-color: #F0F0FF;
+    -webkit-transform: translateX(-50%) translateY(50%);
+    transform: translateX(-50%) translateY(50%);
+    transition: border-color 100ms ease-in, background-color 150ms ease-in;
+}
+
+.progress-bar .progressbar .holder .labels i::after {
+    display: block;
+    content: attr(data-label);
+    position: relative;
+    top: 0;
+    padding-bottom: 1.8em;
+    /* font-family: 'Open Sans'; */
+    font-weight: 300;
+    color: #3CA6C7;
+    transition: color 150ms ease-in, top 100ms ease-out;
+}
+
+.progress-bar .progressbar .holder .labels i:hover::before, .progress-bar .progressbar .holder .labels i:focus::before {
+    background-color: #80E1FF;
+}
+
+.progress-bar .progressbar .holder .labels i:hover::after, .progress-bar .progressbar .holder .labels i:focus::after {
+    top: -.2em;
+}
+
+.progress-bar .progressbar .holder .labels i.read::before {
+    border-color: #3CA6C7;
+}
+
+.progress-bar .progressbar .holder .labels i.read:hover::before, .progress-bar .progressbar .holder .labels i.read:focus::before {
+    background-color: #3CA6C7;
+}
+
+.progress-bar .progressbar .holder .labels i.reading::after {
+    color: #222;
+}
+
+.progress-bar .progressbar .holder .labels i.reading:hover::after, .progress-bar .progressbar .holder .labels i.reading:focus::after {
+    top: 0;
+}
+
+.progress-bar .progressbar.fixed .holder {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.progress-bar .progressbar.fixed .shim {
+    display: block;
+}
+
+.progress-bar .buttons {
+    text-align: center;
+    font-size: 1.2em;
+}

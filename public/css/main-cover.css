@@ -1,0 +1,26 @@
+.main .gradient-border {
+    width: 90%;
+    height: 500px;
+    margin: 0 auto;
+}
+
+.main .main-cover {
+    max-width: 100%;
+    height: 500px;
+}
+
+.main .main-cover p {
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    right: 3%;
+    color: #fff;
+    text-shadow: -1px -1px 0 #7A797B, 1px -1px 0 #7A797B, -1px 1px 0 #7A797B, 1px 1px 0 #7A797B;
+    font-size: 4em;
+    font-family: 'Caveat', cursive;
+    text-align: right;
+}
+
+.main .backstretch {
+    border-radius: 3px;
+}
