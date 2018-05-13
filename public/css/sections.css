@@ -7,9 +7,15 @@
 .sections .filter {
     display: block;
     width: 30%;
+    margin-left: 5%;
 }
 
 .sections .info {
     display: block;
-    width: 70%;
+    width: 65%;
+}
+
+.sections .goods {
+    margin-bottom: 30px;
+    background-color: white;
 }

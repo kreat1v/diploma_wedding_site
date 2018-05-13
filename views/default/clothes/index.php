@@ -7,10 +7,28 @@ use \App\Core\Config;
 $router = \App\Core\App::getRouter();
 ?>
 <div class="sections">
+    <!-- <?php print_r($data['info'])?> -->
 
     <div class="info">
-        <?php print_r($data['info']) ?>
-        <?php print_r($data['get']) ?>
+        <?php foreach ($data['info'] as $value): ?>
+        <div class="gradient-border ">
+            <div class="goods">
+                <div class="card">
+
+                </div>
+                <?=$value['title']?>
+                <div class="text">
+
+                </div>
+                <div class="buttons">
+
+                </div>
+                <div class="galery">
+
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
     </div>
 
     <div class="filter">
