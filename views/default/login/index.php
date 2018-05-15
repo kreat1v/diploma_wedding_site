@@ -25,7 +25,7 @@ $router = \App\Core\App::getRouter();
 						</div>
 					</label>
 					<!-- <p class="forgot-pass">Forgot password?</p> -->
-					<button type="submit" class="submit" name="button" value="login"><?=__('login.login')?></button>
+					<button type="submit" class="submit sm-buttons" name="button" value="login"><?=__('login.login')?></button>
 					<button type="button" class="fb-btn"><?=__('login.fb')?> <span>facebook</span></button>
 				</form>
 			</div>
@@ -79,7 +79,7 @@ $router = \App\Core\App::getRouter();
 								<div><?=__('register.tool5')?></div>
 							</div>
 						</label>
-						<button type="submit" class="submit" name="button" value="register"><?=__('register.register')?></button>
+						<button type="submit" class="submit sm-buttons" name="button" value="register"><?=__('register.register')?></button>
 						<button type="button" class="fb-btn"><?=__('register.fb')?> <span>facebook</span></button>
 					</form>
 				</div>

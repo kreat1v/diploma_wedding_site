@@ -6,8 +6,9 @@
 
 .sections .filter {
     display: block;
-    width: 30%;
-    margin-left: 5%;
+    width: 25%;
+    position: fixed;
+    right: 5%;
 }
 
 .sections .info {
@@ -16,6 +17,339 @@
 }
 
 .sections .goods {
+    margin-bottom: 50px;
+    background-color: #1D1F20;
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.sections .blur {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    -webkit-filter: blur(30px);
+    -moz-filter: blur(30px);
+    -o-filter: blur(30px);
+    -ms-filter: blur(30px);
+    filter: blur(30px);
+    width: 100%;
+    height: 100%;
+}
+
+.sections .blur img {
+    width: 100%;
+}
+
+.sections .top {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 100;
+    margin: 30px;
+}
+
+.sections h3 {
+    position: relative;
+    z-index: 100;
+    margin: 30px 30px 0;
+    color: white;
+    text-align: center;
+}
+
+.sections .card {
+    transform: translate(0%, 0%);
+    width: 30%;
+    min-width: 250px;
+    height: 300px;
+    background: #000;
+    position: relative;
+}
+
+.sections .card .image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.sections .card .image img {
+    width: 100%;
+    transition: .5s;
+}
+
+.sections .card:hover .image img {
+    opacity: .5;
+    transform: translateX(30%);
+}
+
+.sections .card .details {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: #AD7F00;
+    transition: .5s;
+    transform-origin: left;
+    transform: perspective(2000px) rotateY(-90deg);
+}
+
+.sections .card:hover .details {
+    transform: perspective(2000px) rotateY(0deg);
+}
+
+.sections .card .details .center {
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sections .card .details .center h5 {
+    margin: 0;
+    padding: 0;
+    color: #3CA6C7;
+    line-height: 20px;
+    text-transform: uppercase;
+}
+
+.sections .card .details .center a {
+    font-size: 14px;
+    color: #3CA6C7;
+    text-decoration: none;
+}
+
+.sections .card .details .center p {
+    margin: 10px 0;
+    padding: 0;
+    color: #7A797B;
+    font-size: 12px;
+}
+
+.sections .card .details .center ul {
+    margin: 10px auto 0;
+    padding: 0;
+    display: table;
+}
+
+.sections .card .details .center ul li {
+    list-style: none;
+    margin: 0 5px;
+    float: left;
+}
+
+.sections .card .details .center ul li a {
+    display: block;
+    background: #AD7F00;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    transform: .5s;
+}
+
+.sections .card .details .center ul li a:hover {
+    background: #FAB900;
+}
+
+.sections .body {
+    width: 70%;
+}
+
+.sections .main-text {
+    color: white;
+    text-align: justify;
     margin-bottom: 30px;
-    background-color: white;
+}
+
+.sections .main-text p {
+    margin: 0 0 0 30px;
+}
+
+.sections .bt {
+    display: flex;
+    justify-content: center;
+    width: auto;
+}
+
+.sections .bt a {
+    margin: 0 10px;
+    padding: 0 20px;
+    text-decoration: none;
+}
+
+.sections .bt span {
+    display: inline-block;
+}
+
+.sections .bt span:last-child {
+    margin-left: 10px;
+    display: none;
+}
+
+.sections .galery {
+    margin: 0 auto 30px;
+    display: block;
+    width: 100%;
+    height: 400px;
+    position: relative;
+    z-index: 100;
+}
+
+.sections .galery, .sections .galery:before, .sections .galery:after {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.sections .galery .panels {
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    z-index: 1;
+}
+
+.sections .galery .panel {
+    flex: 1;
+    cursor: pointer;
+    background-position: center 30%;
+    background-size: cover;
+}
+
+.sections .galery .panel__content {
+    width: 100%;
+    height: 102%;
+    overflow: hidden;
+    cursor: pointer;
+    background: inherit;
+}
+
+.sections .galery .panel:before, .sections .galery .panel__content:before {
+    content: ' ';
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sections .galery .panel:before {
+    background: rgba(255, 255, 255, 0.3);
+    position: relative;
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 0.3s linear;
+}
+
+.sections .galery .panel:hover:before, .sections .galery .panel:focus:before {
+    opacity: 1;
+}
+
+.sections .galery .panel:hover .panel__content, .sections .galery .panel:focus .panel__content {
+    position: absolute;
+    top: -1%;
+    left: 0;
+    z-index: 98;
+}
+
+@supports ( (--panel-support: 0)) {
+    .panel {
+        --i: 0;
+        --percent: calc( ((var(--i) - 1) / var(--items)) * 100);
+    }
+    .panel:nth-last-child(n + 1), .panel:nth-last-child(n + 1)~.panel {
+        --items: 1;
+    }
+    .panel:nth-child( 1) {
+        --i: 1;
+    }
+    .panel:nth-last-child(n + 2), .panel:nth-last-child(n + 2)~.panel {
+        --items: 2;
+    }
+    .panel:nth-child( 2) {
+        --i: 2;
+    }
+    .panel:nth-last-child(n + 3), .panel:nth-last-child(n + 3)~.panel {
+        --items: 3;
+    }
+    .panel:nth-child( 3) {
+        --i: 3;
+    }
+    .panel:nth-last-child(n + 4), .panel:nth-last-child(n + 4)~.panel {
+        --items: 4;
+    }
+    .panel:nth-child( 4) {
+        --i: 4;
+    }
+    .panel:nth-last-child(n + 5), .panel:nth-last-child(n + 5)~.panel {
+        --items: 5;
+    }
+    .panel:nth-child( 5) {
+        --i: 5;
+    }
+    .panel:nth-last-child(n + 6), .panel:nth-last-child(n + 6)~.panel {
+        --items: 6;
+    }
+    .panel:nth-child( 6) {
+        --i: 6;
+    }
+    .panel:nth-last-child(n + 7), .panel:nth-last-child(n + 7)~.panel {
+        --items: 7;
+    }
+    .panel:nth-child( 7) {
+        --i: 7;
+    }
+    .panel__content {
+        position: absolute;
+        top: -1%;
+        left: 0%;
+        z-index: auto;
+        -webkit-transform: translateX(calc( var(--percent) * 1%));
+        transform: translateX(calc( var(--percent) * 1%));
+    }
+    .panel__content:before {
+        background: inherit;
+        -webkit-transform: translateX(-50%) translateX(calc(100% / var(--items) * 0.5));
+        transform: translateX(-50%) translateX(calc(100% / var(--items) * 0.5));
+    }
+    .panel__content, .panel__content:before {
+        transition: -webkit-transform 0.4s cubic-bezier(0.44, 0, 0, 1);
+        transition: transform 0.4s cubic-bezier(0.44, 0, 0, 1);
+        transition: transform 0.4s cubic-bezier(0.44, 0, 0, 1), -webkit-transform 0.4s cubic-bezier(0.44, 0, 0, 1);
+    }
+    .panels:hover .panel__content {
+        z-index: auto;
+        -webkit-transform: translateX(0%);
+        transform: translateX(0%);
+    }
+    .panel:hover~.panel .panel__content {
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
+    .panel:hover .panel__content, .panel:focus .panel__content {
+        -webkit-transform: translateX(0%);
+        transform: translateX(0%);
+    }
+    .panel:hover .panel__content:before, .panel:focus .panel__content:before {
+        -webkit-transform: translateX(0%) scale(1.2);
+        transform: translateX(0%) scale(1.2);
+    }
+    .panel:focus .panel__content, .panel:focus .panel__content:before {
+        transition: none !important;
+    }
+}
+
+.sections .galery .panels {
+    box-shadow: 0 0 10rem rgba(0, 0, 0, 0.6);
+    height: 40vh;
+    margin: 10vh auto;
+    min-height: 300px;
+    max-height: 700px;
+}
+
+.sections .galery>.panels:first-child {
+    margin: 0 auto;
+    height: 65vh;
 }

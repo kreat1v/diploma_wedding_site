@@ -61,9 +61,6 @@
     width: 260px;
     height: 36px;
     border-radius: 30px;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
 }
 
 .login .img {
@@ -263,13 +260,6 @@
 .login .submit {
     margin-top: 40px;
     margin-bottom: 20px;
-    background: #AD7F00;
-    text-transform: uppercase;
-    transition: all 0.5s linear;
-}
-
-.login .submit:hover {
-    background: #FAB900;
 }
 
 .login .fb-btn {

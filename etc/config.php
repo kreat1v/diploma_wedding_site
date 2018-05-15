@@ -49,4 +49,7 @@ Config::set('pagButtonLimit', 5);
  * Gallery
  */
 Config::set('gallery', ROOT.DS.'public'.DS.'img'.DS);
+Config::set('gallery_clothes', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);
 Config::set('imgDir', DS.'img'.DS);
+Config::set('imgDir_clothes', DS.'img'.DS.'clothes'.DS);
+Config::set('imgDir_clothes_web', '/img/clothes/');

@@ -55,3 +55,20 @@
     -moz-transform: translateY(0px);
     transform: translateY(0px);
 }
+
+.sm-buttons {
+    display: block;
+    height: 36px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    background: #AD7F00 !important;
+    text-transform: uppercase;
+    transition: all 0.5s linear;
+    line-height: 38px;
+}
+
+.sm-buttons:hover {
+    background: #FAB900 !important;
+}

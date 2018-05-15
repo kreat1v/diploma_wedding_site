@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \App\Core\App;
 use \App\Core\Localization;
+use \App\Core\Config;
 use \App\Entity\Clothes\ClothesMain;
 
 class ClothesController extends Base
@@ -55,6 +56,14 @@ class ClothesController extends Base
 		$this->data['filter']['brand'] = $this->clothesMainModel->getBrand();
 		$this->data['filter']['size'] = ['s', 'm', 'l', 'xl'];
 		$this->data['info'] = $this->clothesMainModel->selectLanguageList($this->language, 'id_clothes', $get);
+
+		foreach ($this->data['info'] as $key => $value) {
+			if (isset($value['img_dir'])) {
+				$this->data['info'][$key]['galery'] = array_values(array_diff(scandir(Config::get('gallery_clothes') . $value['img_dir']), ['.', '..']));
+			} else {
+				$this->data['info'][$key]['galery'] = null;
+			}
+		}
 
 		if (isset($get)) {
 			$this->data['get'] = $get;
