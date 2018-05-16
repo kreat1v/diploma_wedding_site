@@ -9,8 +9,6 @@ use \App\Entity\Clothes\ClothesMain;
 
 class ClothesController extends Base
 {
-	private $language;
-	private $nameModel;
 	private $clothesMainModel;
 
 	public function __construct(array $params = [])
@@ -55,7 +53,7 @@ class ClothesController extends Base
 
 		$this->data['filter']['brand'] = $this->clothesMainModel->getBrand();
 		$this->data['filter']['size'] = ['s', 'm', 'l', 'xl'];
-		$this->data['info'] = $this->clothesMainModel->selectLanguageList($this->language, 'id_clothes', $get);
+		$this->data['info'] = $this->clothesMainModel->selectLanguageList('id_clothes', $get);
 
 		foreach ($this->data['info'] as $key => $value) {
 			if (isset($value['img_dir'])) {

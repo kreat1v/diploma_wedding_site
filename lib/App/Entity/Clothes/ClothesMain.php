@@ -68,7 +68,7 @@ class ClothesMain extends \App\Entity\Base
 		return $this->conn->query($sql);
 	}
 
-	public function selectLanguageList($lang, $id_table, $filter = [])
+	public function selectLanguageList($id_table, $filter = [])
 	{
 		$fieldsMain = $this->getTableName();
 		$fieldsLang = $this->getClothesLang()->getTableName();
