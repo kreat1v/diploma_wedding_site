@@ -68,33 +68,53 @@ class ClothesMain extends \App\Entity\Base
 		return $this->conn->query($sql);
 	}
 
-	public function selectLanguageList($id_table, $filter = [])
+	public function selectLanguageList($filter = [])
 	{
+		// получаем имена таблиц
 		$fieldsMain = $this->getTableName();
 		$fieldsLang = $this->getClothesLang()->getTableName();
 		$fieldsSize = $this->getClothesSize()->getTableName();
 
+		// формируем условия запроса
 		$str = '';
-
 		if (!empty($filter)) {
 			$str = 'WHERE 1';
 
 			foreach ($filter as $key => $value) {
+				if (is_array($value)) {
+					$value = array_map(function($n){
+						return $this->conn->escape($n);
+					}, $value);
+				} else {
+					$value = $this->conn->escape($value);
+				}
+
 				if ($key == 'price') {
 					$str .= " AND $fieldsMain.$key BETWEEN $value[0] AND $value[1]";
 				} elseif ($key == 'size') {
-					$str .= " AND ($fieldsSize." . implode(" = 1 OR $fieldsSize.", $value) . " = 1)";
+					$size = [];
+
+					foreach ($value as $sizeName) {
+						if (!in_array(trim($sizeName, '\''), $this->getClothesSize()->getFields())) {
+							continue;
+						}
+
+						$size[] = trim($sizeName, '\'');
+					}
+
+					$str .= " AND ($fieldsSize." . implode(" = 1 OR $fieldsSize.", $size) . " = 1)";
 				} else {
-					$in = is_array($value) ? implode('\', \'', $value) : $value;
-					$str .= " AND $fieldsMain.$key IN ('$in')";
+					$in = is_array($value) ? implode(', ', $value) : $value;
+					$str .= " AND $fieldsMain.$key IN ($in)";
 				}
 			}
 		}
 
+		// формируем сам запрос
 		$sql = "SELECT $fieldsMain.*, $fieldsLang.*, $fieldsSize.*
 				FROM $fieldsMain
-				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.$id_table
-				JOIN $fieldsSize ON $fieldsMain.id = $fieldsSize.$id_table
+				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_clothes
+				JOIN $fieldsSize ON $fieldsMain.id = $fieldsSize.id_clothes
 				$str";
 
 		return $this->conn->query($sql);

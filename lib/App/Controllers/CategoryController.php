@@ -18,24 +18,12 @@ class CategoryController extends Base
 	{
 		parent::__construct($params);
 
-		$this->language = Localization::getLang();
-		$this->nameModel = '\App\Entity\Category\Category' . ucfirst($this->language);
-
 		$this->categoryMainModel = new CategoryMain(App::getConnection());
-		$this->categoryLanguageModel = new $this->nameModel(App::getConnection());
 	}
 
 	public function indexAction()
 	{
-		$activeCategory = $this->categoryMainModel->list(['active' => 1]);
-
-		$categoryId = '';
-		foreach ($activeCategory as $value) {
-			$categoryId .= $value['id'] . ', ';
-		}
-		$categoryId = substr($categoryId, 0, -2);
-
-		$this->data = $this->categoryLanguageModel->selectiveList($categoryId);
+		$this->data = $this->categoryMainModel->selectLanguageList('id_category');
 	}
 
 	public function viewAction()

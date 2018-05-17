@@ -62,26 +62,26 @@ abstract class Base
 		return $this->conn->query($sql);
 	}
 
-	public function selectiveList(string $id, $where = 'id_category', $set = [])
-	{
-		if (empty($id)) {
-			return null;
-		}
-
-		$str = '';
-		if (in_array('order', $set)) {
-			$str .= 'ORDER BY ' . $set['order'] . ' DESC ';
-		}
-		if (in_array('limit', $set)) {
-			$str .= 'LIMIT ' . $set['limit'];
-		}
-		if (in_array('offset', $set)) {
-			$str .= ' OFFSET ' . $set['offset'];
-		}
-
-		$sql = 'SELECT * FROM ' .  $this->getTableName() . ' WHERE ' . $where . ' IN ('. $id .') ' . $str;
-		return $this->conn->query($sql);
-	}
+	// public function selectiveList(string $id, $where = 'id_category', $set = [])
+	// {
+	// 	if (empty($id)) {
+	// 		return null;
+	// 	}
+	//
+	// 	$str = '';
+	// 	if (in_array('order', $set)) {
+	// 		$str .= 'ORDER BY ' . $set['order'] . ' DESC ';
+	// 	}
+	// 	if (in_array('limit', $set)) {
+	// 		$str .= 'LIMIT ' . $set['limit'];
+	// 	}
+	// 	if (in_array('offset', $set)) {
+	// 		$str .= ' OFFSET ' . $set['offset'];
+	// 	}
+	//
+	// 	$sql = 'SELECT * FROM ' .  $this->getTableName() . ' WHERE ' . $where . ' IN ('. $id .') ' . $str;
+	// 	return $this->conn->query($sql);
+	// }
 
 	/**
 	 * Получаем данные из БД.
