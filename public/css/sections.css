@@ -1,27 +1,24 @@
 .sections {
-    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-}
-
-.sections .title {
-    /* margin-bottom: 50px; */
 }
 
 .sections .container {
     display: flex;
     position: relative;
+    align-items: flex-start;
     margin-top: 4em;
 }
 
 .sections .filter {
+    position: sticky;
+    top: 0;
     margin-left: 5%;
     display: block;
-    width: 30%;
+    width: 25%;
     box-sizing: border-box;
     padding-left: 30px;
-    border-left: 3px solid black;
-    /* position: fixed;
-    right: 5%; */
+    border-left: 2px solid #AD7F00;
 }
 
 .sections .info {
@@ -178,6 +175,7 @@
     color: white;
     text-align: justify;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .sections .main-text p {
@@ -185,19 +183,20 @@
 }
 
 .sections .bt {
-    display: flex;
-    justify-content: center;
-    width: auto;
+    text-align: center;
 }
 
 .sections .bt a {
     margin: 0 10px;
     padding: 0 20px;
     text-decoration: none;
+    display: inline-block;
+    transition: all 0.1s linear;
 }
 
 .sections .bt span {
     display: inline-block;
+    float: left;
 }
 
 .sections .bt span:last-child {

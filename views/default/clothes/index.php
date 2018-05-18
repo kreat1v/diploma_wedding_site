@@ -106,7 +106,7 @@ $router = \App\Core\App::getRouter();
 
         <div class="filter">
             <form class="" method="get" id="filter-clothes">
-                <div class="">
+                <div class="sex">
                     <label>
                         <input type="radio" name="sex" value="m" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> />Man
                     </label>
@@ -161,8 +161,8 @@ $router = \App\Core\App::getRouter();
                 <input id='size' type='hidden' name='size' />
                 <hr>
 
-                <input type="submit" value="GO">
-                <div id="reset">
+                <div class="">
+                    <input type="submit" value="GO">
                     <a href="<?=$router->buildUri('.clothes')?>">Reset</a>
                 </div>
             </form>
@@ -173,30 +173,16 @@ $router = \App\Core\App::getRouter();
 </div>
 
 <script type="text/javascript">
+
     $(document).ready(function() {
 
         $('.sm-buttons').hover(function(){
-            $(this).find("span:last-child").show();
+            $(this).find("span:last-child").show(15);
         }, function(){
-            $(this).find("span:last-child").hide();
+            $(this).find("span:last-child").hide(15);
         });
 
     });
-
-    // функция - показывающая сколько пикселей div видно на экране
-    // function inViewport($el) {
-    //     var elH = $el.outerHeight(),
-    //         H   = $(window).height(),
-    //         r   = $el[0].getBoundingClientRect(),
-    //         t   = r.top,
-    //         b   = r.bottom;
-    //     return Math.max(0, t > 0 ? Math.min(elH, H - t) : (b < H ? b : H));
-    // }
-    //
-    // $(window).on("scroll resize", function(){
-    //     console.log( inViewport($('#elementID')) ); // n px in viewport
-    // });
-
 </script>
 
 <script type="text/javascript" src="/js/filter-clothes.js"></script>
