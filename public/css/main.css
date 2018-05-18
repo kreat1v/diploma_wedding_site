@@ -20,3 +20,31 @@ footer {
     font-size: 1.2em;
     font-family: 'Montserrat Alternates', sans-serif;
 }
+
+.format h1, .format h2, .format p {
+    line-height: 1.75;
+}
+
+.format h1, .format h2 {
+    font-weight: 400;
+    font-size: 250%;
+    line-height: 1.5;
+}
+
+.format h1 {
+    margin-bottom: 1.5em;
+    color: #FAB900;
+}
+
+.format h2 {
+    margin-top: 2em;
+    margin-botttom: 1em;
+    color: #3CA6C7;
+}
+
+.format p {
+    font-weight: 300;
+    font-size: 100%;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}

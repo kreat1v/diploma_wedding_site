@@ -25,7 +25,10 @@ class ClothesController extends Base
 	{
 		// получаем данные о категории
 		$controller = lcfirst(App::getRouter()->getController(true));
-		$category = $this->categoryMainModel->getBy('category_name', $controller);
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// echo '<pre>';
+		// print_r($category);
 
 		if ($category['active'] != 0) {
 			$get = [];
@@ -59,9 +62,12 @@ class ClothesController extends Base
 				}
 			}
 
+			// формируем data
+			$this->data['title'] = $category['full_title'];
+			$this->data['text'] = $category['second_text'];
 			$this->data['filter']['brand'] = $this->clothesMainModel->getBrand();
 			$this->data['filter']['size'] = ['s', 'm', 'l', 'xl'];
-			$this->data['info'] = $this->clothesMainModel->selectLanguageList($get);
+			$this->data['info'] = $this->clothesMainModel->languageList($get);
 
 			foreach ($this->data['info'] as $key => $value) {
 				if (isset($value['img_dir'])) {

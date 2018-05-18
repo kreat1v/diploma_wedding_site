@@ -23,7 +23,7 @@ class CategoryController extends Base
 
 	public function indexAction()
 	{
-		$this->data = $this->categoryMainModel->selectLanguageList('id_category');
+		$this->data = $this->categoryMainModel->languageList(['active' => 1]);
 	}
 
 	public function viewAction()

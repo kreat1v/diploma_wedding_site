@@ -68,7 +68,7 @@ class ClothesMain extends \App\Entity\Base
 		return $this->conn->query($sql);
 	}
 
-	public function selectLanguageList($filter = [])
+	public function languageList($filter = [])
 	{
 		// получаем имена таблиц
 		$fieldsMain = $this->getTableName();
@@ -76,7 +76,7 @@ class ClothesMain extends \App\Entity\Base
 		$fieldsSize = $this->getClothesSize()->getTableName();
 
 		// формируем условия запроса
-		$str = '';
+		$strWhere = '';
 		if (!empty($filter)) {
 			$str = 'WHERE 1';
 
@@ -90,7 +90,7 @@ class ClothesMain extends \App\Entity\Base
 				}
 
 				if ($key == 'price') {
-					$str .= " AND $fieldsMain.$key BETWEEN $value[0] AND $value[1]";
+					$strWhere .= " AND $fieldsMain.$key BETWEEN $value[0] AND $value[1]";
 				} elseif ($key == 'size') {
 					$size = [];
 
@@ -102,10 +102,10 @@ class ClothesMain extends \App\Entity\Base
 						$size[] = trim($sizeName, '\'');
 					}
 
-					$str .= " AND ($fieldsSize." . implode(" = 1 OR $fieldsSize.", $size) . " = 1)";
+					$strWhere .= " AND ($fieldsSize." . implode(" = 1 OR $fieldsSize.", $size) . " = 1)";
 				} else {
 					$in = is_array($value) ? implode(', ', $value) : $value;
-					$str .= " AND $fieldsMain.$key IN ($in)";
+					$strWhere .= " AND $fieldsMain.$key IN ($in)";
 				}
 			}
 		}
@@ -115,7 +115,7 @@ class ClothesMain extends \App\Entity\Base
 				FROM $fieldsMain
 				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_clothes
 				JOIN $fieldsSize ON $fieldsMain.id = $fieldsSize.id_clothes
-				$str";
+				$strWhere";
 
 		return $this->conn->query($sql);
 	}

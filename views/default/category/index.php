@@ -15,7 +15,7 @@ $router = \App\Core\App::getRouter();
     </div>
 </div>
 
-<div class="progress-bar text">
+<div class="progress-bar format text">
     <h1><?=__('category.title')?></h1>
     <?=__('category.text')?>
 

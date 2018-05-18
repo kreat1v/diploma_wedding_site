@@ -1,20 +1,27 @@
 .sections {
     width: 90%;
     margin: 0 auto;
+}
+
+.sections .title {
+    /* margin-bottom: 50px; */
+}
+
+.sections .container {
     display: flex;
     position: relative;
+    margin-top: 4em;
 }
 
 .sections .filter {
     margin-left: 5%;
     display: block;
     width: 30%;
-    /* height: 90%; */
     box-sizing: border-box;
     padding-left: 30px;
-    position: fixed;
-    right: 5%;
     border-left: 3px solid black;
+    /* position: fixed;
+    right: 5%; */
 }
 
 .sections .info {

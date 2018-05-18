@@ -12,34 +12,12 @@
 }
 
 .progress-bar h1, .progress-bar h2, .progress-bar p {
-    line-height: 1.75;
     margin: 0 auto;
     width: 90%;
 }
 
-.progress-bar h1, .progress-bar h2 {
-    font-weight: 400;
-    font-size: 250%;
-    line-height: 1.5;
-}
-
 .progress-bar h1 {
     margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    color: #FAB900;
-}
-
-.progress-bar h2 {
-    margin-top: 2em;
-    margin-botttom: 1em;
-    color: #3CA6C7;
-}
-
-.progress-bar p {
-    font-weight: 300;
-    font-size: 100%;
-    margin-top: 2em;
-    margin-bottom: 2em;
 }
 
 .progress-bar .progressbar {

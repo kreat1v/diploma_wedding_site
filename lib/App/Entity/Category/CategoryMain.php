@@ -35,19 +35,34 @@ class CategoryMain extends \App\Entity\Base
 	{
 		return [
 			'id',
-			'active'
+			'active',
+			'category_name'
 		];
 	}
 
-	public function selectLanguageList()
+	public function languageList($filter = [])
 	{
+		$fields = array_merge($this->getFields(), $this->getCategoryLang()->getFields());
+
 		$fieldsMain = $this->getTableName();
 		$fieldsLang = $this->getCategoryLang()->getTableName();
+
+		// формируем условия запроса
+		$strWhere = '';
+
+		foreach ($filter as $fieldName => $value) {
+			if (!in_array($fieldName, $fields)) {
+				continue;
+			}
+
+			$value = $this->conn->escape($value);
+			$strWhere .= " AND $fieldName = $value";
+		}
 
 		$sql = "SELECT $fieldsMain.*, $fieldsLang.*
 				FROM $fieldsMain
 				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_category
-				WHERE active = 1";
+				$strWhere";
 
 		return $this->conn->query($sql);
 	}
