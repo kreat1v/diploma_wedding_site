@@ -19,6 +19,71 @@
     box-sizing: border-box;
     padding-left: 30px;
     border-left: 2px solid #AD7F00;
+    font-size: 0.8em;
+}
+
+.sections .filter label {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.sections .filter .sex, .sections .filter .price, .sections .filter .brands, .sections .filter .size {
+    display: block;
+    margin-bottom: 30px;
+}
+
+.sections .filter h4 {
+    margin: 5px 0;
+    font-size: 1.1em;
+    color: #3CA6C7;
+}
+
+.sections .filter .price input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 70px;
+    border-bottom: 1px solid #3CA6C7;
+    text-align: center;
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+}
+
+.sections .filter .price #slider-range {
+    margin: 15px 0 0 0px;
+    width: 73%;
+}
+
+.sections .filter .price #slider-range .ui-widget-header {
+    background: #3CA6C7 !important;
+}
+
+.sections .filter .sex input, .sections .filter .brands input, .sections .filter .size input {
+    margin-right: 10px;
+}
+
+.sections .filter .bt {
+    display: flex;
+    justify-content: space-around;
+    width: 85%;
+    padding-bottom: 5px;
+}
+
+.sections .filter .bt div {
+    width: 100%;
+    margin-right: 10px;
+}
+
+.sections .filter .bt input {
+    border: none;
+    width: 100%;
+    color: white;
+}
+
+.sections .filter .bt a {
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
 }
 
 .sections .info {
@@ -171,22 +236,22 @@
     width: 70%;
 }
 
-.sections .main-text {
+.sections .body .main-text {
     color: white;
     text-align: justify;
     margin-bottom: 30px;
     width: 100%;
 }
 
-.sections .main-text p {
-    margin: 0 0 0 30px;
+.sections .body .main-text p {
+    margin: 0 0 20px 30px;
 }
 
-.sections .bt {
+.sections .body .bt {
     text-align: center;
 }
 
-.sections .bt a {
+.sections .body .bt a {
     margin: 0 10px;
     padding: 0 20px;
     text-decoration: none;
@@ -194,12 +259,12 @@
     transition: all 0.1s linear;
 }
 
-.sections .bt span {
+.sections .body .bt span {
     display: inline-block;
     float: left;
 }
 
-.sections .bt span:last-child {
+.sections .body .bt span:last-child {
     margin-left: 10px;
     display: none;
 }

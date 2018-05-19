@@ -9,7 +9,6 @@ $router = \App\Core\App::getRouter();
 <div class="sections">
     <!-- <pre> -->
     <!-- <?php print_r($data['info'])?> -->
-    <!-- <?php print_r($data['galery'])?> -->
 
     <div class="title format text">
         <h1><?=$data['title']?></h1>
@@ -67,6 +66,14 @@ $router = \App\Core\App::getRouter();
 
                             <div class="main-text">
                                 <p><?=$value['text']?></p>
+                                <p>Размеры:
+                                <?=$value['s'] ? 'S ' : ''?>
+                                <?=$value['m'] ? 'M ' : ''?>
+                                <?=$value['l'] ? 'L ' : ''?>
+                                <?=$value['xl'] ? 'XL ' : ''?>
+                                </p>
+                                <p>Брэнд: <?=$value['brand']?></p>
+                                <p>Цена: <?=$value['price']?></p>
                             </div>
 
                             <div class="bt">
@@ -104,33 +111,35 @@ $router = \App\Core\App::getRouter();
 
         </div>
 
-        <div class="filter">
-            <form class="" method="get" id="filter-clothes">
+        <div class="filter text">
+            <form method="get" id="filter-clothes">
                 <div class="sex">
+                    <h4>Пол</h4>
                     <label>
-                        <input type="radio" name="sex" value="m" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> />Man
+                        <input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> />Man
                     </label>
-                    <br>
                     <label>
-                        <input type="radio" name="sex" value="f" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> />Female
+                        <input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> />Female
                     </label>
-                    <br>
-                    <hr>
                 </div>
 
                 <div class="price" id='myform'>
-                    <label for="amount">Price range:</label>
-                    <input type="number" id="min" value='<?=isset($data['get']['price']) ? $data['get']['price'][0] : ''?>' />
-                    <input type="number" id="max" value='<?=isset($data['get']['price']) ? $data['get']['price'][1] : ''?>' />
+                    <h4>Цена</h4>
+                    <label>
+                        От <input type="number" id="min" value='<?=isset($data['get']['price']) ? $data['get']['price'][0] : ''?>' />
+                    </label>
+                    <label>
+                        до <input type="number" id="max" value='<?=isset($data['get']['price']) ? $data['get']['price'][1] : ''?>' />
+                    </label>
                     <div id="slider-range"></div>
                 </div>
                 <input id='price' type='hidden' name='price' />
-                <hr>
 
                 <div class="brands">
+                    <h4>Брэнд</h4>
                     <?php foreach ($data['filter']['brand'] as $value): ?>
                     <label>
-                        <input type="checkbox" value="<?=lcfirst($value['brand'])?>"
+                        <input type="checkbox" value="<?=lcfirst($value['brand'])?>" class="option-input checkbox"
                         <?php
                         if (isset($data['get']['brand']) && array_search(lcfirst($value['brand']), $data['get']['brand']) !== false) {
                             echo "checked";
@@ -138,16 +147,15 @@ $router = \App\Core\App::getRouter();
                         ?>
                         /><?=$value['brand']?>
                     </label>
-                    <br>
                     <?php endforeach; ?>
                 </div>
                 <input id='brand' type='hidden' name='brand' />
-                <hr>
 
                 <div class="size">
+                    <h4>Размер</h4>
                     <?php foreach ($data['filter']['size'] as $value): ?>
                     <label>
-                        <input type="checkbox" value="<?=$value?>"
+                        <input type="checkbox" value="<?=$value?>" class="option-input checkbox"
                         <?php
                         if (isset($data['get']['size']) && array_search($value, $data['get']['size']) !== false) {
                             echo "checked";
@@ -155,15 +163,17 @@ $router = \App\Core\App::getRouter();
                         ?>
                         /><?=mb_strtoupper($value)?>
                     </label>
-                    <br>
                     <?php endforeach; ?>
                 </div>
                 <input id='size' type='hidden' name='size' />
-                <hr>
 
-                <div class="">
-                    <input type="submit" value="GO">
-                    <a href="<?=$router->buildUri('.clothes')?>">Reset</a>
+                <div class="bt">
+                    <div>
+                        <input type="submit" value="Фильтр" class="sm-buttons text" />
+                    </div>
+                    <div>
+                        <a class="sm-buttons" href="<?=$router->buildUri('.clothes')?>">Сбросить</a>
+                    </div>
                 </div>
             </form>
         </div>
