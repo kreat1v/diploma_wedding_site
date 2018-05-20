@@ -54,6 +54,35 @@ return [
 		'button' => 'Go to the section'
 	],
 
+	'products' => [
+		'contacts' => 'Contacts',
+		'size' => 'Sizes',
+		'brand' => 'Brand',
+		'price' => 'Price',
+		'basket' => 'Add to cart',
+		'favorites' => 'To favorites',
+		'discussion' => 'Discussion',
+		'not_found' => 'We could not find anything...'
+	],
+
+	'filter' => [
+		'sex' => 'Category',
+		'm' => 'Men\'s',
+		'f' => 'Women\'s',
+		'price' => 'Price',
+		'from' => 'From',
+		'to' => 'to',
+		'brand' => 'Brand',
+		'size' => 'Size',
+		'filter' => 'Filter',
+		'reset' => 'Reset'
+	],
+
+	'pagination' => [
+		'previous' => 'Previous',
+		'next' => 'Next'
+	],
+
 	'footer' => [
 		'about' => 'About us',
 		'communications' => 'Feedback',

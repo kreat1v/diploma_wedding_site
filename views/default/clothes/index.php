@@ -42,7 +42,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                 <div class="details text">
 
                                     <div class="center">
-                                        <h5>Контакты</h5>
+                                        <h5><?=__('products.contacts')?></h5>
                                         <p><?=$value['contacts']?></p>
                                         <a href="tel: <?=$value['tel']?>"><i class="fas fa-phone"></i> <?=$value['tel']?></a>
                                         <span></span>
@@ -67,28 +67,28 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                                 <div class="main-text">
                                     <p><?=$value['text']?></p>
-                                    <p>Размеры:
+                                    <p><?=__('products.size')?>:
                                     <?=$value['s'] ? 'S ' : ''?>
                                     <?=$value['m'] ? 'M ' : ''?>
                                     <?=$value['l'] ? 'L ' : ''?>
                                     <?=$value['xl'] ? 'XL ' : ''?>
                                     </p>
-                                    <p>Брэнд: <?=$value['brand']?></p>
-                                    <p>Цена: <?=$value['price']?></p>
+                                    <p><?=__('products.brand')?>: <?=$value['brand']?></p>
+                                    <p><?=__('products.price')?>: <?=$value['price']?></p>
                                 </div>
 
                                 <div class="bt">
                                     <a href="#" class="sm-buttons">
                                         <span><i class="fas fa-shopping-cart fa-lg"></i></span>
-                                        <span>В корзину</span>
+                                        <span><?=__('products.basket')?></span>
                                     </a>
                                     <a href="#" class="sm-buttons">
                                         <span><i class="fas fa-heart fa-lg"></i></span>
-                                        <span>В избранное</span>
+                                        <span><?=__('products.favorites')?></span>
                                     </a>
                                     <a href="#" class="sm-buttons">
                                         <span><i class="fas fa-comments fa-lg"></i></span>
-                                        <span>Обсуждение</span>
+                                        <span><?=__('products.discussion')?></span>
                                     </a>
                                 </div>
 
@@ -120,7 +120,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         </li>
 
                         <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]).$filter : ''?>">Previous</a>
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]).$filter : ''?>"><?=__('pagination.previous')?></a>
                         </li>
 
                         <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
@@ -130,7 +130,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         <?php endforeach; ?>
 
                         <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]).$filter : ''?>">Next</a>
+                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]).$filter : ''?>"><?=__('pagination.next')?></a>
                         </li>
 
                         <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
@@ -143,7 +143,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 <?php endif;
             else: ?>
             <div class="format text">
-                <p>Мы не смогли ничего найти...</p>
+                <p><?=__('products.not_found')?></p>
             </div>
         <?php endif; ?>
         </div>
@@ -151,29 +151,29 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         <div class="filter text">
             <form method="get" id="filter-clothes">
                 <div class="sex">
-                    <h4>Пол</h4>
+                    <h4><?=__('filter.sex')?></h4>
                     <label>
-                        <input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> />Man
+                        <input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> /><?=__('filter.m')?>
                     </label>
                     <label>
-                        <input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> />Female
+                        <input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> /><?=__('filter.f')?>
                     </label>
                 </div>
 
                 <div class="price" id='myform'>
-                    <h4>Цена</h4>
+                    <h4><?=__('filter.price')?></h4>
                     <label>
-                        От <input type="number" id="min" value='<?=isset($data['get']['price']) ? $data['get']['price'][0] : ''?>' />
+                        <?=__('filter.from')?> <input type="number" id="min" value='<?=isset($data['get']['price']) ? $data['get']['price'][0] : ''?>' />
                     </label>
                     <label>
-                        до <input type="number" id="max" value='<?=isset($data['get']['price']) ? $data['get']['price'][1] : ''?>' />
+                        <?=__('filter.to')?> <input type="number" id="max" value='<?=isset($data['get']['price']) ? $data['get']['price'][1] : ''?>' />
                     </label>
                     <div id="slider-range"></div>
                 </div>
                 <input id='price' type='hidden' name='price' />
 
                 <div class="brands">
-                    <h4>Брэнд</h4>
+                    <h4><?=__('filter.brand')?></h4>
                     <?php foreach ($data['filter']['brand'] as $value): ?>
                     <label>
                         <input type="checkbox" value="<?=lcfirst($value['brand'])?>" class="option-input checkbox"
@@ -189,7 +189,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 <input id='brand' type='hidden' name='brand' />
 
                 <div class="size">
-                    <h4>Размер</h4>
+                    <h4><?=__('filter.size')?></h4>
                     <?php foreach ($data['filter']['size'] as $value): ?>
                     <label>
                         <input type="checkbox" value="<?=$value?>" class="option-input checkbox"
@@ -206,10 +206,10 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                 <div class="bt">
                     <div>
-                        <input type="submit" value="Фильтр" class="sm-buttons text" />
+                        <input type="submit" value="<?=__('filter.filter')?>" class="sm-buttons text" />
                     </div>
                     <div>
-                        <a class="sm-buttons" href="<?=$router->buildUri('.clothes')?>">Сбросить</a>
+                        <a class="sm-buttons" href="<?=$router->buildUri('.clothes')?>"><?=__('filter.reset')?></a>
                     </div>
                 </div>
             </form>
