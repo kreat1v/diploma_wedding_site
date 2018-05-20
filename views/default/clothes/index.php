@@ -5,146 +5,147 @@
 use \App\Core\Config;
 
 $router = \App\Core\App::getRouter();
-
-$page = isset($router->getParams()[0]) ? $router->getParams()[0] : 1;
-
-$filtr =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
+$filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
 ?>
 <div class="sections">
-    <!-- <pre> -->
-    <!-- <?php print_r($data['info'])?> -->
 
-    <div class="title format text">
+    <div class="format text">
         <h1><?=$data['title']?></h1>
         <?=$data['text']?>
     </div>
 
     <div class="container">
 
-        <div class="info">
+        <div class="product">
 
-            <?php foreach ($data['info'] as $value): ?>
-            <div class="gradient-border ">
+            <?php if (!empty($data['product'])):
+                foreach ($data['product'] as $value): ?>
+                <div class="gradient-border ">
 
-                <div class="goods">
+                    <div class="goods">
 
-                    <div class="blur">
-                        <img src="<?=\App\Core\Config::get('imgDir_clothes') . $value['img_dir'] . DS . $value['galery'][0]?>"/>
-                    </div>
+                        <div class="blur">
+                            <img src="<?=\App\Core\Config::get('imgDir_clothes') . $value['img_dir'] . DS . $value['galery'][0]?>"/>
+                        </div>
 
-                    <h3 class="text"><?=$value['title']?></h3>
+                        <h3 class="text"><?=$value['title']?></h3>
 
-                    <div class="top">
+                        <div class="top">
 
-                        <div class="card">
+                            <div class="card">
 
-                            <div class="image">
-                                <img src="<?=\App\Core\Config::get('imgDir_clothes') . $value['img_dir'] . DS . $value['galery'][0]?>"/>
+                                <div class="image">
+                                    <img src="<?=\App\Core\Config::get('imgDir_clothes') . $value['img_dir'] . DS . $value['galery'][0]?>"/>
+                                </div>
+
+                                <div class="details text">
+
+                                    <div class="center">
+                                        <h5>Контакты</h5>
+                                        <p><?=$value['contacts']?></p>
+                                        <a href="tel: <?=$value['tel']?>"><i class="fas fa-phone"></i> <?=$value['tel']?></a>
+                                        <span></span>
+                                        <ul>
+                                            <?php if (isset($value['fb'])): ?>
+                                            <li><a href="<?='https://www.'.$value['fb']?>"><i class="fab fa-facebook-square"></i></a></li>
+                                            <?php endif; ?>
+                                            <?php if (isset($value['inst'])): ?>
+                                            <li><a href="<?='https://www.'.$value['inst']?>"><i class="fab fa-instagram"></i></a></li>
+                                            <?php endif; ?>
+                                            <?php if (isset($value['telegram'])): ?>
+                                            <li><a href="<?='https://www.'.$value['telegram']?>"><i class="fab fa-telegram-plane"></i></a></li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            <div class="details text">
+                            <div class="body text">
 
-                                <div class="center">
-                                    <h5>Контакты</h5>
-                                    <p><?=$value['contacts']?></p>
-                                    <a href="tel: <?=$value['tel']?>"><i class="fas fa-phone"></i> <?=$value['tel']?></a>
-                                    <span></span>
-                                    <ul>
-                                        <?php if (isset($value['fb'])): ?>
-                                        <li><a href="<?='https://www.'.$value['fb']?>"><i class="fab fa-facebook-square"></i></a></li>
-                                        <?php endif; ?>
-                                        <?php if (isset($value['inst'])): ?>
-                                        <li><a href="<?='https://www.'.$value['inst']?>"><i class="fab fa-instagram"></i></a></li>
-                                        <?php endif; ?>
-                                        <?php if (isset($value['telegram'])): ?>
-                                        <li><a href="<?='https://www.'.$value['telegram']?>"><i class="fab fa-telegram-plane"></i></a></li>
-                                        <?php endif; ?>
-                                    </ul>
+                                <div class="main-text">
+                                    <p><?=$value['text']?></p>
+                                    <p>Размеры:
+                                    <?=$value['s'] ? 'S ' : ''?>
+                                    <?=$value['m'] ? 'M ' : ''?>
+                                    <?=$value['l'] ? 'L ' : ''?>
+                                    <?=$value['xl'] ? 'XL ' : ''?>
+                                    </p>
+                                    <p>Брэнд: <?=$value['brand']?></p>
+                                    <p>Цена: <?=$value['price']?></p>
+                                </div>
+
+                                <div class="bt">
+                                    <a href="#" class="sm-buttons">
+                                        <span><i class="fas fa-shopping-cart fa-lg"></i></span>
+                                        <span>В корзину</span>
+                                    </a>
+                                    <a href="#" class="sm-buttons">
+                                        <span><i class="fas fa-heart fa-lg"></i></span>
+                                        <span>В избранное</span>
+                                    </a>
+                                    <a href="#" class="sm-buttons">
+                                        <span><i class="fas fa-comments fa-lg"></i></span>
+                                        <span>Обсуждение</span>
+                                    </a>
                                 </div>
 
                             </div>
 
                         </div>
 
-                        <div class="body text">
-
-                            <div class="main-text">
-                                <p><?=$value['text']?></p>
-                                <p>Размеры:
-                                <?=$value['s'] ? 'S ' : ''?>
-                                <?=$value['m'] ? 'M ' : ''?>
-                                <?=$value['l'] ? 'L ' : ''?>
-                                <?=$value['xl'] ? 'XL ' : ''?>
-                                </p>
-                                <p>Брэнд: <?=$value['brand']?></p>
-                                <p>Цена: <?=$value['price']?></p>
+                        <div class="galery">
+                            <div class="panels">
+                                <?php foreach ($value['galery'] as $img): ?>
+                                <a href="javascript:void(0)" class="panel">
+                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('imgDir_clothes_web') . $value['img_dir'] . '/' . $img?>');"></div>
+                                </a>
+                                <?php endforeach; ?>
                             </div>
-
-                            <div class="bt">
-                                <a href="#" class="sm-buttons">
-                                    <span><i class="fas fa-shopping-cart fa-lg"></i></span>
-                                    <span>В корзину</span>
-                                </a>
-                                <a href="#" class="sm-buttons">
-                                    <span><i class="fas fa-heart fa-lg"></i></span>
-                                    <span>В избранное</span>
-                                </a>
-                                <a href="#" class="sm-buttons">
-                                    <span><i class="fas fa-comments fa-lg"></i></span>
-                                    <span>Обсуждение</span>
-                                </a>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="galery">
-                        <div class="panels">
-                            <?php foreach ($value['galery'] as $img): ?>
-                            <a href="javascript:void(0)" class="panel">
-                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('imgDir_clothes_web') . $value['img_dir'] . '/' . $img?>');"></div>
-                            </a>
-                            <?php endforeach; ?>
                         </div>
                     </div>
+
                 </div>
+                <?php endforeach; ?>
 
+                <?php if ($data['pagination']): ?>
+                <nav>
+                    <ul class="pagination text">
+                        <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [1]).$filter : ''?>">
+                                <span>&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]).$filter : ''?>">Previous</a>
+                        </li>
+
+                        <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
+                        <li class="<?=$data['page'] == $key ? 'active' : ''?>">
+                            <a href="<?=$router->buildUri('clothes.index', [$key]).$filter?>"><?=$key?></a>
+                        </li>
+                        <?php endforeach; ?>
+
+                        <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]).$filter : ''?>">Next</a>
+                        </li>
+
+                        <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+                            <a href="<?=$router->buildUri('clothes.index', [$data['pagination']['last']]).$filter?>">
+                                <span>&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <?php endif;
+            else: ?>
+            <div class="format text">
+                <p>Мы не смогли ничего найти...</p>
             </div>
-            <?php endforeach; ?>
-
-            <?php if ($data['pagination']): ?>
-            <nav>
-                <ul class="pagination text">
-                    <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [1]).$filtr : ''?>">
-                            <span>&laquo;</span>
-                        </a>
-                    </li>
-
-                    <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]).$filtr : ''?>">Previous</a>
-                    </li>
-
-                    <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
-                    <li class="<?=$page == $key ? 'active' : ''?>">
-                        <a href="<?=$router->buildUri('clothes.index', [$key]).$filtr?>"><?=$key?></a>
-                    </li>
-                    <?php endforeach; ?>
-
-                    <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]).$filtr : ''?>">Next</a>
-                    </li>
-
-                    <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                        <a href="<?=$router->buildUri('clothes.index', [$data['pagination']['last']]).$filtr?>">
-                            <span>&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <?php endif; ?>
+        <?php endif; ?>
         </div>
 
         <div class="filter text">
@@ -215,30 +216,8 @@ $filtr =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         </div>
 
     </div>
-<!--
-    <ul class="pagination text">
-        <li><a href="#">«</a></li>
-        <li><a href="#">1</a></li>
-        <li class="active"><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">»</a></li>
-    </ul> -->
 
 </div>
 
-<script type="text/javascript">
-
-    $(document).ready(function() {
-
-        $('.sm-buttons').hover(function(){
-            $(this).find("span:last-child").show(15);
-        }, function(){
-            $(this).find("span:last-child").hide(15);
-        });
-
-    });
-</script>
-
+<script type="text/javascript" src="/js/buttons.js"></script>
 <script type="text/javascript" src="/js/filter-clothes.js"></script>
