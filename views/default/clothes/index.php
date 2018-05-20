@@ -6,6 +6,10 @@ use \App\Core\Config;
 
 $router = \App\Core\App::getRouter();
 
+$page = isset($router->getParams()[0]) ? $router->getParams()[0] : 1;
+
+$filtr =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
+
 ?>
 <div class="sections">
     <!-- <pre> -->
@@ -114,27 +118,27 @@ $router = \App\Core\App::getRouter();
             <nav>
                 <ul class="pagination text">
                     <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [1]) : ''?>">
+                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [1]).$filtr : ''?>">
                             <span>&laquo;</span>
                         </a>
                     </li>
 
                     <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]) : ''?>">Previous</a>
+                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]).$filtr : ''?>">Previous</a>
                     </li>
 
                     <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
-                    <li class="<?=$router->getParams()[1] == $key ? 'active' : ''?>">
-                        <a href="<?=$router->buildUri('clothes.index', [$key])?>"><?=$key?></a>
+                    <li class="<?=$page == $key ? 'active' : ''?>">
+                        <a href="<?=$router->buildUri('clothes.index', [$key]).$filtr?>"><?=$key?></a>
                     </li>
                     <?php endforeach; ?>
 
                     <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]) : ''?>">Next</a>
+                        <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]).$filtr : ''?>">Next</a>
                     </li>
 
                     <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                        <a href="<?=$router->buildUri('clothes.index', [$data['pagination']['last']])?>" aria-label="Last">
+                        <a href="<?=$router->buildUri('clothes.index', [$data['pagination']['last']]).$filtr?>">
                             <span>&raquo;</span>
                         </a>
                     </li>
@@ -211,7 +215,7 @@ $router = \App\Core\App::getRouter();
         </div>
 
     </div>
-
+<!--
     <ul class="pagination text">
         <li><a href="#">«</a></li>
         <li><a href="#">1</a></li>
@@ -220,7 +224,7 @@ $router = \App\Core\App::getRouter();
         <li><a href="#">4</a></li>
         <li><a href="#">5</a></li>
         <li><a href="#">»</a></li>
-    </ul>
+    </ul> -->
 
 </div>
 

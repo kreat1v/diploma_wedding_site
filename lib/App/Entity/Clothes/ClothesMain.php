@@ -68,7 +68,7 @@ class ClothesMain extends \App\Entity\Base
 		return $this->conn->query($sql);
 	}
 
-	public function languageList($filter = [])
+	public function languageList($filter = [], $limit = [])
 	{
 		// получаем имена таблиц
 		$fieldsMain = $this->getTableName();
@@ -110,12 +110,19 @@ class ClothesMain extends \App\Entity\Base
 			}
 		}
 
+		// данные для пагинации
+		$strLimit = '';
+		if (!empty($limit)) {
+			$strLimit = " LIMIT $limit[0] OFFSET $limit[1]";
+		}
+
 		// формируем сам запрос
 		$sql = "SELECT $fieldsMain.*, $fieldsLang.*, $fieldsSize.*
 				FROM $fieldsMain
 				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_clothes
 				JOIN $fieldsSize ON $fieldsMain.id = $fieldsSize.id_clothes
-				$strWhere";
+				$strWhere
+				$strLimit";
 
 		return $this->conn->query($sql);
 	}

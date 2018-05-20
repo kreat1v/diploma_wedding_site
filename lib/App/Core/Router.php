@@ -14,6 +14,8 @@ class Router
 
 	protected $params;
 
+	protected $query;
+
 	/**
 	 * @return mixed
 	 */
@@ -57,6 +59,14 @@ class Router
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getQuery()
+	{
+		return $this->query;
+	}
+
+	/**
 	 * Router constructor.
 	 *
 	 * @param string $uri
@@ -66,6 +76,7 @@ class Router
 		// Получаем default настройки.
 		$this->controller = Config::get('defaultController');
 		$this->action = Config::get('defaultAction');
+		$this->query = Config::get('defaultQuery');
 		$this->route = Config::get('defaultRoute');
 		$this->lang = Config::get('defaultLanguage');
 
@@ -92,6 +103,10 @@ class Router
 
 		if (current($pathParts)) {
 			$this->action = array_shift($pathParts);
+		}
+
+		if (isset($parts['query'])) {
+			$this->query = $parts['query'];
 		}
 
 		$this->params = $pathParts;

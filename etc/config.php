@@ -9,6 +9,7 @@ Config::set('routes', ['default', 'admin']);
 Config::set('defaultRoute', 'default');
 Config::set('defaultController', 'category');
 Config::set('defaultAction', 'index');
+Config::set('defaultQuery', '');
 
 /**
  * Languages

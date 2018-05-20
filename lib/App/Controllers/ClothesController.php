@@ -65,15 +65,6 @@ class ClothesController extends Base
 			$this->data['text'] = $category['second_text'];
 			$this->data['filter']['brand'] = $this->clothesMainModel->getBrand();
 			$this->data['filter']['size'] = ['s', 'm', 'l', 'xl'];
-			$this->data['info'] = $this->clothesMainModel->languageList($get);
-
-			foreach ($this->data['info'] as $key => $value) {
-				if (isset($value['img_dir'])) {
-					$this->data['info'][$key]['galery'] = array_values(array_diff(scandir(Config::get('gallery_clothes') . $value['img_dir']), ['.', '..']));
-				} else {
-					$this->data['info'][$key]['galery'] = null;
-				}
-			}
 
 			if (isset($get)) {
 				$this->data['get'] = $get;
@@ -81,7 +72,7 @@ class ClothesController extends Base
 
 			// пагинация
 			$page = isset($this->params[0]) ? $this->params[0] : 1;
-			$productsCount = count($this->data['info']);
+			$productsCount = count($this->clothesMainModel->languageList($get));
 
 			$pag = new Pagination();
 			$pagination = $pag->getLinks(
@@ -101,6 +92,17 @@ class ClothesController extends Base
 			$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
 
 			// $this->data['page'] = $page;
+
+			$this->data['info'] = $this->clothesMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
+
+
+			foreach ($this->data['info'] as $key => $value) {
+				if (isset($value['img_dir'])) {
+					$this->data['info'][$key]['galery'] = array_values(array_diff(scandir(Config::get('gallery_clothes') . $value['img_dir']), ['.', '..']));
+				} else {
+					$this->data['info'][$key]['galery'] = null;
+				}
+			}
 		} else {
 			$this->page404();
 		}
