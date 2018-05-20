@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \App\Core\App;
 use \App\Core\Localization;
 use \App\Core\Config;
+use \App\Core\Pagination;
 use \App\Entity\Category\CategoryMain;
 use \App\Entity\Clothes\ClothesMain;
 
@@ -26,9 +27,6 @@ class ClothesController extends Base
 		// получаем данные о категории
 		$controller = lcfirst(App::getRouter()->getController(true));
 		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
-
-		// echo '<pre>';
-		// print_r($category);
 
 		if ($category['active'] != 0) {
 			$get = [];
@@ -80,6 +78,29 @@ class ClothesController extends Base
 			if (isset($get)) {
 				$this->data['get'] = $get;
 			}
+
+			// пагинация
+			$page = isset($this->params[0]) ? $this->params[0] : 1;
+			$productsCount = count($this->data['info']);
+
+			$pag = new Pagination();
+			$pagination = $pag->getLinks(
+				$productsCount,
+				Config::get('pagLimit'),
+				$page,
+				Config::get('pagButtonLimit'));
+
+			// var_dump($pagination);
+
+			if (!empty($pagination)) {
+				$this->data['pagination'] = $pagination;
+			} else {
+				$this->data['pagination'] = null;
+			}
+
+			$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+			// $this->data['page'] = $page;
 		} else {
 			$this->page404();
 		}

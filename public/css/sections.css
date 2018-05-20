@@ -91,6 +91,11 @@
     width: 65%;
 }
 
+.sections .info nav {
+    min-width: 200px;
+    margin: 0 auto;
+}
+
 .sections .goods {
     margin-bottom: 50px;
     background-color: #1D1F20;
@@ -232,7 +237,7 @@
     background: #FAB900;
 }
 
-.sections .body {
+.sections .top .body {
     width: 70%;
 }
 

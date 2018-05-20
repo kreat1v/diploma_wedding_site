@@ -5,6 +5,7 @@
 use \App\Core\Config;
 
 $router = \App\Core\App::getRouter();
+
 ?>
 <div class="sections">
     <!-- <pre> -->
@@ -109,6 +110,37 @@ $router = \App\Core\App::getRouter();
             </div>
             <?php endforeach; ?>
 
+            <?php if ($data['pagination']): ?>
+            <nav>
+                <ul class="pagination text">
+                    <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [1]) : ''?>">
+                            <span>&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]) : ''?>">Previous</a>
+                    </li>
+
+                    <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
+                    <li class="<?=$router->getParams()[1] == $key ? 'active' : ''?>">
+                        <a href="<?=$router->buildUri('clothes.index', [$key])?>"><?=$key?></a>
+                    </li>
+                    <?php endforeach; ?>
+
+                    <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+                        <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]) : ''?>">Next</a>
+                    </li>
+
+                    <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+                        <a href="<?=$router->buildUri('clothes.index', [$data['pagination']['last']])?>" aria-label="Last">
+                            <span>&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <?php endif; ?>
         </div>
 
         <div class="filter text">
@@ -179,6 +211,16 @@ $router = \App\Core\App::getRouter();
         </div>
 
     </div>
+
+    <ul class="pagination text">
+        <li><a href="#">«</a></li>
+        <li><a href="#">1</a></li>
+        <li class="active"><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">»</a></li>
+    </ul>
 
 </div>
 
