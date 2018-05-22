@@ -10,7 +10,7 @@ class Password
 	public function __construct($password, $saltText = null)
 	{
 		$this->salt = md5(is_null($saltText) ? Config::get('salt') : $saltText);
-		$this->hashedPassword = md5($this->salt . $password);
+		$this->hashedPassword = md5($password . $this->salt);
 	}
 
 	public function __toString()

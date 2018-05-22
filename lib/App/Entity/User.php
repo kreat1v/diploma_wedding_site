@@ -32,6 +32,7 @@ class User extends Base
 			'tel',
 			'role',
 			'password',
+			'secretkey',
 			'active'
 		];
 	}
@@ -46,7 +47,10 @@ class User extends Base
 			throw new \Exception(__('register.error2'));
 		}
 
-		$data['password'] = md5(new Password($data['password']));
+		$secret_key = uniqid();
+
+		$data['password'] = md5(new Password($data['password'], $secret_key));
+		$data['secretkey'] = $secret_key;
 
 		$this->save($data);
 	}
@@ -57,17 +61,26 @@ class User extends Base
 
 		$user = $this->getBy('email', $data['email']);
 
+		// Проверяем корректность введенных данных.
 		if (!$user) {
 			throw new \Exception(__('login.error1'));
 		}
 
-		if ($user['password'] != md5(new Password($data['password']))) {
+		if ($user['password'] != md5(new Password($data['password'], $user['secretkey']))) {
 			throw new \Exception(__('login.error2'));
 		}
 
 		if (!$user['active']) {
 			throw new \Exception(__('login.error3'));
 		}
+
+		// Обновляем пароль.
+		$secret_key = uniqid();
+
+		$data['password'] = md5(new Password($data['password'], $secret_key));
+		$data['secretkey'] = $secret_key;
+
+		$this->save($data, $user['id']);
 
 		return $user;
 	}

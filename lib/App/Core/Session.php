@@ -67,7 +67,7 @@ class Session
 		if (!isset($_SESSION['flash']) || !is_array($_SESSION['flash'])) {
 			$_SESSION['flash'] = [];
 		}
-
+		
 		$_SESSION['flash'][] = $message;
 	}
 

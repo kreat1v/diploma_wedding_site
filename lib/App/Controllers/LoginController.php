@@ -38,6 +38,14 @@ class LoginController extends Base
 							$message = 'Доброе утро!';
 							break;
 
+						case $time < 18:
+							$message = 'Добрый день!';
+							break;
+
+						case $time < 24:
+							$message = 'Добрый вечер!';
+							break;
+
 						default:
 							$message = 'Привет!';
 							break;
@@ -48,7 +56,7 @@ class LoginController extends Base
 					App::getSession()->set('role', $user['role']);
 
 					App::getSession()->addFlash("$message Мы рады вас видеть!");
-					App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('.user'));
 				}
 
 				if (isset($_POST['button']) && $_POST['button'] == 'register') {
@@ -61,7 +69,8 @@ class LoginController extends Base
 
 					$this->userModel->register($this->data);
 
-					App::getSession()->addFlash('Thank you for registering!');
+					App::getSession()->addFlash(__('register.reg_mes'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('.login'));
 				}
 
 			} catch (\Exception $exception) {
@@ -83,12 +92,5 @@ class LoginController extends Base
 				die();
 			}
 		}
-	}
-
-	public function logoutAction()
-	{
-		App::getSession()->destroy();
-		App::getSession()->addFlash('You have completed the session');
-		App::getRouter()->redirect(App::getRouter()->buildUri('category.index'));
 	}
 }

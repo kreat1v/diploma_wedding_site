@@ -6,6 +6,11 @@
     align-items: center;
 }
 
+.menu a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .menu .wrap {
     height: 100%;
     display: flex;

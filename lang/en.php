@@ -38,7 +38,8 @@ return [
 		'tool4' => 'The password must be between 8 and 12 characters. You can use upper and lower case letters, numbers, as well as special characters _ - @ #',
 		'tool5' => 'The entered passwords do not match',
 		'error1' => 'User with this email already registered',
-		'error2' => 'Passwords do not match'
+		'error2' => 'Passwords do not match',
+		'reg_mes' => 'Thank you for registering! Now you can log in'
 	],
 
 	'form' => [

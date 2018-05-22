@@ -23,7 +23,7 @@ $router = \App\Core\App::getRouter();
     <h2 class='progressbar-header'><?=$value['title']?></h2>
     <?=$value['first_text']?>
     <div class="buttons">
-        <a href="#">
+        <a href="<?=$router->buildUri('.' . $value['category_name'])?>">
             <span><?=__('category.button')?></span>
         </a>
     </div>

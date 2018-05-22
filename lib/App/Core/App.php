@@ -83,16 +83,14 @@ class App
 			static::getRouter()->redirect(static::getRouter()->buildUri('default.category.index'));
 		}
 
-		// Если сессия активна, то страницы с формой регистрации и логина не доступны.
-		if (static::getSession()->get('id') && (static::getRouter()->getAction(true) == 'register' || static::getRouter()->getAction(true) == 'login')) {
-			static::getRouter()->redirect(static::getRouter()->buildUri('category.index'));
+		// Если сессия активна, то страница с формами входа и регистрации не доступны.
+		if (static::getRouter()->getController(true) == 'Login' && App::getSession()->get('id')) {
+			static::getRouter()->redirect(static::getRouter()->buildUri('.user'));
 		}
 
 		// Если контроллер User и сессия не активна, то доступны только страницы с формами входа и регистрации.
 		if (static::getRouter()->getController(true) == 'User' && !App::getSession()->get('id')) {
-			if (static::getRouter()->getAction(true) != 'register' && static::getRouter()->getAction(true) != 'login') {
-				static::getRouter()->redirect(static::getRouter()->buildUri('default.user.login'));
-			}
+			static::getRouter()->redirect(static::getRouter()->buildUri('.login'));
 		}
 
 		// Если контроллер Contacts и сессия не активна - доступна страница только с формой для сообщений.

@@ -26,78 +26,81 @@ $router = \App\Core\App::getRouter();
 	<body style="background: fixed url('/img/back.png') center no-repeat #F0F0FF; background-size: 100%">
 		<header>
 	        <div class="menu" <?=$router->getController('true') == 'Login' ? 'style="width: 750px"' : ''?>>
-	            <div class="wrap">
-	                <div class="logo">
-	                    <div class="grid">
-	                        <div class="red nw"></div>
-	                        <div class="blue sw"></div>
-	                        <div class="blue se"></div>
-	                        <div class="red ne"></div>
-	                        <div class="yellow ne"></div>
-	                        <div class="navy se"></div>
-	                        <div class="navy sw"></div>
-	                        <div class="yellow nw"></div>
-	                        <div class="yellow se"></div>
-	                        <div class="navy ne"></div>
-	                        <div class="navy nw"></div>
-	                        <div class="yellow sw"></div>
-	                        <div class="red sw"></div>
-	                        <div class="blue nw"></div>
-	                        <div class="blue ne"></div>
-	                        <div class="red se"></div>
-	                    </div>
-	                    <div class="grid">
-	                        <div class="blue se"></div>
-	                        <div class="navy ne"></div>
-	                        <div class="navy nw"></div>
-	                        <div class="blue sw"></div>
-	                        <div class="navy sw"></div>
-	                        <div class="black nw"></div>
-	                        <div class="black ne"></div>
-	                        <div class="navy se"></div>
-	                        <div class="navy nw"></div>
-	                        <div class="black sw"></div>
-	                        <div class="black se"></div>
-	                        <div class="navy ne"></div>
-	                        <div class="blue ne"></div>
-	                        <div class="navy se"></div>
-	                        <div class="navy sw"></div>
-	                        <div class="blue nw"></div>
-	                    </div>
-	                    <div class="grid">
-	                        <div class="red nw"></div>
-	                        <div class="blue sw"></div>
-	                        <div class="blue se"></div>
-	                        <div class="red ne"></div>
-	                        <div class="yellow ne"></div>
-	                        <div class="navy se"></div>
-	                        <div class="navy sw"></div>
-	                        <div class="yellow nw"></div>
-	                        <div class="yellow se"></div>
-	                        <div class="navy ne"></div>
-	                        <div class="navy nw"></div>
-	                        <div class="yellow sw"></div>
-	                        <div class="red sw"></div>
-	                        <div class="blue nw"></div>
-	                        <div class="blue ne"></div>
-	                        <div class="red se"></div>
-	                    </div>
-	                </div>
-	                <div class="byline">
-	                    <span>K</span>
-	                    <span>A</span>
-	                    <span>L</span>
-	                    <span>E</span>
-	                    <span>I</span>
-	                    <span>D</span>
-	                    <span>O</span>
-	                    <span>S</span>
-	                    <span>C</span>
-	                    <span>O</span>
-	                    <span>P</span>
-	                    <span>E</span>
-	                </div>
-	            </div>
+				<a href="<?=$router->buildUri('.')?>">
+					<div class="wrap">
+		                <div class="logo">
+		                    <div class="grid">
+		                        <div class="red nw"></div>
+		                        <div class="blue sw"></div>
+		                        <div class="blue se"></div>
+		                        <div class="red ne"></div>
+		                        <div class="yellow ne"></div>
+		                        <div class="navy se"></div>
+		                        <div class="navy sw"></div>
+		                        <div class="yellow nw"></div>
+		                        <div class="yellow se"></div>
+		                        <div class="navy ne"></div>
+		                        <div class="navy nw"></div>
+		                        <div class="yellow sw"></div>
+		                        <div class="red sw"></div>
+		                        <div class="blue nw"></div>
+		                        <div class="blue ne"></div>
+		                        <div class="red se"></div>
+		                    </div>
+		                    <div class="grid">
+		                        <div class="blue se"></div>
+		                        <div class="navy ne"></div>
+		                        <div class="navy nw"></div>
+		                        <div class="blue sw"></div>
+		                        <div class="navy sw"></div>
+		                        <div class="black nw"></div>
+		                        <div class="black ne"></div>
+		                        <div class="navy se"></div>
+		                        <div class="navy nw"></div>
+		                        <div class="black sw"></div>
+		                        <div class="black se"></div>
+		                        <div class="navy ne"></div>
+		                        <div class="blue ne"></div>
+		                        <div class="navy se"></div>
+		                        <div class="navy sw"></div>
+		                        <div class="blue nw"></div>
+		                    </div>
+		                    <div class="grid">
+		                        <div class="red nw"></div>
+		                        <div class="blue sw"></div>
+		                        <div class="blue se"></div>
+		                        <div class="red ne"></div>
+		                        <div class="yellow ne"></div>
+		                        <div class="navy se"></div>
+		                        <div class="navy sw"></div>
+		                        <div class="yellow nw"></div>
+		                        <div class="yellow se"></div>
+		                        <div class="navy ne"></div>
+		                        <div class="navy nw"></div>
+		                        <div class="yellow sw"></div>
+		                        <div class="red sw"></div>
+		                        <div class="blue nw"></div>
+		                        <div class="blue ne"></div>
+		                        <div class="red se"></div>
+		                    </div>
+		                </div>
+		                <div class="byline">
+		                    <span>K</span>
+		                    <span>A</span>
+		                    <span>L</span>
+		                    <span>E</span>
+		                    <span>I</span>
+		                    <span>D</span>
+		                    <span>O</span>
+		                    <span>S</span>
+		                    <span>C</span>
+		                    <span>O</span>
+		                    <span>P</span>
+		                    <span>E</span>
+		                </div>
+		            </div>
+				</a>
+
 	            <div class="right-side">
 	                <div class="search" id="search">
 	                    <form>
@@ -117,9 +120,15 @@ $router = \App\Core\App::getRouter();
 	                    <a href="#">
 							<span><?=__('header.stories')?></span>
 						</a>
-	                    <a href="<?=$router->buildUri('.login')?>">
-							<span><?=__('header.login')?></span>
-						</a>
+							<?php if (!Session::get('id')):?>
+		                    <a href="<?=$router->buildUri('.login')?>">
+								<span><?=__('header.login')?></span>
+							</a>
+							<?php else: ?>
+							<a href="<?=$router->buildUri('user.logout')?>">
+								<span>X</span>
+							</a>
+							<?php endif; ?>
 						<?php endif; ?>
 	                </div>
 	            </div>

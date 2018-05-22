@@ -21,60 +21,6 @@ class UserController extends Base
 		$this->data = $this->userModel->getBy('id', App::getSession()->get('id'));
 	}
 
-	public function registerAction()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			try {
-				$this->data = [
-					'firstName' => $_POST['firstName'],
-					'secondName' => $_POST['secondName'],
-					'email' => $_POST['email'],
-					'password' => $_POST['password'],
-					'confirmPassword' => $_POST['confirmPassword'],
-					'role' => 'user'
-				];
-
-				$this->userModel->register($this->data);
-
-				App::getSession()->addFlash('Thank you for registering!');
-				App::getRouter()->redirect(App::getRouter()->buildUri('user.login'));
-			} catch (\Exception $exception) {
-				App::getSession()->addFlash($exception->getMessage());
-			}
-		}
-	}
-
-	public function loginAction()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			try {
-				$this->data = [
-					'email' => $_POST['email'],
-					'password' => $_POST['password']
-				];
-
-				$user = $this->userModel->login($this->data);
-
-				App::getSession()->set('id', $user['id']);
-				App::getSession()->set('name', $user['firstName']);
-				App::getSession()->set('email', $user['email']);
-				App::getSession()->set('role', $user['role']);
-
-				App::getSession()->addFlash('Hello, ' . $user['firstName'] . '!');
-				App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
-			} catch (\Exception $exception) {
-				App::getSession()->addFlash($exception->getMessage());
-			}
-		}
-	}
-
-	public function logoutAction()
-	{
-		App::getSession()->destroy();
-		App::getSession()->addFlash('You have completed the session');
-		App::getRouter()->redirect(App::getRouter()->buildUri('category.index'));
-	}
-
 	public function editAction() {
 		if (App::getSession()->get('id')) {
 			$this->data = $this->userModel->getBy('id', App::getSession()->get('id'));
@@ -127,5 +73,11 @@ class UserController extends Base
 				App::getSession()->addFlash($exception->getMessage());
 			}
 		}
+	}
+
+	public function logoutAction()
+	{
+		App::getSession()->destroy();
+		App::getRouter()->redirect(App::getRouter()->buildUri('.category'));
 	}
 }
