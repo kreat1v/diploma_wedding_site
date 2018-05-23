@@ -2,6 +2,8 @@ body {
     padding: 0;
     margin: 0;
     background-color: #F0F0FF;
+    background: fixed url('/img/system/back.png') center no-repeat #F0F0FF;
+    background-size: 100%;
 }
 
 header {

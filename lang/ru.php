@@ -84,6 +84,14 @@ return [
 		'next' => 'Следующая'
 	],
 
+	'user_menu' => [
+		'index' => 'Профиль',
+		'settings' => 'Настройки',
+		'communications' => 'Связь с нами',
+		'favorites' => 'Закладки',
+		'purchases' => 'Оплаченные услуги'
+	],
+
 	'footer' => [
 		'about' => 'О нас',
 		'communications' => 'Обратная связь',

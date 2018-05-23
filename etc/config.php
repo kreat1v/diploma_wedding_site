@@ -36,6 +36,11 @@ Config::set('db.password', '');
 Config::set('db.name', 'wedding_site');
 
 /**
+ * User menu
+ */
+Config::set('userMenu', ['index', 'settings', 'communications', 'favorites', 'purchases']);
+
+/**
  * Набор случайных символов для усложнения подборки пользовательского пароля ("соль").
  */
 Config::set('salt', 'g5kgat83kd0pbm51d');
@@ -47,10 +52,20 @@ Config::set('pagLimit', 5);
 Config::set('pagButtonLimit', 5);
 
 /**
- * Gallery
+ * Image
  */
 Config::set('gallery', ROOT.DS.'public'.DS.'img'.DS);
-Config::set('gallery_clothes', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);
 Config::set('imgDir', DS.'img'.DS);
+
+/**
+ * System image
+ */
+// Config::set('gallery', ROOT.DS.'public'.DS.'img'.DS);
+Config::set('systemImg', DS.'img'.DS.'system'.DS);
+
+/**
+ * Product gallery
+ */
+Config::set('gallery_clothes', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);
 Config::set('imgDir_clothes', DS.'img'.DS.'clothes'.DS);
 Config::set('imgDir_clothes_web', '/img/clothes/');

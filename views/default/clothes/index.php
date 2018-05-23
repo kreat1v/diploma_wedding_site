@@ -21,7 +21,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
             <?php if (!empty($data['product'])):
                 foreach ($data['product'] as $value): ?>
-                <div class="gradient-border ">
+                <div class="gradient-border">
 
                     <div class="goods">
 

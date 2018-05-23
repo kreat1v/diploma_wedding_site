@@ -84,6 +84,14 @@ return [
 		'next' => 'Next'
 	],
 
+	'user_menu' => [
+		'index' => 'Profile',
+		'settings' => 'Settings',
+		'communications' => 'Contact Us',
+		'favorites' => 'My Favorites',
+		'purchases' => 'Paid services'
+	],
+
 	'footer' => [
 		'about' => 'About us',
 		'communications' => 'Feedback',

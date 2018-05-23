@@ -23,7 +23,7 @@ $router = \App\Core\App::getRouter();
 		<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
 	</head>
 
-	<body style="background: fixed url('/img/back.png') center no-repeat #F0F0FF; background-size: 100%">
+	<body>
 		<header>
 	        <div class="menu" <?=$router->getController('true') == 'Login' ? 'style="width: 750px"' : ''?>>
 				<a href="<?=$router->buildUri('.')?>">

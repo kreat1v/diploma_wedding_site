@@ -3,18 +3,37 @@
 
 $router = \App\Core\App::getRouter();
 ?>
-<div class="row">
-	<div class="jumbotron mt-3 col-xl-6 col-lg-6 col-md-8 col-12">
+<div class="user">
+	<div class="container">
 
-		<h1>Your profile</h1>
+		<div class="menu">
+			<ul>
+				<?php foreach (\App\Core\Config::get('userMenu') as $value): ?>
+				<li class="buttons">
+					<a href="<?=$router->buildUri('user.' . $value)?>"><?=__('user_menu.' . $value)?></a>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 
-		<p class="lead"><b>Your first name:</b> <?=$data['firstName']?></p>
-		<p class="lead"><b>Your second name:</b> <?=$data['secondName']?></p>
-		<p class="lead"><b>Your email:</b> <?=$data['email']?></p>
+		<div class="info">
+			<div class="gradient-border">
+				<div class="body">
+					<div class="blur">
+						<img src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>">
+					</div>
 
-		<br />
-		<a class="btn btn-md btn-primary" href="<?=$router->buildUri('user.edit')?>" role="button">Edit your profile</a>
-		<a class="btn btn-md btn-primary" href="<?=$router->buildUri('user.editpassword')?>" role="button">Edit your password</a>
+					<div class="avatar">
+						<img src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>">
+					</div>
 
+					<div class="data text">
+						<p class="lead"><b>Your first name:</b> <?=$data['firstName']?></p>
+						<p class="lead"><b>Your second name:</b> <?=$data['secondName']?></p>
+						<p class="lead"><b>Your email:</b> <?=$data['email']?></p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
