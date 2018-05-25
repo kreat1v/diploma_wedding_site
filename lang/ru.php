@@ -63,8 +63,9 @@ return [
 		'purchases' => 'Оплаченные услуги'
 	],
 
-	'user_index' => [
+	'user_settings' => [
 		'title_avatar' => 'Измените свой аватар',
+		'choose' => 'Выберите файл',
 		'download' => 'Загрузить',
 		'delete' => 'Удалить',
 		'title' => 'Вы можете изменить ваши данные',

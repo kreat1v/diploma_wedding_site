@@ -9,6 +9,8 @@
 }
 
 .user .menu {
+    position: sticky;
+    top: 0;
     width: 20%;
     border-right: 2px solid #AD7F00;
     text-align: right;
@@ -24,6 +26,10 @@
 .user .info {
     width: 80%;
     text-align: center;
+}
+
+.user .info .gradient-border {
+    margin-bottom: 20px;
 }
 
 .user .info .body, .user .info .avatar-select {

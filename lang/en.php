@@ -63,8 +63,9 @@ return [
 		'purchases' => 'Paid services'
 	],
 
-	'user_index' => [
+	'user_settings' => [
 		'title_avatar' => 'Change your avatar',
+		'choose' => 'Choose file',
 		'download' => 'Download',
 		'delete' => 'Delete',
 		'title' => 'You can change your details',

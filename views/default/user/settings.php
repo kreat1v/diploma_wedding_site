@@ -25,7 +25,7 @@ $router = \App\Core\App::getRouter();
 
 					<div class="form text">
 						<!-- <form enctype="multipart/form-data" method="post">
-							<h2><?=__('user_index.title_avatar')?></h2>
+
 							<div class="cropFrame">
 								<img id="image" src="#" alt="" class="cropImage" cropwidth="200" cropheight="200" />
 							</div>
@@ -45,8 +45,10 @@ $router = \App\Core\App::getRouter();
 								</div>
 							</label>
 
-							<button type="submit" class="submit sm-buttons" name="button" value="avatar"><?=__('user_index.download')?></button>
+							<button type="submit" class="submit sm-buttons" name="button" value="avatar"><?=__('user_settings.download')?></button>
 						</form> -->
+
+						<h2><?=__('user_settings.title_avatar')?></h2>
 
 						<div class="avatar">
 							<img class="cropim" alt="avatar" src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>" />
@@ -59,11 +61,11 @@ $router = \App\Core\App::getRouter();
 							<div class="file-upload submit sm-buttons button">
 							     <label>
 							          <input type="file" name="avatar" id="imgInput">
-							          Выберите файл
+							          <?=__('user_settings.choose')?>
 							     </label>
 							</div>
 
-							<button class="submit sm-buttons button text" type="submit" name="button" value="avatar">Загрузить</button>
+							<button class="submit sm-buttons button text" type="submit" name="button" value="avatar"><?=__('user_settings.download')?></button>
 						</form>
 
 						<!-- <div class="download">
@@ -83,48 +85,48 @@ $router = \App\Core\App::getRouter();
 				<div class="body">
 
 					<div class="form text">
-						<h2><?=__('user_index.title')?></h2>
+						<h2><?=__('user_settings.title')?></h2>
 						<form method="post" id="f-form">
 							<div class="sex">
-								<span><?=__('user_index.sex')?></span>
+								<span><?=__('user_settings.sex')?></span>
 								<label>
 									<input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> />
-									<span><?=__('user_index.guy')?></span>
+									<span><?=__('user_settings.guy')?></span>
 								</label>
 								<label>
 									<input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> />
-									<span><?=__('user_index.girl')?></span>
+									<span><?=__('user_settings.girl')?></span>
 								</label>
 							</div>
 							<label>
-								<span><?=__('user_index.name')?></span>
+								<span><?=__('user_settings.name')?></span>
 								<input type="text" name="name" class="input" id="login-password" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool2')?></div>
 								</div>
 							</label>
 							<label>
-								<span><?=__('user_index.surname')?></span>
+								<span><?=__('user_settings.surname')?></span>
 								<input type="text" name="surname" class="input" id="login-password" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool2')?></div>
 								</div>
 							</label>
 							<label>
-								<span><?=__('user_index.telephone')?></span>
+								<span><?=__('user_settings.telephone')?></span>
 								<input type="tel" name="tel" class="input" id="telephone" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool2')?></div>
 								</div>
 							</label>
 							<label>
-								<span><?=__('user_index.email')?></span>
+								<span><?=__('user_settings.email')?></span>
 								<input type="email" name="email" class="input" id="login-email" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool1')?></div>
 								</div>
 							</label>
-							<button type="submit" class="submit sm-buttons button text" name="button" value="login"><?=__('user_index.save')?></button>
+							<button type="submit" class="submit sm-buttons button text" name="button" value="login"><?=__('user_settings.save')?></button>
 						</form>
 					</div>
 
@@ -140,29 +142,29 @@ $router = \App\Core\App::getRouter();
 
 					<div class="form text">
 						<form method="post" id="f-form">
-							<h2><?=__('user_index.title_pas')?></h2>
+							<h2><?=__('user_settings.title_pas')?></h2>
 							<label>
-								<span><?=__('user_index.old_pas')?></span>
+								<span><?=__('user_settings.old_pas')?></span>
 								<input type="password" name="oldPassword" class="input" id="login-email" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool1')?></div>
 								</div>
 							</label>
 							<label>
-								<span><?=__('user_index.password')?></span>
+								<span><?=__('user_settings.password')?></span>
 								<input type="password" name="password" class="input" id="login-email" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool1')?></div>
 								</div>
 							</label>
 							<label>
-								<span><?=__('user_index.conf')?></span>
+								<span><?=__('user_settings.conf')?></span>
 								<input type="password" name="confirmPassword" class="input" id="login-password" />
 								<div class="tooltips-right">
 									<div><?=__('login.tool2')?></div>
 								</div>
 							</label>
-							<button type="submit" class="submit sm-buttons button text" name="button" value="login"><?=__('user_index.change')?></button>
+							<button type="submit" class="submit sm-buttons button text" name="button" value="login"><?=__('user_settings.change')?></button>
 						</form>
 					</div>
 
