@@ -55,6 +55,34 @@ return [
 		'button' => 'Go to the section'
 	],
 
+	'user_menu' => [
+		'index' => 'Profile',
+		'settings' => 'Settings',
+		'communications' => 'Contact Us',
+		'favorites' => 'My Favorites',
+		'purchases' => 'Paid services'
+	],
+
+	'user_index' => [
+		'title_avatar' => 'Change your avatar',
+		'download' => 'Download',
+		'delete' => 'Delete',
+		'title' => 'You can change your details',
+		'sex' => 'Who you are?',
+		'guy' => 'Guy',
+		'girl' => 'Girl',
+		'name' => 'Your name',
+		'surname' => 'Your surname',
+		'telephone' => 'Your phone number',
+		'email' => 'Your Email',
+		'save' => 'Save',
+		'title_pas' => 'Change Password',
+		'old_pas' => 'Change Password',
+		'password' => 'Enter a new password',
+		'conf' => 'Enter a new password',
+		'change' => 'Change'
+	],
+
 	'products' => [
 		'contacts' => 'Contacts',
 		'size' => 'Sizes',
@@ -82,14 +110,6 @@ return [
 	'pagination' => [
 		'previous' => 'Previous',
 		'next' => 'Next'
-	],
-
-	'user_menu' => [
-		'index' => 'Profile',
-		'settings' => 'Settings',
-		'communications' => 'Contact Us',
-		'favorites' => 'My Favorites',
-		'purchases' => 'Paid services'
 	],
 
 	'footer' => [

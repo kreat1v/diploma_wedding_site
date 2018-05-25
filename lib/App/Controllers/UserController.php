@@ -21,6 +21,25 @@ class UserController extends Base
 		$this->data = $this->userModel->getBy('id', App::getSession()->get('id'));
 	}
 
+	public function settingsAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			try {
+
+				if (isset($_POST['button']) && $_POST['button'] == 'avatar') {
+					print_r($_POST);
+					print_r($_FILES);
+
+					// App::getSession()->addFlash(__('register.reg_mes'));
+					// App::getRouter()->redirect(App::getRouter()->buildUri('.login'));
+				}
+
+			} catch (\Exception $exception) {
+				App::getSession()->addFlash($exception->getMessage());
+			}
+		}
+	}
+
 	public function editAction() {
 		if (App::getSession()->get('id')) {
 			$this->data = $this->userModel->getBy('id', App::getSession()->get('id'));

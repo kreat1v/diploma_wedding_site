@@ -6,7 +6,6 @@
 .user .container {
     display: flex;
     align-items: flex-start;
-    /* margin-top: 4em; */
 }
 
 .user .menu {
@@ -27,13 +26,18 @@
     text-align: center;
 }
 
-.user .body {
+.user .info .body, .user .info .avatar-select {
     overflow: hidden;
     position: relative;
     border-radius: 3px;
+    background: #fff;
 }
 
-.user .blur {
+.user .info .body div, .user .info .avatar-crop>div, .user .info .avatar-select>div {
+    margin: 30px;
+}
+
+.user .info .blur {
     display: flex;
     align-items: center;
     position: absolute;
@@ -46,11 +50,95 @@
     height: 100%;
 }
 
-.user .blur img {
+.user .info .blur img {
     width: 100%;
 }
 
-.user, .avatar, .user .data {
+.user .info .avatar, .user .info .data {
     position: relative;
     z-index: 100;
+}
+
+.user .info .avatar {
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    border: 3px solid #AD7F00;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}
+
+.user .info .form {
+    color: #3CA6C7;
+}
+
+.user .info .form h2 {
+    margin-bottom: 10px;
+}
+
+.user .info .form label {
+    display: block;
+    width: 400px;
+    margin: 25px auto 0;
+    text-align: center;
+}
+
+.user .info .form label span {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.user .info .form .sex>span {
+    display: block;
+    margin-top: 30px;
+}
+
+.user .info .form .sex label {
+    margin: 10px 10px 0;
+    display: inline-block;
+    width: inherit;
+}
+
+.user .info .form .input, .user .info .form .button {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.user .info .form .input {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    font-size: 16px;
+    border-bottom: 1px solid #3CA6C7;
+    text-align: center;
+}
+
+.user .form .button {
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    margin-top: 40px;
+    color: white;
+    font-size: 15px;
+}
+
+.user .info .avatar-crop #image {
+    display: none;
+}
+
+.file-upload {
+    position: relative;
+    margin: 0 auto !important;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-upload label {
+    cursor: pointer;
+    margin-top: 0 !important;
 }
