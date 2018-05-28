@@ -64,6 +64,12 @@ Config::set('imgDir', DS.'img'.DS);
 Config::set('systemImg', DS.'img'.DS.'system'.DS);
 
 /**
+ * User image
+ */
+Config::set('userImgRoot', ROOT.DS.'public'.DS.'img'.DS.'user'.DS);
+Config::set('userImg', DS.'img'.DS.'user'.DS);
+
+/**
  * Product gallery
  */
 Config::set('gallery_clothes', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);

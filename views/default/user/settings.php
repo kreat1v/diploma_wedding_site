@@ -51,12 +51,23 @@ $router = \App\Core\App::getRouter();
 						<h2><?=__('user_settings.title_avatar')?></h2>
 
 						<div class="avatar">
-							<img class="cropim" alt="avatar" src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>" />
+							<img class="cropim" src="<?=\App\Core\Config::get('imgDir') . 'user' . DS . 'new' . DS . 'ava.jpg'?>" />
+							<!-- <img class="cropim" alt="avatar" src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>" /> -->
 						</div>
 
 						<form class="avatar-crop" enctype="multipart/form-data" method="post">
 							<div>
 								<img id='image' class="cropimage" src="" />
+							</div>
+							<div class="results">
+								<!-- <b>X</b>: <span class="cropX"></span>
+								<b>Y</b>: <span class="cropY"></span>
+								<b>W</b>: <span class="cropW"></span>
+								<b>H</b>: <span class="cropH"></span> -->
+								<input type="hidden" class="cropX" name="cropX" value="">
+								<input type="hidden" class="cropY" name="cropY" value="">
+								<input type="hidden" class="cropW" name="cropW" value="">
+								<input type="hidden" class="cropH" name="cropH" value="">
 							</div>
 							<div class="file-upload submit sm-buttons button">
 							     <label>
@@ -208,9 +219,6 @@ function readURL(input) {
 
                 reader.onload = function (e) {
                     $('#image').attr('src', e.target.result);
-					// setTimeout(function() {
-					// 	$('#image').show('500');
-					// }, 2000);
                     $(".cropim").attr('src', e.target.result);
 
                     $( function () {
@@ -218,11 +226,11 @@ function readURL(input) {
                             cropwidth = image.attr('cropwidth'),
                             cropheight = image.attr('cropheight'),
                             results = image.next('.results' ),
-                            x = $('.cropX', results),
-                            y = $('.cropY', results),
-                            w = $('.cropW', results),
-                            h = $('.cropH', results),
-                            download = results.next('.download').find('a');
+                            x = $('.cropX'),
+                            y = $('.cropY'),
+                            w = $('.cropW'),
+                            h = $('.cropH')
+                            // download = results.next('.download').find('a');
 
                         image.cropbox({
                             width: cropwidth,
@@ -236,11 +244,16 @@ function readURL(input) {
                             var attributes = $( '.cropimage' ).prop("attributes");
                             $(".cropim").attr('style', attributes['style'].value);
 
-                            x.text( results.cropX );
-                            y.text( results.cropY );
-                            w.text( results.cropW );
-                            h.text( results.cropH );
-                            download.attr('href', img.getDataURL());
+                            // x.text( results.cropX );
+                            // y.text( results.cropY );
+                            // w.text( results.cropW );
+                            // h.text( results.cropH );
+
+							x.val( results.cropX );
+							y.val( results.cropY );
+							w.val( results.cropW );
+							h.val( results.cropH );
+                            // download.attr('href', img.getDataURL());
                         });
                     } );
                 };
