@@ -24,35 +24,10 @@ $router = \App\Core\App::getRouter();
 				<div class="avatar-select">
 
 					<div class="form text">
-						<!-- <form enctype="multipart/form-data" method="post">
-
-							<div class="cropFrame">
-								<img id="image" src="#" alt="" class="cropImage" cropwidth="200" cropheight="200" />
-							</div>
-							<div class="results">
-								<b>X</b>: <span class="cropX"></span>
-								<b>Y</b>: <span class="cropY"></span>
-								<b>W</b>: <span class="cropW"></span>
-								<b>H</b>: <span class="cropH"></span>
-							</div>
-							<div class="download">
-								<a href="#" download="crop.png">Download</a>
-							</div>
-							<label>
-								<input type="file" name="avatar" id="imgInput">
-								<div class="tooltips-right">
-									<div><?=__('login.tool1')?></div>
-								</div>
-							</label>
-
-							<button type="submit" class="submit sm-buttons" name="button" value="avatar"><?=__('user_settings.download')?></button>
-						</form> -->
 
 						<h2><?=__('user_settings.title_avatar')?></h2>
-
 						<div class="avatar">
-							<img class="cropim" src="<?=\App\Core\Config::get('imgDir') . 'user' . DS . 'new' . DS . 'ava.jpg'?>" />
-							<!-- <img class="cropim" alt="avatar" src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>" /> -->
+							<img class="cropim" src="<?=$data['avatar']?>" />
 						</div>
 
 						<form class="avatar-crop" enctype="multipart/form-data" method="post">
@@ -60,28 +35,21 @@ $router = \App\Core\App::getRouter();
 								<img id='image' class="cropimage" src="" />
 							</div>
 							<div class="results">
-								<!-- <b>X</b>: <span class="cropX"></span>
-								<b>Y</b>: <span class="cropY"></span>
-								<b>W</b>: <span class="cropW"></span>
-								<b>H</b>: <span class="cropH"></span> -->
 								<input type="hidden" class="cropX" name="cropX" value="">
 								<input type="hidden" class="cropY" name="cropY" value="">
 								<input type="hidden" class="cropW" name="cropW" value="">
 								<input type="hidden" class="cropH" name="cropH" value="">
 							</div>
+
 							<div class="file-upload submit sm-buttons button">
 							     <label>
 							          <input type="file" name="avatar" id="imgInput">
 							          <?=__('user_settings.choose')?>
 							     </label>
 							</div>
-
 							<button class="submit sm-buttons button text" type="submit" name="button" value="avatar"><?=__('user_settings.download')?></button>
+							<button class="submit sm-buttons button text" type="submit" name="button" value="deleteAvatar"><?=__('user_settings.delete')?></button>
 						</form>
-
-						<!-- <div class="download">
-							<a href="#" download="crop.png">Download</a>
-						</div> -->
 
 					</div>
 

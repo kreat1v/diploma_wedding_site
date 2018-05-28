@@ -24,25 +24,32 @@ class UserController extends Base
 
 	public function settingsAction()
 	{
-		$id = App::getSession()->get('id');
+		// Получаем данные.
+		if (App::getSession()->get('id')) {
+			$id = App::getSession()->get('id');
+
+			$this->data['info'] = $this->userModel->getBy('id', $id);
+
+			if (!file_exists(Config::get('userImgRoot') . $id)) {
+				$avatar = Config::get('systemImg') . 'user.png';
+			} else {
+				$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+				$avatar = Config::get('userImg') . $id . DS . $paths[0];
+			}
+
+			$this->data['avatar'] = $avatar;
+		}
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
 
 				if (isset($_POST['button']) && $_POST['button'] == 'avatar') {
 
-					// echo '<pre>';
-					// print_r($_POST);
-					// print_r($_FILES);
-					// print_r(getimagesize($_FILES['avatar']['tmp_name']));
-					// echo '</pre>';
-					// exit();
-
 					// Загружаем изображение. Получаем путь загруженного изображения.
-					$fileName = $this->saveAvatar($_FILES['avatar']['tmp_name'], $id);
+					$paths = $this->saveAvatar($_FILES['avatar']['tmp_name'], $id);
 
 					// Получаем его расширение.
-					$extension = pathinfo($fileName, PATHINFO_EXTENSION);
+					$extension = pathinfo($paths['filePath'], PATHINFO_EXTENSION);
 
 					// Путь нового, обрезанного, изображения.
 					$newFile = Config::get('userImgRoot') . $id . DS . uniqid('av_') . '.' . $extension;
@@ -53,11 +60,20 @@ class UserController extends Base
 					$w = $_POST['cropW'];
 					$h = $_POST['cropH'];
 
-					// Обрезаем изображение.
-					$this->imageCrop($extension, $fileName, $newFile, $x, $y, $w, $h);
+					// Обрезаем изображение и удаляем старое изображение.
+					if ($this->imageCrop($extension, $paths['filePath'], $newFile, $x, $y, $w, $h) && isset($paths['oldFilePath'])) {
+						unlink($paths['oldFilePath']);
+					};
+
+					// Удаляем оригинальное изображение.
+					unlink($paths['filePath']);
 
 					// App::getSession()->addFlash(__('register.reg_mes'));
-					// App::getRouter()->redirect(App::getRouter()->buildUri('.login'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('user.settings'));
+				}
+
+				if (isset($_POST['button']) && $_POST['button'] == 'deleteAvatar') {
+					rmdir(Config::get('userImgRoot') . $id);
 				}
 
 			} catch (\Exception $exception) {
@@ -90,22 +106,28 @@ class UserController extends Base
 				throw new \Exception('Неверный формат файла');
 		}
 
+		$paths = [];
+
 		// Проверка наличия директории. Если нету таковой - то создание новой.
 		if (!file_exists(Config::get('userImgRoot') . $nameDir)) {
 			mkdir(Config::get('userImgRoot') . $nameDir, 0777);
+		} else {
+			$oldImage = array_values(array_diff(scandir(Config::get('userImgRoot') . $nameDir), ['.', '..']));
+			$paths['oldFilePath'] = Config::get('userImgRoot') . $nameDir . DS . $oldImage[0];
 		}
 
 		// Путь к изображению.
-		$filePath = Config::get('userImgRoot') . $nameDir . DS . uniqid('img_') . $fileType;
+		$paths['filePath'] = Config::get('userImgRoot') . $nameDir . DS . uniqid('img_') . $fileType;
 
 		// Загрузка изображения.
-		if (!move_uploaded_file($image, $filePath)) {
-			rmdir(Config::get('userImg') . $nameDir);
+		if (!move_uploaded_file($image, $paths['filePath'])) {
+			rmdir(Config::get('userImgRoot') . $nameDir);
 			throw new \Exception('Image are not downloaded!');
 		}
 
 		// Возвращаем путь загруженного изображения.
-		return $filePath;
+		print_r($paths);
+		return $paths;
 	}
 
 	private function imageCrop($ext, $image_source, $save_as, $x, $y, $width, $height)
@@ -144,6 +166,8 @@ class UserController extends Base
 		// Освобождение памяти.
 		imagedestroy($image);
 		imagedestroy($new_image);
+
+		return true;
 	}
 
 	public function editAction() {
