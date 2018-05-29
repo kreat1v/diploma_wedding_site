@@ -60,7 +60,6 @@ Config::set('imgDir', DS.'img'.DS);
 /**
  * System image
  */
-// Config::set('gallery', ROOT.DS.'public'.DS.'img'.DS);
 Config::set('systemImg', DS.'img'.DS.'system'.DS);
 
 /**

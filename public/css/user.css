@@ -39,28 +39,11 @@
     background: #fff;
 }
 
-.user .info .body div, .user .info .avatar-crop>div, .user .info .avatar-select>div {
+.user .info .body>div, .user .info .avatar-crop>div, .user .info .avatar-select>div {
     margin: 30px;
 }
 
-.user .info .blur {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    -webkit-filter: blur(30px);
-    -moz-filter: blur(30px);
-    -o-filter: blur(30px);
-    -ms-filter: blur(30px);
-    filter: blur(30px);
-    width: 100%;
-    height: 100%;
-}
-
-.user .info .blur img {
-    width: 100%;
-}
-
-.user .info .avatar, .user .info .data {
+.user .info .avatar, .user .info .data, .user .info .message {
     position: relative;
     z-index: 100;
 }
@@ -135,16 +118,16 @@
     display: none;
 }
 
-.file-upload {
+.user .info .avatar-select .file-upload {
     position: relative;
     margin: 0 auto !important;
 }
 
-.file-upload input[type="file"] {
+.user .info .avatar-select .file-upload input[type="file"] {
     display: none;
 }
 
-.file-upload label {
+.user .info .avatar-select .file-upload label {
     cursor: pointer;
     margin-top: 0 !important;
 }

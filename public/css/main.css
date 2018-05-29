@@ -50,3 +50,11 @@ footer {
     margin-top: 2em;
     margin-bottom: 2em;
 }
+
+.valid span {
+    color: #fa0202 !important;
+}
+
+.valid input {
+    border-bottom: 1px solid #fa0202 !important;
+}

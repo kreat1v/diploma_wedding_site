@@ -278,14 +278,6 @@
     color: #455a81;
 }
 
-.login .valid span {
-    color: #fa0202 !important;
-}
-
-.login .valid input {
-    border-bottom: 1px solid #fa0202;
-}
-
 .login .index {
     position: relative;
     z-index: 100;

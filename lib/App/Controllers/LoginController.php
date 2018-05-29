@@ -20,6 +20,7 @@ class LoginController extends Base
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
+				
 				if (isset($_POST['button']) && $_POST['button'] == 'login') {
 					$this->data = [
 						'email' => $_POST['email'],
@@ -74,7 +75,10 @@ class LoginController extends Base
 				}
 
 			} catch (\Exception $exception) {
+
 				App::getSession()->addFlash($exception->getMessage());
+				App::getRouter()->redirect(App::getRouter()->buildUri('.login'));
+
 			}
 		}
 	}
