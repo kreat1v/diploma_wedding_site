@@ -48,7 +48,9 @@ $router = \App\Core\App::getRouter();
 							     </label>
 							</div>
 							<button class="submit sm-buttons button text" type="submit" name="button" value="avatar"><?=__('user_settings.download')?></button>
+							<?php if (!strstr($data['avatar'], 'user.png')): ?>
 							<button class="submit sm-buttons button text" type="submit" name="button" value="deleteAvatar"><?=__('user_settings.delete')?></button>
+							<?php endif; ?>
 						</form>
 
 					</div>
@@ -56,8 +58,6 @@ $router = \App\Core\App::getRouter();
 				</div>
 
 			</div>
-
-			<br>
 
 			<div class="gradient-border">
 
@@ -65,47 +65,47 @@ $router = \App\Core\App::getRouter();
 
 					<div class="form text">
 						<h2><?=__('user_settings.title')?></h2>
-						<form method="post" id="f-form">
+						<form method="post" id="data-form">
 							<div class="sex">
 								<span><?=__('user_settings.sex')?></span>
 								<label>
-									<input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> />
+									<input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['info']['sex']) && $data['info']['sex'] == 'm' ? 'checked' : ''?> />
 									<span><?=__('user_settings.guy')?></span>
 								</label>
 								<label>
-									<input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> />
+									<input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['info']['sex']) && $data['info']['sex'] == 'f' ? 'checked' : ''?> />
 									<span><?=__('user_settings.girl')?></span>
 								</label>
 							</div>
 							<label>
 								<span><?=__('user_settings.name')?></span>
-								<input type="text" name="name" class="input" id="login-password" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool2')?></div>
+								<input type="text" name="firstName" value="<?=isset($data['info']['firstName']) ? $data['info']['firstName'] : ''?>" class="input" id="first-name" />
+								<div class="tooltips-left">
+									<div><?=__('user_settings.tool1')?></div>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.surname')?></span>
-								<input type="text" name="surname" class="input" id="login-password" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool2')?></div>
+								<input type="text" name="secondName" value="<?=isset($data['info']['secondName']) ? $data['info']['secondName'] : ''?>" class="input" id="second-name" />
+								<div class="tooltips-left">
+									<div><?=__('user_settings.tool2')?></div>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.telephone')?></span>
-								<input type="tel" name="tel" class="input" id="telephone" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool2')?></div>
-								</div>
+								<input type="tel" name="tel" value="<?=isset($data['info']['tel']) ? $data['info']['tel'] : ''?>" class="input" id="telephone" />
 							</label>
 							<label>
 								<span><?=__('user_settings.email')?></span>
-								<input type="email" name="email" class="input" id="login-email" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool1')?></div>
+								<input type="email" name="email" value="<?=isset($data['info']['email']) ? $data['info']['email'] : ''?>" class="input" id="email" />
+								<div class="tooltips-left">
+									<div><?=__('user_settings.tool3')?></div>
+								</div>
+								<div class="tooltips-left check-email">
+									<div><?=__('user_settings.tool4')?></div>
 								</div>
 							</label>
-							<button type="submit" class="submit sm-buttons button text" name="button" value="login"><?=__('user_settings.save')?></button>
+							<button type="submit" class="submit sm-buttons button text" name="button" value="data"><?=__('user_settings.save')?></button>
 						</form>
 					</div>
 
@@ -113,37 +113,41 @@ $router = \App\Core\App::getRouter();
 
 			</div>
 
-			<br>
-
 			<div class="gradient-border">
 
 				<div class="body">
 
 					<div class="form text">
-						<form method="post" id="f-form">
+						<form method="post" id="password-form">
 							<h2><?=__('user_settings.title_pas')?></h2>
 							<label>
 								<span><?=__('user_settings.old_pas')?></span>
-								<input type="password" name="oldPassword" class="input" id="login-email" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool1')?></div>
+								<input type="password" name="oldPassword" class="input" id="old-password" />
+								<div class="tooltips-left">
+									<div><?=__('user_settings.tool5')?></div>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.password')?></span>
-								<input type="password" name="password" class="input" id="login-email" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool1')?></div>
+								<input type="password" name="password" class="input" id="password" />
+								<div class="tooltips-left">
+									<div><?=__('user_settings.tool5')?></div>
+								</div>
+								<div class="help">
+									<div class="tooltips-top">
+										<div><?=__('user_settings.tool6')?></div>
+									</div>
+									<i class="far fa-question-circle"></i>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.conf')?></span>
-								<input type="password" name="confirmPassword" class="input" id="login-password" />
-								<div class="tooltips-right">
-									<div><?=__('login.tool2')?></div>
+								<input type="password" name="confirmPassword" class="input" id="confirm-password" />
+								<div class="tooltips-left">
+									<div><?=__('user_settings.tool7')?></div>
 								</div>
 							</label>
-							<button type="submit" class="submit sm-buttons button text" name="button" value="login"><?=__('user_settings.change')?></button>
+							<button type="submit" class="submit sm-buttons button text" name="button" value="password"><?=__('user_settings.change')?></button>
 						</form>
 					</div>
 
@@ -160,79 +164,5 @@ $router = \App\Core\App::getRouter();
 <script type="text/javascript" src="/js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="/js/jquery.cropbox.js"></script>
-<script type="text/javascript">
-$("#telephone").mask("+38 (999) 999 - 99 - 99");
-
-function readURL(input) {
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#image').attr('src', e.target.result);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-</script>
-
-<script type="text/javascript">
-
-    $(document).ready(function() {
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#image').attr('src', e.target.result);
-                    $(".cropim").attr('src', e.target.result);
-
-                    $( function () {
-                        var image = $( '.cropimage' ),
-                            cropwidth = image.attr('cropwidth'),
-                            cropheight = image.attr('cropheight'),
-                            results = image.next('.results' ),
-                            x = $('.cropX'),
-                            y = $('.cropY'),
-                            w = $('.cropW'),
-                            h = $('.cropH')
-                            // download = results.next('.download').find('a');
-
-                        image.cropbox({
-                            width: cropwidth,
-                            height: cropheight,
-                            showControls: 'always'
-                        }, function() {
-                            var attributes = $( '.cropimage' ).prop("attributes");
-                            $(".cropim").attr('style', attributes['style'].value);
-                    	})
-                        .on('cropbox', function( event, results, img ) {
-                            var attributes = $( '.cropimage' ).prop("attributes");
-                            $(".cropim").attr('style', attributes['style'].value);
-
-                            // x.text( results.cropX );
-                            // y.text( results.cropY );
-                            // w.text( results.cropW );
-                            // h.text( results.cropH );
-
-							x.val( results.cropX );
-							y.val( results.cropY );
-							w.val( results.cropW );
-							h.val( results.cropH );
-                            // download.attr('href', img.getDataURL());
-                        });
-                    } );
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#imgInput").change(function(){
-          readURL(this);
-        });
-
-    });
-</script>
+<script type="text/javascript" src="/js/avatar-crop.js"></script>
+<script type="text/javascript" src="/js/validation-usersettings.js"></script>

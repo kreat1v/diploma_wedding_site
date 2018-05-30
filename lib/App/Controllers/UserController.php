@@ -19,7 +19,21 @@ class UserController extends Base
 
 	public function indexAction()
 	{
-		$this->data = $this->userModel->getBy('id', App::getSession()->get('id'));
+		// Получаем данные.
+		if (App::getSession()->get('id')) {
+			$id = App::getSession()->get('id');
+
+			$this->data['info'] = $this->userModel->getBy('id', $id);
+
+			if (!file_exists(Config::get('userImgRoot') . $id)) {
+				$avatar = Config::get('systemImg') . 'user.png';
+			} else {
+				$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+				$avatar = Config::get('userImg') . $id . DS . $paths[0];
+			}
+
+			$this->data['avatar'] = $avatar;
+		}
 	}
 
 	public function settingsAction()
@@ -43,6 +57,7 @@ class UserController extends Base
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
 
+				// Установка аватара.
 				if (isset($_POST['button']) && $_POST['button'] == 'avatar') {
 
 					// Загружаем изображение. Получаем путь загруженного изображения.
@@ -68,17 +83,66 @@ class UserController extends Base
 					// Удаляем оригинальное изображение.
 					unlink($paths['filePath']);
 
-					// App::getSession()->addFlash(__('register.reg_mes'));
+					App::getSession()->addFlash(__('user_settings.mes1'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
+				}
+
+				// Удаление аватара.
+				if (isset($_POST['button']) && $_POST['button'] == 'deleteAvatar') {
+
+					if (file_exists(Config::get('userImgRoot') . $id)) {
+						$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+
+						unlink(Config::get('userImgRoot') . $id . DS . $paths[0]);
+						rmdir(Config::get('userImgRoot') . $id);
+					}
+
+					App::getSession()->addFlash(__('user_settings.mes2'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('user.settings'));
 				}
 
-				if (isset($_POST['button']) && $_POST['button'] == 'deleteAvatar') {
-					rmdir(Config::get('userImgRoot') . $id);
+				// Обновление своих данных.
+				if (isset($_POST['button']) && $_POST['button'] == 'data') {
+
+					foreach ($_POST as $key => $value) {
+						$this->data[$key] = $value;
+					}
+
+					$this->data = array_filter($this->data);
+
+					if (App::getSession()->get('email') == $this->data['email']) {
+						unset($this->data['email']);
+					}
+
+					$this->userModel->edit($this->data, $id);
+
+					if (isset($this->data['email'])) {
+						App::getSession()->set('email', $this->data['email']);
+					}
+
+					App::getSession()->addFlash(__('user_settings.mes3'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
+				}
+
+				// Обновление пароля.
+				if (isset($_POST['button']) && $_POST['button'] == 'password') {
+
+					$this->data = [
+						'oldPassword' => $_POST['oldPassword'],
+						'password' => $_POST['password'],
+						'confirmPassword' => $_POST['confirmPassword'],
+					];
+
+					$this->userModel->editPassword($this->data, $id);
+
+					App::getSession()->addFlash(__('user_settings.mes4'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
 				}
 
 			} catch (\Exception $exception) {
 
 				App::getSession()->addFlash($exception->getMessage());
+				App::getRouter()->redirect(App::getRouter()->buildUri('user.settings'));
 
 			}
 		}
@@ -88,7 +152,7 @@ class UserController extends Base
 	{
 		// Проверка на наличие загружаемого изображения.
 		if (!file_exists($image)) {
-			throw new \Exception('Image are not downloaded!');
+			throw new \Exception(__('user_settings.error1'));
 		}
 
 		// Проверка на тип файла. Получение расширения изображения.
@@ -103,7 +167,7 @@ class UserController extends Base
 				$fileType = '.png';
 				break;
 			default:
-				throw new \Exception('Неверный формат файла');
+				throw new \Exception(__('user_settings.error2'));
 		}
 
 		$paths = [];
@@ -122,11 +186,10 @@ class UserController extends Base
 		// Загрузка изображения.
 		if (!move_uploaded_file($image, $paths['filePath'])) {
 			rmdir(Config::get('userImgRoot') . $nameDir);
-			throw new \Exception('Image are not downloaded!');
+			throw new \Exception(__('user_settings.error3'));
 		}
 
 		// Возвращаем путь загруженного изображения.
-		print_r($paths);
 		return $paths;
 	}
 
@@ -134,7 +197,7 @@ class UserController extends Base
 	{
 		// Проверка на наличие изображения.
 		if (!file_exists($image_source)) {
-			throw new \Exception('Изображение '.$image_source.' не найдено');
+			throw new \Exception(__('user_settings.error3'));
 		}
 
 		// Создаём изображение.
@@ -149,7 +212,7 @@ class UserController extends Base
 				$image = imagecreatefrompng($image_source);
 				break;
 			default:
-				throw new \Exception('Неверный формат файла');
+				throw new \Exception(__('user_settings.error2'));
 		}
 		$new_image = imagecreatetruecolor(200, 200);
 
@@ -170,56 +233,17 @@ class UserController extends Base
 		return true;
 	}
 
-	public function editAction() {
-		if (App::getSession()->get('id')) {
-			$this->data = $this->userModel->getBy('id', App::getSession()->get('id'));
-		}
-
+	public function checkEmailAction()
+	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			try {
-				$id = App::getSession()->get('id') ? App::getSession()->get('id') : null;
+			$email = strip_tags($_POST['email']);
 
-				$this->data = [
-					'firstName' => $_POST['firstName'],
-					'secondName' => $_POST['secondName'],
-					'email' => $_POST['email'],
-				];
-
-				if (App::getSession()->get('email') == $this->data['email']) {
-					unset($this->data['email']);
-				}
-
-				$this->userModel->edit($this->data, $id);
-
-				if (isset($this->data['email'])) {
-					App::getSession()->set('email', $this->data['email']);
-				}
-
-				App::getSession()->addFlash('Your data has been saved successfully.');
-				App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
-			} catch (\Exception $exception) {
-				App::getSession()->addFlash($exception->getMessage());
-			}
-		}
-	}
-
-	public function editPasswordAction() {
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			try {
-				$id = App::getSession()->get('id') ? App::getSession()->get('id') : null;
-
-				$this->data = [
-					'oldPassword' => $_POST['oldPassword'],
-					'password' => $_POST['password'],
-					'confirmPassword' => $_POST['confirmPassword'],
-				];
-
-				$this->userModel->editPassword($this->data, $id);
-
-				App::getSession()->addFlash('Your new password has been saved successfully.');
-				App::getRouter()->redirect(App::getRouter()->buildUri('user.index'));
-			} catch (\Exception $exception) {
-				App::getSession()->addFlash($exception->getMessage());
+			if ($this->userModel->getBy('email', $email)) {
+				echo true;
+				die();
+			} else {
+				echo false;
+				die();
 			}
 		}
 	}

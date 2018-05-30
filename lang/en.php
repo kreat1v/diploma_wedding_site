@@ -63,11 +63,37 @@ return [
 		'purchases' => 'Paid services'
 	],
 
+	'user_index' => [
+		'email' => 'Your e-mail address',
+		'tel' => 'Your phone number',
+		'mes1' => 'Let\'s get acquainted closer!',
+		'mes2' => 'Fill in the settings',
+		'mes3' => 'information about yourself, that would be more convenient for us to keep in touch.'
+	],
+
 	'user_settings' => [
 		'title_avatar' => 'Change your avatar',
 		'choose' => 'Choose file',
 		'download' => 'Download',
 		'delete' => 'Delete',
+		'error1' => 'Select image to upload',
+		'error2' => 'Invalid image format',
+		'error3' => 'An error occurred, the image was not uploaded! Try again',
+		'error4' => 'User with this email already registered',
+		'error5' => 'The old password is not correct',
+		'error6' => 'The new password can not be the same as the old one',
+		'error7' => 'Passwords do not match',
+		'mes1' => 'Your avatar is installed successfully',
+		'mes2' => 'Your avatar has been deleted',
+		'mes3' => 'Your data has been saved successfully',
+		'mes4' => 'Your password has been changed successfully',
+		'tool1' => 'Please enter a valid name',
+		'tool2' => 'Please enter a valid last name',
+		'tool3' => 'Please enter a valid email address',
+		'tool4' => 'This email address is already registered in our system',
+		'tool5' => 'Please enter the correct password',
+		'tool6' => 'The password must be between 8 and 12 characters. You can use upper and lower case letters, numbers, as well as special characters _ - @ #',
+		'tool7' => 'The entered passwords do not match',
 		'title' => 'You can change your details',
 		'sex' => 'Who you are?',
 		'guy' => 'Guy',

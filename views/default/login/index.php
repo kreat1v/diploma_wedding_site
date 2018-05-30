@@ -65,7 +65,7 @@ $router = \App\Core\App::getRouter();
 							<div class="tooltips-left">
 								<div><?=__('register.tool3')?></div>
 							</div>
-							<div class="info">
+							<div class="help">
 								<div class="tooltips-top">
 									<div><?=__('register.tool4')?></div>
 								</div>

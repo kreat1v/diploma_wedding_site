@@ -29,7 +29,7 @@
 }
 
 .user .info .gradient-border {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .user .info .body, .user .info .avatar-select {
@@ -41,6 +41,11 @@
 
 .user .info .body>div, .user .info .avatar-crop>div, .user .info .avatar-select>div {
     margin: 30px;
+}
+
+.user .info .title {
+    margin-top: 0 !important;
+    color: #3CA6C7;
 }
 
 .user .info .avatar, .user .info .data, .user .info .message {
@@ -56,6 +61,16 @@
     border-radius: 50%;
     width: 200px;
     height: 200px;
+}
+
+.user .info .message a {
+    text-decoration: none;
+    color: #3CA6C7;
+    font-weight: bold;
+}
+
+.user .info .message a:hover {
+    color: #80E1FF;
 }
 
 .user .info .form {
@@ -105,7 +120,7 @@
     text-align: center;
 }
 
-.user .form .button {
+.user .info .form .button {
     display: block;
     margin: 0 auto;
     width: 400px;
@@ -130,4 +145,11 @@
 .user .info .avatar-select .file-upload label {
     cursor: pointer;
     margin-top: 0 !important;
+}
+
+.user .info .form .help {
+    position: absolute;
+    right: 215px;
+    top: 200px;
+    cursor: pointer;
 }

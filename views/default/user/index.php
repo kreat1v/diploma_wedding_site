@@ -23,22 +23,29 @@ $router = \App\Core\App::getRouter();
 
 				<div class="body">
 
-					<!-- <div class="blur">
-						<img src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>">
-					</div> -->
-
 					<div class="avatar">
-						<img src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>">
+						<img class="cropim" src="<?=$data['avatar']?>" />
 					</div>
+
+					<?php if (isset($data['info']['firstName'])): ?>
+					<div class="title text">
+						<h2><?=$data['info']['firstName'] . ' ' . $data['info']['secondName']?></h2>
+					</div>
+					<?php endif; ?>
 
 					<div class="data text">
-						<p><b>Ваш e-mail:</b> <?=$data['email']?></p>
+						<p><b><?=__('user_index.email')?>:</b> <?=$data['info']['email']?></p>
+						<?php if (isset($data['info']['tel'])): ?>
+						<p><b><?=__('user_index.tel')?>:</b> <?=$data['info']['tel']?></p>
+						<?php endif; ?>
 					</div>
 
+					<?php if (!isset($data['info']['firstName']) || !isset($data['info']['secondName']) || !isset($data['info']['email']) || !isset($data['info']['tel'])): ?>
 					<div class="message text">
-						<p>Давайте познакомимся поближе! Заполните в настройках данные о себе, что бы нам было удобнее поддерживать связь.</p>
+						<p><?=__('user_index.mes1')?> <a href="<?=$router->buildUri('user.settings')?>"><?=__('user_index.mes2')?></a> <?=__('user_index.mes3')?></p>
 					</div>
-					
+					<?php endif; ?>
+
 				</div>
 
 			</div>

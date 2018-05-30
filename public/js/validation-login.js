@@ -118,14 +118,14 @@ $(document).ready(function() {
     });
 
     // Показать тултип подсказки при наведении
-    $('.info').mouseenter(function() {
+    $('.help').mouseenter(function() {
 
         $(this).find('.tooltips-top').fadeIn();
 
     });
 
     // Скрыть тултип подсказки
-    $('.info').mouseleave(function() {
+    $('.help').mouseleave(function() {
 
         $(this).find('.tooltips-top').fadeOut();
 

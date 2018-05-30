@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Core\Password;
-use \PDO;
 
 class User extends Base
 {
@@ -88,7 +87,7 @@ class User extends Base
 	public function edit(array $data, $id)
 	{
 		if ($this->getBy('email', $data['email'])) {
-			throw new \Exception('User with this email already registered');
+			throw new \Exception(__('user_settings.error4'));
 		}
 
 		$this->save($data, $id);
@@ -100,19 +99,22 @@ class User extends Base
 
 		$user = $this->getBy('id', $id);
 
-		if ($user['password'] != md5(new Password($data['oldPassword']))) {
-			throw new \Exception('The old password is not correct.');
+		if ($user['password'] != md5(new Password($data['oldPassword'], $user['secretkey']))) {
+			throw new \Exception(__('user_settings.error5'));
 		}
 
-		if ($user['password'] == md5(new Password($data['password']))) {
-			throw new \Exception('The new password can not be the same as the old one.');
+		if ($user['password'] == md5(new Password($data['password'], $user['secretkey']))) {
+			throw new \Exception(__('user_settings.error6'));
 		}
 
 		if ($data['password'] != $data['confirmPassword']) {
-			throw new \Exception('Passwords do not match');
+			throw new \Exception(__('user_settings.error7'));
 		}
 
-		$data['password'] = md5(new Password($data['password']));
+		$secret_key = uniqid();
+
+		$data['password'] = md5(new Password($data['password'], $secret_key));
+		$data['secretkey'] = $secret_key;
 
 		$this->save($data, $id);
 	}
