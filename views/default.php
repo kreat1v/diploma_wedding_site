@@ -124,13 +124,23 @@ $router = \App\Core\App::getRouter();
 		                    <a href="<?=$router->buildUri('.login')?>">
 								<span><?=__('header.login')?></span>
 							</a>
-							<?php else: ?>
-							<a href="<?=$router->buildUri('user.logout')?>">
-								<span>X</span>
-							</a>
 							<?php endif; ?>
 						<?php endif; ?>
 	                </div>
+
+					<?php if (Session::get('id')):?>
+					<div class="user-buttons text">
+						<a class="body" href="<?=$router->buildUri('.user')?>">
+							<div class="avatar">
+								<img src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>">
+							</div>
+							<span><?=Session::get('email')?></span>
+						</a>
+						<a class="close" href="<?=$router->buildUri('user.logout')?>">
+							<span><i class="fas fa-times"></i></span>
+						</a>
+					</div>
+					<?php endif; ?>
 	            </div>
 	        </div>
 	    </header>

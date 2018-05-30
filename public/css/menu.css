@@ -91,10 +91,47 @@
     transform: rotate(270deg);
 }
 
-.menu .right-side {
+.menu .right-side, .menu .user-buttons, .menu .user-buttons a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.menu .user-buttons {
+    margin-left: 30px;
+    color: #AD7F00;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.menu .user-buttons .avatar {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #AD7F00;
+    border-radius: 50%;
+    transition: all 0.2s linear;
+}
+
+.menu .user-buttons .body span {
+    margin: 0 10px;
+    transition: all 0.2s linear;
+}
+
+.menu .user-buttons .body .avatar img {
+    width: 100%;
+}
+
+.menu .user-buttons .body:hover span, .menu .user-buttons .close:hover {
+    color: #FAB900;
+}
+
+.menu .user-buttons .body:hover .avatar {
+    border: 2px solid #FAB900;
+}
+
+.menu .user-buttons .close {
+    transition: all 0.2s linear;
+    margin-left: 5px;
 }
 
 .search input[type='text'] {
