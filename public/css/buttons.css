@@ -56,6 +56,11 @@
     transform: translateY(0px);
 }
 
+.buttons .active {
+    color: #FAB900;
+    pointer-events: none;
+}
+
 .sm-buttons {
     display: block;
     height: 36px;

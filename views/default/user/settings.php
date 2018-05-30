@@ -11,7 +11,7 @@ $router = \App\Core\App::getRouter();
 			<ul>
 				<?php foreach (\App\Core\Config::get('userMenu') as $value): ?>
 				<li class="buttons">
-					<a href="<?=$router->buildUri('user.' . $value)?>"><?=__('user_menu.' . $value)?></a>
+					<a class="<?=$router->getAction('true') == $value ? 'active' : ''?>" href="<?=$router->buildUri('user.' . $value)?>"><?=__('user_menu.' . $value)?></a>
 				</li>
 				<?php endforeach; ?>
 			</ul>
