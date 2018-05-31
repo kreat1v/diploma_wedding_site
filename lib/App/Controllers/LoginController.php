@@ -20,7 +20,7 @@ class LoginController extends Base
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
-				
+
 				if (isset($_POST['button']) && $_POST['button'] == 'login') {
 					$this->data = [
 						'email' => $_POST['email'],
@@ -55,6 +55,9 @@ class LoginController extends Base
 					App::getSession()->set('id', $user['id']);
 					App::getSession()->set('email', $user['email']);
 					App::getSession()->set('role', $user['role']);
+					if (isset($user['firstName'])) {
+						App::getSession()->set('name', $user['firstName']);
+					}
 
 					App::getSession()->addFlash("$message Мы рады вас видеть!");
 					App::getRouter()->redirect(App::getRouter()->buildUri('.user'));

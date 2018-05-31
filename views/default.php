@@ -4,8 +4,30 @@
 
 use App\Core\Localization;
 use App\Core\Session;
+use App\Core\Config;
 
 $router = \App\Core\App::getRouter();
+
+if(Session::get('id')) {
+
+	$session_id = Session::get('id');
+
+	if (!file_exists(Config::get('userImgRoot') . $session_id)) {
+
+		$avatar = Config::get('systemImg') . 'user.png';
+
+	} else {
+
+		$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $session_id), ['.', '..']));
+		$avatar = Config::get('userImg') . $session_id . DS . $paths[0];
+
+	}
+
+} else {
+
+	$session_id = false;
+
+}
 
 ?><!doctype html>
 <html>
@@ -14,7 +36,7 @@ $router = \App\Core\App::getRouter();
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title><?=\App\Core\Config::get('siteName')?></title>
+		<title><?=Config::get('siteName')?></title>
 	    <link rel="stylesheet" href="/css/index.css">
 		<link href="https://fonts.googleapis.com/css?family=Caveat:400,700|Montserrat+Alternates:300,300i,400,400i,500,500i,700,700i&amp;subset=cyrillic" rel="stylesheet">
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -120,7 +142,7 @@ $router = \App\Core\App::getRouter();
 	                    <a href="#">
 							<span><?=__('header.stories')?></span>
 						</a>
-							<?php if (!Session::get('id')):?>
+							<?php if (!$session_id):?>
 		                    <a href="<?=$router->buildUri('.login')?>">
 								<span><?=__('header.login')?></span>
 							</a>
@@ -128,13 +150,13 @@ $router = \App\Core\App::getRouter();
 						<?php endif; ?>
 	                </div>
 
-					<?php if (Session::get('id')):?>
+					<?php if ($session_id):?>
 					<div class="user-buttons text">
 						<a class="body" href="<?=$router->buildUri('.user')?>">
 							<div class="avatar">
-								<img src="<?=\App\Core\Config::get('systemImg') . 'user.png'?>">
+								<img src="<?=$avatar?>">
 							</div>
-							<span><?=Session::get('email')?></span>
+							<span><?=Session::get('name') ? Session::get('name') : Session::get('email')?></span>
 						</a>
 						<a class="close" href="<?=$router->buildUri('user.logout')?>">
 							<span><i class="fas fa-times"></i></span>

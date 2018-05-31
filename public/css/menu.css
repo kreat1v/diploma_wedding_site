@@ -99,7 +99,6 @@
 
 .menu .user-buttons {
     margin-left: 30px;
-    color: #AD7F00;
     font-size: 14px;
     text-transform: uppercase;
 }
@@ -107,14 +106,17 @@
 .menu .user-buttons .avatar {
     width: 40px;
     height: 40px;
-    border: 2px solid #AD7F00;
+    border: 2px solid #3CA6C7;
     border-radius: 50%;
     transition: all 0.2s linear;
+    overflow: hidden;
 }
 
 .menu .user-buttons .body span {
+    color: #3CA6C7;
     margin: 0 10px;
     transition: all 0.2s linear;
+    font-weight: bold;
 }
 
 .menu .user-buttons .body .avatar img {
@@ -122,16 +124,21 @@
 }
 
 .menu .user-buttons .body:hover span, .menu .user-buttons .close:hover {
-    color: #FAB900;
+    color: #80E1FF;
 }
 
 .menu .user-buttons .body:hover .avatar {
-    border: 2px solid #FAB900;
+    border: 2px solid #80E1FF;
 }
 
 .menu .user-buttons .close {
+    color: #AD7F00;
     transition: all 0.2s linear;
     margin-left: 5px;
+}
+
+.menu .user-buttons .close:hover {
+    color: #FAB900;
 }
 
 .search input[type='text'] {

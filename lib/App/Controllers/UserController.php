@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Core\App;
 use App\Core\Config;
 
+
+
 class UserController extends Base
 {
 	private $userModel;
@@ -114,10 +116,18 @@ class UserController extends Base
 						unset($this->data['email']);
 					}
 
+					if (App::getSession()->get('name') == $this->data['firstName']) {
+						unset($this->data['firstName']);
+					}
+
 					$this->userModel->edit($this->data, $id);
 
 					if (isset($this->data['email'])) {
 						App::getSession()->set('email', $this->data['email']);
+					}
+
+					if (isset($this->data['firstName'])) {
+						App::getSession()->set('name', $this->data['firstName']);
 					}
 
 					App::getSession()->addFlash(__('user_settings.mes3'));
