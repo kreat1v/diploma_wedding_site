@@ -41,7 +41,7 @@ $router = \App\Core\App::getRouter();
 					</div>
 
 					<?php if (!isset($data['info']['firstName']) || !isset($data['info']['secondName']) || !isset($data['info']['email']) || !isset($data['info']['tel'])): ?>
-					<div class="message text">
+					<div class="notification text">
 						<p><?=__('user_index.mes1')?> <a href="<?=$router->buildUri('user.settings')?>"><?=__('user_index.mes2')?></a> <?=__('user_index.mes3')?></p>
 					</div>
 					<?php endif; ?>

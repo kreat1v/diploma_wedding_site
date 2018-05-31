@@ -108,7 +108,7 @@
     height: 40px;
     border: 2px solid #3CA6C7;
     border-radius: 50%;
-    transition: all 0.2s linear;
+    transition: all 0.5s linear;
     overflow: hidden;
 }
 
@@ -133,7 +133,7 @@
 
 .menu .user-buttons .close {
     color: #AD7F00;
-    transition: all 0.2s linear;
+    transition: all 0.5s linear;
     margin-left: 5px;
 }
 

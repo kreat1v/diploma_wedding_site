@@ -48,7 +48,7 @@
     color: #3CA6C7;
 }
 
-.user .info .avatar, .user .info .data, .user .info .message {
+.user .info .avatar, .user .info .data, .user .info .notification, .user .info .title {
     position: relative;
     z-index: 100;
 }
@@ -63,18 +63,23 @@
     height: 200px;
 }
 
-.user .info .message a {
+.user .info .notification a {
     text-decoration: none;
     color: #3CA6C7;
     font-weight: bold;
+    transition: all 0.5s linear;
 }
 
-.user .info .message a:hover {
+.user .info .notification a:hover {
     color: #80E1FF;
 }
 
 .user .info .form {
     color: #3CA6C7;
+}
+
+.user .info .form label {
+    position: relative;
 }
 
 .user .info .form h2 {
@@ -129,6 +134,10 @@
     font-size: 15px;
 }
 
+.user .info .form textarea {
+    resize: none;
+}
+
 .user .info .avatar-crop #image {
     display: none;
 }
@@ -149,7 +158,14 @@
 
 .user .info .form .help {
     position: absolute;
-    right: 215px;
-    top: 200px;
+    right: -25px;
+    top: 25px;
     cursor: pointer;
+}
+
+.user .info .form .count {
+    display: none;
+    position: absolute;
+    right: -25px;
+    top: 60px;
 }

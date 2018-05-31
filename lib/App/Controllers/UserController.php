@@ -258,6 +258,25 @@ class UserController extends Base
 		}
 	}
 
+	public function communicationsAction()
+	{
+		// Получаем данные.
+		if (App::getSession()->get('id')) {
+			$id = App::getSession()->get('id');
+
+			$this->data['info'] = $this->userModel->getBy('id', $id);
+
+			if (!file_exists(Config::get('userImgRoot') . $id)) {
+				$avatar = Config::get('systemImg') . 'user.png';
+			} else {
+				$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+				$avatar = Config::get('userImg') . $id . DS . $paths[0];
+			}
+
+			$this->data['avatar'] = $avatar;
+		}
+	}
+
 	public function logoutAction()
 	{
 		App::getSession()->destroy();

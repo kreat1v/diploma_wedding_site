@@ -110,6 +110,18 @@ return [
 		'change' => 'Change'
 	],
 
+	'user_communications' => [
+		'title1' => 'You can leave us a message',
+		'message' => 'Message',
+		'send' => 'Send',
+		'title2' => 'Or order a call back',
+		'mes1' => 'You can leave a request - and we will call you back!',
+		'mes2' => 'In order to leave a request,',
+		'mes3' => 'enter your phone',
+		'mes4' => 'number in the settings.',
+		'call' => 'Call me back'
+	],
+
 	'products' => [
 		'contacts' => 'Contacts',
 		'size' => 'Sizes',
