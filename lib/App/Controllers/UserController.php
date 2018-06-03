@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Entity\User;
+use App\Entity\MessagesUser;
+use App\Entity\CallsUser;
 use App\Core\App;
 use App\Core\Config;
 
@@ -11,12 +13,16 @@ use App\Core\Config;
 class UserController extends Base
 {
 	private $userModel;
+	private $messagesUserModel;
+	private $callsUserModel;
 
 	public function __construct(array $params = [])
 	{
 		parent::__construct( $params );
 
 		$this->userModel = new User(App::getConnection());
+		$this->messagesUserModel = new MessagesUser(App::getConnection());
+		$this->callsUserModel = new CallsUser(App::getConnection());
 	}
 
 	public function indexAction()
@@ -264,8 +270,6 @@ class UserController extends Base
 		if (App::getSession()->get('id')) {
 			$id = App::getSession()->get('id');
 
-			$this->data['info'] = $this->userModel->getBy('id', $id);
-
 			if (!file_exists(Config::get('userImgRoot') . $id)) {
 				$avatar = Config::get('systemImg') . 'user.png';
 			} else {
@@ -274,6 +278,73 @@ class UserController extends Base
 			}
 
 			$this->data['avatar'] = $avatar;
+			$this->data['info'] = $this->userModel->getBy('id', $id);
+			$this->data['messages'] = $this->messagesUserModel->list(['id_users' => $id], [5, 0], 'date');
+		}
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			try {
+
+				// Отправка сообщения.
+				if (isset($_POST['button']) && $_POST['button'] == 'message') {
+					$this->data = [
+						'id_users' => $id,
+						'message' => $_POST['message'],
+						'active' => '1'
+					];
+
+					$this->messagesUserModel->save($this->data);
+
+					App::getSession()->addFlash(__('user_communications.mes5'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('user.communications'));
+				}
+
+				// Обратный звонок.
+				if (isset($_POST['button']) && $_POST['button'] == 'call') {
+					$this->data = [
+						'id_users' => $id,
+						'active' => '1'
+					];
+
+					$this->callsUserModel->save($this->data);
+
+					App::getSession()->addFlash(__('user_communications.mes6'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('user.communications'));
+				}
+
+			} catch (\Exception $exception) {
+
+				App::getSession()->addFlash($exception->getMessage());
+				App::getRouter()->redirect(App::getRouter()->buildUri('user.communications'));
+
+			}
+		}
+	}
+
+	public function getMessagesAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			if (App::getSession()->get('id')) {
+				$id = App::getSession()->get('id');
+
+				if (!file_exists(Config::get('userImgRoot') . $id)) {
+					$avatar = Config::get('systemImg') . 'user.png';
+				} else {
+					$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+					$avatar = Config::get('userImg') . $id . DS . $paths[0];
+				}
+
+				$start = $_POST['start'];
+				$limit = $_POST['limit'];
+
+				$arr['data'] = $this->messagesUserModel->list(['id_users' => $id], [$limit, $start], 'date');
+				$arr['avatar'] = $avatar;
+
+				echo json_encode($arr);
+				die();
+			}
+
 		}
 	}
 

@@ -39,7 +39,7 @@ abstract class Base
 	 *
 	 * @return mixed
 	 */
-	public function list($filter = [])
+	public function list($filter = [], $section = [], $sort = false)
 	{
 		$fields = $this->getFields();
 		$where = [];
@@ -58,7 +58,20 @@ abstract class Base
 			$strWhere = ' AND ' . implode(' AND ', $where);
 		}
 
-		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE 1 ' . $strWhere;
+		$strLimit = '';
+		if (!empty($section)) {
+			$limitStart = $section[1];
+			$limit = $section[0];
+
+			$strLimit = ' LIMIT ' . $limit . ' OFFSET ' . $limitStart;
+		}
+
+		$strSort = '';
+		if ($sort) {
+			$strSort = ' ORDER BY ' . $sort . ' DESC';
+		}
+
+		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE 1 ' . $strWhere . $strSort . $strLimit;
 		return $this->conn->query($sql);
 	}
 

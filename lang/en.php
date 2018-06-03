@@ -119,6 +119,8 @@ return [
 		'mes2' => 'In order to leave a request,',
 		'mes3' => 'enter your phone',
 		'mes4' => 'number in the settings.',
+		'mes5' => 'We received your message and will respond to you as soon as possible!',
+		'mes6' => 'We received your request and will get back to you shortly!',
 		'call' => 'Call me back'
 	],
 
