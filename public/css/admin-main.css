@@ -1,0 +1,12 @@
+.admin-menu {
+    position: fixed;
+    width: 20%;
+    height: 100%;
+    background-color: #AD7F00;
+}
+
+.content {
+    max-width: 1000px;
+    width: 70%;
+    margin-left: 25%;
+}

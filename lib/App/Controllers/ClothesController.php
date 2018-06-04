@@ -110,4 +110,9 @@ class ClothesController extends Base
 			die();
 		}
 	}
+
+	public function reviewsAction()
+	{
+
+	}
 }

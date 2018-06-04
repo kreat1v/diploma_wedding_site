@@ -131,7 +131,7 @@ return [
 		'price' => 'Price',
 		'basket' => 'Add to cart',
 		'favorites' => 'To favorites',
-		'discussion' => 'Discussion',
+		'reviews' => 'Reviews',
 		'not_found' => 'We could not find anything...'
 	],
 
@@ -163,18 +163,7 @@ return [
 		'mail' => 'You can write to us!'
 	],
 
-	'admin_nav' => [
-		'back_profile' => 'Back profile',
-		'pages_management' => 'Category management',
-		'news' => 'News',
-		'moderation' => 'Moderation of comments',
-		'comments' => 'Published comments',
-		'external_messages' => 'External messages',
-		'user_messages' => 'User messages',
-		'all_messages' => 'All messages',
-		'users' => 'Users',
-		'adLeft' => 'Left block of ads',
-		'adRight' => 'Right block of ads',
-		'style' => 'Color scheme'
+	'admin_menu' => [
+		'language' => 'RU'
 	]
 ];

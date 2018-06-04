@@ -88,7 +88,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     </a>
                                     <a href="#" class="sm-buttons">
                                         <span><i class="fas fa-comments fa-lg"></i></span>
-                                        <span><?=__('products.discussion')?></span>
+                                        <span><?=__('products.reviews')?></span>
                                     </a>
                                 </div>
 

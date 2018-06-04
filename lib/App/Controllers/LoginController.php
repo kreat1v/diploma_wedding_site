@@ -60,7 +60,14 @@ class LoginController extends Base
 					}
 
 					App::getSession()->addFlash("$message Мы рады вас видеть!");
-					App::getRouter()->redirect(App::getRouter()->buildUri('.user'));
+
+					if ($user['role'] == 'user') {
+						App::getRouter()->redirect(App::getRouter()->buildUri('.user'));
+					}
+
+					if ($user['role'] == 'admin') {
+						App::getRouter()->redirect(App::getRouter()->buildUri('.admin'));
+					}
 				}
 
 				if (isset($_POST['button']) && $_POST['button'] == 'register') {

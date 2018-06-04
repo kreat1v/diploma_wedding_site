@@ -79,9 +79,9 @@ class App
 		$controller = new $controllerName($params);
 
 		// Если юзер не админ, то админский раздел не доступен.
-		if ($route == 'admin' && static::getSession()->get('role') != 'admin') {
-			static::getRouter()->redirect(static::getRouter()->buildUri('default.category.index'));
-		}
+		// if ($route == 'admin' && static::getSession()->get('role') != 'admin') {
+		// 	static::getRouter()->redirect(static::getRouter()->buildUri('default.category.index'));
+		// }
 
 		// Если сессия активна, то страница с формами входа и регистрации не доступны.
 		if (static::getRouter()->getController(true) == 'Login' && App::getSession()->get('id')) {

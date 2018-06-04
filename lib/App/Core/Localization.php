@@ -57,9 +57,16 @@ class Localization
 
 	public static function chooseLang($lang)
 	{
+		$route = App::getRouter()->getRoute();
 		$controller = strtolower(App::getRouter()->getController(true));
 		$action = App::getRouter()->getAction(true);
 		$params = !empty(App::getRouter()->getParams()) ? '/' . implode('/', App::getRouter()->getParams()) : '';
+
+		if (($route === Config::get('defaultRoute')) && ($controller === Config::get('defaultController')) && ($action === Config::get('defaultAction')) && empty($params)) {
+			$route = '';
+		} else {
+			$route = '/' . $route;
+		}
 
 		if (($controller === Config::get('defaultController')) && ($action === Config::get('defaultAction')) && empty($params)) {
 			$controller = '';
@@ -73,6 +80,6 @@ class Localization
 			$action = '/' . $action;
 		}
 
-		return '/' . $lang . $controller . $action . $params;
+		return '/' . $lang . $route . $controller . $action . $params;
 	}
 }
