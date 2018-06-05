@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-class MessagesUser extends Base
+class MessagesAdmin extends Base
 {
 	private $user;
 
@@ -17,7 +17,7 @@ class MessagesUser extends Base
 
 	public function getTableName()
 	{
-		return 'messages_user';
+		return 'messages_admin';
 	}
 
 	public function checkFields($data) {
@@ -34,8 +34,7 @@ class MessagesUser extends Base
 			'id',
 			'id_users',
 			'message',
-			'date',
-			'active'
+			'date'
 		];
 	}
 

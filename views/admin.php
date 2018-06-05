@@ -50,14 +50,19 @@ if(Session::get('id')) {
             <nav>
                 <ul class="menu-bar text">
 					<li>
-						<a href="#">О нас</a>
+						<a href="<?=$router->buildUri('.category')?>">Категории</a>
 					</li>
-                    <li>
-                        <a href="#">Фото обложки</a>
-                    </li>
-                    <li>
-                        <a href="#">Контакты</a>
-                    </li>
+					<li>
+						<a href="#">Товары</a>
+						<ul>
+							<li><a href="#">Оформление</a></li>
+							<li><a href="#">Одежда</a></li>
+							<li><a href="#">Авто</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Заказы</a>
+					</li>
 
 					<br>
 
@@ -67,27 +72,15 @@ if(Session::get('id')) {
 
 					<br>
 
-                    <li>
-                        <a href="#">Категории</a>
-                    </li>
-                    <li>
-                        <a href="#">Товары</a>
-                        <ul>
-                            <li><a href="#">Оформление</a></li>
-                            <li><a href="#">Одежда</a></li>
-                            <li><a href="#">Авто</a></li>
-                        </ul>
-                    </li>
-                    <li>
-						<a href="#">Заказы</a>
+					<li>
+						<a href="#">Пользователи</a>
 					</li>
-
-					<br>
-
                     <li><a href="#">Обратная связь</a>
                         <ul>
-                            <li><a href="#">Сообщения</a></li>
-                            <li><a href="#">Звонки</a></li>
+                            <li><a href="<?=$router->buildUri('.feedback')?>">Активные диалоги</a></li>
+                            <li><a href="#">Архивные диалоги</a></li>
+                            <li><a href="#">Активные заявки</a></li>
+                            <li><a href="#">Архивные заявки</a></li>
                         </ul>
                     </li>
 					<li>
@@ -96,6 +89,18 @@ if(Session::get('id')) {
 							<li><a href="#">Отзывы о товарах</a></li>
 							<li><a href="#">Комментарии историй</a></li>
 						</ul>
+					</li>
+
+					<br>
+
+					<li>
+						<a href="#">О нас</a>
+					</li>
+					<li>
+						<a href="#">Фото обложки</a>
+					</li>
+					<li>
+						<a href="#">Контакты</a>
 					</li>
                 </ul>
             </nav>
@@ -193,7 +198,7 @@ if(Session::get('id')) {
     							</div>
     							<span>Admin</span>
     						</a>
-    						<a class="close" href="<?=$router->buildUri('user.logout')?>">
+    						<a class="close" href="<?=$router->buildUri('default.user.logout')?>">
     							<span><i class="fas fa-times"></i></span>
     						</a>
     					</div>

@@ -1,7 +1,7 @@
 <?php
-// Представление контроллера User - страница профиля.
 
 $router = \App\Core\App::getRouter();
+
 ?>
 <div class="user">
 

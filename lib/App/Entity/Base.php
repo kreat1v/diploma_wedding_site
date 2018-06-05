@@ -118,7 +118,7 @@ abstract class Base
 	 *
 	 * @return mixed
 	 */
-	public function save($data, $id = null)
+	public function save($data, $id = [])
 	{
 		$this->checkFields($data);
 
@@ -132,7 +132,7 @@ abstract class Base
 			}
 
 			$this->conn->escape($val);
-			if ($id > 0) {
+			if (!empty($id)) {
 				$values[] = "$key = ?";
 			} else {
 				$values[] = $val;
@@ -141,17 +141,62 @@ abstract class Base
 
 		$cols = implode(',', array_keys($data));
 
-		if ($id > 0) {
+		if (!empty($id)) {
+			$key = key($id);
+			$where = 'id';
+
+			if (in_array($key, $fields)) {
+				$where = $key;
+			}
+
 			$values = implode(',', $values);
-			$data[] = $id;
-			$sql = "UPDATE " . $this->getTableName() . " SET $values WHERE id = ?";
+			$data[] = $id[$key];
+			$sql = "UPDATE " . $this->getTableName() . " SET $values WHERE $where = ?";
 		} else {
 			$vals = rtrim(str_repeat('?,', count($data)), ',');
 			$sql = "INSERT INTO " . $this->getTableName() . " ($cols) VALUES ($vals)";
 		}
 
+		echo $sql;
+		// "UPDATE `messages_user` SET `active` = 0 where `id_users` = 4;";
+
 		return $this->conn->query($sql, array_values($data));
 	}
+
+	// public function save($data, $id = null)
+	// {
+	// 	$this->checkFields($data);
+	//
+	// 	$fields = $this->getFields();
+	//
+	// 	$values = [];
+	// 	foreach ($data as $key => $val) {
+	// 		if (!in_array($key, $fields)) {
+	// 			unset($data[$key]);
+	// 			continue;
+	// 		}
+	//
+	// 		$this->conn->escape($val);
+	// 		if ($id > 0) {
+	// 			$values[] = "$key = ?";
+	// 		} else {
+	// 			$values[] = $val;
+	// 		}
+	// 	}
+	//
+	// 	$cols = implode(',', array_keys($data));
+	//
+	// 	if ($id > 0) {
+	// 		$values = implode(',', $values);
+	// 		$data[] = $id;
+	// 		$sql = "UPDATE " . $this->getTableName() . " SET $values WHERE id = ?";
+	// 	} else {
+	// 		$vals = rtrim(str_repeat('?,', count($data)), ',');
+	// 		$sql = "INSERT INTO " . $this->getTableName() . " ($cols) VALUES ($vals)";
+	// 	}
+	//
+	// 	return $this->conn->query($sql, array_values($data));
+	// }
 
 	/**
 	 * @param $id
