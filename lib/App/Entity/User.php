@@ -79,7 +79,7 @@ class User extends Base
 		$data['password'] = md5(new Password($data['password'], $secret_key));
 		$data['secretkey'] = $secret_key;
 
-		$this->save($data, $user['id']);
+		$this->save($data, ['id' => $user['id']]);
 
 		return $user;
 	}
@@ -90,7 +90,7 @@ class User extends Base
 			throw new \Exception(__('user_settings.error4'));
 		}
 
-		$this->save($data, $id);
+		$this->save($data, ['id' => $id]);
 	}
 
 	public function editPassword(array $data, $id)
@@ -116,6 +116,6 @@ class User extends Base
 		$data['password'] = md5(new Password($data['password'], $secret_key));
 		$data['secretkey'] = $secret_key;
 
-		$this->save($data, $id);
+		$this->save($data, ['id' => $id]);
 	}
 }
