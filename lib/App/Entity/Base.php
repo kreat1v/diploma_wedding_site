@@ -157,9 +157,6 @@ abstract class Base
 			$sql = "INSERT INTO " . $this->getTableName() . " ($cols) VALUES ($vals)";
 		}
 
-		echo $sql;
-		// "UPDATE `messages_user` SET `active` = 0 where `id_users` = 4;";
-
 		return $this->conn->query($sql, array_values($data));
 	}
 

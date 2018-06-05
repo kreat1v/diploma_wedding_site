@@ -53,8 +53,6 @@ class Connection implements IConnection
 			return $result;
 		}
 
-		// var_dump($result);
-
 		return $result->fetchAll();
 	}
 
