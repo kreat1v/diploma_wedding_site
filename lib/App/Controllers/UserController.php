@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entity\User;
 use App\Entity\MessagesUser;
+use App\Entity\MessagesAdmin;
 use App\Entity\CallsUser;
 use App\Core\App;
 use App\Core\Config;
@@ -14,6 +15,7 @@ class UserController extends Base
 {
 	private $userModel;
 	private $messagesUserModel;
+	private $messagesAdminModel;
 	private $callsUserModel;
 
 	public function __construct(array $params = [])
@@ -22,6 +24,7 @@ class UserController extends Base
 
 		$this->userModel = new User(App::getConnection());
 		$this->messagesUserModel = new MessagesUser(App::getConnection());
+		$this->messagesAdminModel = new MessagesAdmin(App::getConnection());
 		$this->callsUserModel = new CallsUser(App::getConnection());
 	}
 
@@ -270,6 +273,9 @@ class UserController extends Base
 		if (App::getSession()->get('id')) {
 			$id = App::getSession()->get('id');
 
+			$messageUser = $this->messagesUserModel->list(['id_users' => $id], [3, 9], 'date');
+
+			// Получаем аватар.
 			if (!file_exists(Config::get('userImgRoot') . $id)) {
 				$avatar = Config::get('systemImg') . 'user.png';
 			} else {
@@ -277,9 +283,25 @@ class UserController extends Base
 				$avatar = Config::get('userImg') . $id . DS . $paths[0];
 			}
 
+			// Получаем сообщения юзера.
+			$messageUser = $this->messagesUserModel->list(['id_users' => $id], [3, 0], 'date');
+
+			// Получаем сообщения админа. Добавляем в них админскую метку.
+			$messageAdmin = $this->messagesAdminModel->list(['id_users' => $id], [3, 0], 'date');
+			foreach ($messageAdmin as $key => $value) {
+				$messageAdmin[$key]['admin'] = true;
+			}
+
+			// Совмещаем сообщения в единый массив, отсортированный по дате.
+			$message = array_merge($messageUser, $messageAdmin);
+			foreach ($message as $key => $row) {
+				$date[$key]  = $row['date'];
+			}
+			array_multisort($date, SORT_DESC, $message);
+
 			$this->data['avatar'] = $avatar;
 			$this->data['info'] = $this->userModel->getBy('id', $id);
-			$this->data['messages'] = $this->messagesUserModel->list(['id_users' => $id], [5, 0], 'date');
+			$this->data['messages'] = $message;
 		}
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -290,6 +312,7 @@ class UserController extends Base
 					$this->data = [
 						'id_users' => $id,
 						'message' => $_POST['message'],
+						'date' => date('Y-m-d H:i:s'),
 						'active' => '1'
 					];
 
@@ -335,11 +358,35 @@ class UserController extends Base
 					$avatar = Config::get('userImg') . $id . DS . $paths[0];
 				}
 
+				$adminAvatar = Config::get('systemImg') . 'admin.png';
+
 				$start = $_POST['start'];
 				$limit = $_POST['limit'];
 
-				$arr['data'] = $this->messagesUserModel->list(['id_users' => $id], [$limit, $start], 'date');
+				// Получаем сообщения юзера.
+				$messageUser = $this->messagesUserModel->list(['id_users' => $id], [$limit, $start], 'date');
+
+				// Получаем сообщения админа. Добавляем в них админскую метку.
+				$messageAdmin = $this->messagesAdminModel->list(['id_users' => $id], [$limit, $start], 'date');
+				foreach ($messageAdmin as $key => $value) {
+					$messageAdmin[$key]['admin'] = true;
+				}
+
+				// Совмещаем сообщения в единый массив.
+				$message = array_merge($messageUser, $messageAdmin);
+
+				// Если полученный массив не пустой - сортируем его по дате.
+				if(!empty($message)) {
+					foreach ($message as $key => $row) {
+						$date[$key]  = $row['date'];
+					}
+
+					array_multisort($date, SORT_DESC, $message);
+				}
+
+				$arr['data'] = $message;
 				$arr['avatar'] = $avatar;
+				$arr['adminAvatar'] = $adminAvatar;
 
 				echo json_encode($arr);
 				die();

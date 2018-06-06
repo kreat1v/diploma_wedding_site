@@ -150,13 +150,25 @@ if(Session::get('id')) {
 						<?php endif; ?>
 	                </div>
 
-					<?php if ($session_id):?>
+					<?php if ($session_id && Session::get('role') == 'user'):?>
 					<div class="user-buttons text">
 						<a class="body" href="<?=$router->buildUri('.user')?>">
 							<div class="avatar">
 								<img src="<?=$avatar?>">
 							</div>
 							<span><?=Session::get('name') ? Session::get('name') : Session::get('email')?></span>
+						</a>
+						<a class="close" href="<?=$router->buildUri('user.logout')?>">
+							<span><i class="fas fa-times"></i></span>
+						</a>
+					</div>
+					<?php elseif($session_id && Session::get('role') == 'admin'):?>
+					<div class="user-buttons text">
+						<a class="body" href="<?=$router->buildUri('.admin')?>">
+							<div class="avatar">
+								<img src="<?=Config::get('systemImg') . 'admin.png'?>">
+							</div>
+							<span>Admin</span>
 						</a>
 						<a class="close" href="<?=$router->buildUri('user.logout')?>">
 							<span><i class="fas fa-times"></i></span>

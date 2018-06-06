@@ -7,6 +7,7 @@ use \App\Entity\MessagesUser;
 use \App\Entity\MessagesAdmin;
 use \App\Entity\CallsUser;
 use \App\Core\App;
+use \App\Core\Config;
 
 class FeedbackController extends \App\Controllers\Base
 {
@@ -40,6 +41,14 @@ class FeedbackController extends \App\Controllers\Base
 			// Получаем данные юзера.
 			$user = $this->userModel->list(['id' => $id_user])[0];
 
+			// Получем аватар юзера.
+			if (!file_exists(Config::get('userImgRoot') . $id_user)) {
+				$avatar = Config::get('systemImg') . 'user.png';
+			} else {
+				$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id_user), ['.', '..']));
+				$avatar = Config::get('userImg') . $id_user . DS . $paths[0];
+			}
+
 			// Получаем сообщения юзера.
 			$messageUser = $this->messagesUserModel->list(['id_users' => $id_user]);
 
@@ -60,6 +69,7 @@ class FeedbackController extends \App\Controllers\Base
 			if (!empty($message)) {
 				$this->data['message'] = $message;
 				$this->data['user'] = $user;
+				$this->data['avatar'] = $avatar;
 			} else {
 				$this->page404();
 			}
@@ -75,31 +85,71 @@ class FeedbackController extends \App\Controllers\Base
 
 				// Обрабатываем отправленное админом сообщение.
 				if (isset($_POST['button']) && $_POST['button'] == 'message') {
-					$this->data['messageAdmin'] = [
-						'id_users' => $id_user,
-						'message' => $_POST['message']
-					];
 
-					$this->messagesAdminModel->save($this->data['messageAdmin']);
+					// Если есть тело сообщения - сохраняем его.
+					if (!empty($_POST['message'])) {
+						$this->data['messageAdmin'] = [
+							'id_users' => $id_user,
+							'message' => $_POST['message'],
+							'date' => date('Y-m-d H:i:s')
+						];
 
+						$this->messagesAdminModel->save($this->data['messageAdmin']);
+
+						App::getSession()->addFlash('Ваше сообщение успешно отправлено');
+					}
+
+					// Если установлена отметка об архивации диалога - деактивируем диалог.
 					if (isset($_POST['active'])) {
 						$this->data['active'] = [
 							'active' => 0
 						];
 
 						$this->messagesUserModel->save($this->data['active'], ['id_users' => $id_user]);
+
+						App::getSession()->addFlash('Вы успешно закрыли диалог - он перенесён в архивные диалоги. Если пользователь снова напишет сообщение - диалог станет активным.');
 					}
 
-					// App::getSession()->addFlash(__('Отправлено'));
-					// App::getRouter()->redirect(App::getRouter()->buildUri('.feedback'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('.feedback'));
 				}
 
 			} catch (\Exception $exception) {
 
 				App::getSession()->addFlash($exception->getMessage());
-				App::getRouter()->redirect(App::getRouter()->buildUri('user.settings'));
 
 			}
+		}
+	}
+
+	public function editMessageAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			try {
+
+				$this->data = [
+					'message' => $_POST['message']
+				];
+
+				$this->messagesAdminModel->save($this->data, ['id' => $_POST['id']]);
+
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
+			} catch (\Exception $exception) {
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
 		}
 	}
 

@@ -75,7 +75,7 @@ if(Session::get('id')) {
 					<li>
 						<a href="#">Пользователи</a>
 					</li>
-                    <li><a href="#">Обратная связь</a>
+                    <li><a href="<?=$router->buildUri('.feedback')?>">Обратная связь</a>
                         <ul>
                             <li><a href="<?=$router->buildUri('.feedback')?>">Активные диалоги</a></li>
                             <li><a href="#">Архивные диалоги</a></li>
@@ -207,7 +207,7 @@ if(Session::get('id')) {
     	    </header>
 
     		<main>
-    			<div class="tooltips-main">
+    			<div class="tooltips-main" style="left: 22%">
     				<?php if (Session::hasFlash()):
     					foreach (Session::getFlash() as $message): ?>
     						<div class="tooltips">

@@ -1,4 +1,4 @@
-startLimit = 5;
+startLimit = 3;
 
 // Функция подгрузки сообщений.
 function scrollalert() {
@@ -14,20 +14,28 @@ function scrollalert() {
             type: 'post',
             data: {
                 start: startLimit,
-                limit: 5
+                limit: 3
             },
 
             success: function(response) {
                 var data = JSON.parse(response);
-                startLimit = startLimit + 5;
+
+                startLimit = startLimit + 3;
 
                 var mes = '';
 
                 data.data.map(function(element) {
-                    mes += '<div class="mes-user text">' +
-                        '<div><span>Вы, ' + element.date + '</span><p>' + element.message + '</p></div>' +
-                        '<div class="avt"><img src="' + data.avatar + '"></div>' +
-                        '</div>';
+                    if (typeof element['admin'] === "undefined") {
+                        mes += '<div class="mes-user text">' +
+                            '<div><span>Вы, ' + element.date + '</span><p>' + element.message + '</p></div>' +
+                            '<div class="avt"><img src="' + data.avatar + '"></div>' +
+                            '</div>';
+                    } else {
+                        mes += '<div class="mes-admin text">' +
+                            '<div class="avt"><img src="' + data.adminAvatar + '"></div>' +
+                            '<div><span>Admin, ' + element.date + '</span><p>' + element.message + '</p></div>' +
+                            '</div>';
+                    }
                 });
 
                 $('#messages').append(mes);

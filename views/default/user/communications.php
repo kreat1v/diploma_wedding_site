@@ -28,6 +28,7 @@ $router = \App\Core\App::getRouter();
 
 					<div class="messages" id="messages">
 						<?php foreach($data['messages'] as $value): ?>
+							<?php if (!isset($value['admin'])): ?>
 							<div class="mes-user text">
 								<div>
 									<span>Вы, <?=$value['date']?></span>
@@ -37,16 +38,18 @@ $router = \App\Core\App::getRouter();
 									<img src="<?=$data['avatar']?>">
 								</div>
 							</div>
+							<?php else: ?>
+							<div class="mes-admin text">
+								<div class="avt">
+									<img src="<?=\App\Core\Config::get('systemImg') . 'admin.png'?>">
+								</div>
+								<div>
+									<span>Администратор, <?=$value['date']?></span>
+									<p><?=$value['message']?></p>
+								</div>
+							</div>
+							<?php endif; ?>
 						<?php endforeach; ?>
-						<div class="mes-admin text">
-							<div class="avt">
-								<img src="<?=\App\Core\Config::get('systemImg') . 'admin.png'?>">
-							</div>
-							<div>
-								<span>Администратор, 2018-06-01 18:29:07</span>
-								<p>Всё будет хорошо! Оставайтесь на связи.</p>
-							</div>
-						</div>
 					</div>
 
 					<div class="form text">

@@ -10,3 +10,57 @@
     width: 70%;
     margin-left: 25%;
 }
+
+.title {
+    color: #3CA6C7;
+    margin-bottom: 30px;
+}
+
+.title h2 {
+    margin-bottom: 10px;
+}
+
+.title h4 {
+    margin: 0;
+}
+
+.form {
+    width: 400px;
+    text-align: center;
+    margin: 40px auto;
+}
+
+.form label span {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.form textarea {
+    resize: none;
+}
+
+.form .button {
+    display: block;
+    margin: 40px auto 0;
+    width: 400px;
+    color: #FFF;
+    font-size: 15px;
+}
+
+.form .input, .form .button {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.form .input {
+    background: rgba(128, 225, 255, 0.2);
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    font-size: 16px;
+    border-bottom: 2px solid #3CA6C7;
+    border-left: 2px solid #3CA6C7;
+    text-align: center;
+}

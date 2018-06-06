@@ -1,0 +1,108 @@
+.feedback .table td a {
+    text-decoration: none;
+    padding: 0 20px;
+}
+
+.feedback .messages {
+    max-height: 300px;
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+    background: rgba(128, 225, 255, 0.2);
+}
+
+.feedback .messages .mes-user, .feedback .messages .mes-admin {
+    display: flex;
+    justify-content: space-between;
+    clear: both;
+    width: 45%;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #3CA6C7;
+}
+
+.feedback .messages .mes-admin {
+    float: right;
+    text-align: left;
+    position: relative;
+}
+
+.feedback .messages .mes-user {
+    float: left;
+    text-align: right;
+}
+
+.feedback .messages .avt {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 20px;
+}
+
+.feedback .messages .avt img {
+    width: 100%;
+}
+
+.feedback .messages .action {
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+.feedback .messages .action div {
+    display: inline-block;
+    font-size: 14px;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.feedback .messages .action div:hover {
+    color: #80E1FF;
+}
+
+.feedback .messages span {
+    color: #80E1FF;
+    font-size: 11px;
+}
+
+.feedback .messages p {
+    color: white;
+    font-size: 14px;
+}
+
+.feedback .form-edit {
+    clear: both;
+    width: 45%;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #3CA6C7;
+    float: right;
+    text-align: left;
+}
+
+.feedback .form-edit form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feedback .form-edit textarea {
+    width: 100%;
+    resize: none;
+    border: 1px solid #80E1FF;
+    outline: none;
+    padding: 10px;
+}
+
+.feedback .form-edit .button {
+    border: none;
+    outline: none;
+    background: none;
+    color: #FFF;
+    cursor: pointer;
+}
