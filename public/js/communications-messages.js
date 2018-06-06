@@ -1,12 +1,16 @@
-startLimit = 3;
+// Стартовое число для запроса - позиция, с которой будут извлекаться данные.
+var startLimit = 3;
 
 // Функция подгрузки сообщений.
 function scrollalert() {
-    var scrolltop = $('#messages').prop('scrollTop');
-    var scrollheight = $('#messages').prop('scrollHeight');
-    var windowheight = $('#messages').prop('clientHeight');
-    var scrolloffset = 20;
 
+    // Получаем данные прокрутки.
+    var scrolltop = $('#messages').prop('scrollTop'),
+        scrollheight = $('#messages').prop('scrollHeight'),
+        windowheight = $('#messages').prop('clientHeight'),
+        scrolloffset = 20;
+
+    // Если блок прокручен до конца - подгружаем данные.
     if (scrolltop >= (scrollheight - (windowheight + scrolloffset))) {
 
         $.ajax({
@@ -18,12 +22,12 @@ function scrollalert() {
             },
 
             success: function(response) {
-                var data = JSON.parse(response);
+                var data = JSON.parse(response),
+                    mes = '';
 
                 startLimit = startLimit + 3;
 
-                var mes = '';
-
+                // Распредялем сообщения на админские и юзера.
                 data.data.map(function(element) {
                     if (typeof element['admin'] === "undefined") {
                         mes += '<div class="mes-user text">' +
@@ -38,12 +42,14 @@ function scrollalert() {
                     }
                 });
 
+                // Добавляем новую партию сообщений.
                 $('#messages').append(mes);
             }
         });
 
     }
 
+    // Устанавливаем setTimeout, чтобы периодически проверять положение ползунка, чтобы, при необходимости, извлечь новые элементы.
     setTimeout('scrollalert();', 1500);
 }
 
