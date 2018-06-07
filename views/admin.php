@@ -50,10 +50,10 @@ if(Session::get('id')) {
             <nav>
                 <ul class="menu-bar text">
 					<li>
-						<a href="<?=$router->buildUri('.category')?>">Категории</a>
+						<a href="<?=$router->buildUri('.category')?>"><?=__('admin_menu.category')?></a>
 					</li>
 					<li>
-						<a href="#">Товары</a>
+						<a href="#"><?=__('admin_menu.goods')?></a>
 						<ul>
 							<li><a href="#">Оформление</a></li>
 							<li><a href="#">Одежда</a></li>
@@ -61,30 +61,30 @@ if(Session::get('id')) {
 						</ul>
 					</li>
 					<li>
-						<a href="#">Заказы</a>
+						<a href="#"><?=__('admin_menu.orders')?></a>
 					</li>
 
 					<br>
 
 					<li>
-						<a href="#">Истории</a>
+						<a href="#"><?=__('admin_menu.stories')?></a>
 					</li>
 
 					<br>
 
 					<li>
-						<a href="#">Пользователи</a>
+						<a href="#"><?=__('admin_menu.users')?></a>
 					</li>
-                    <li><a href="<?=$router->buildUri('.feedback')?>">Обратная связь</a>
+                    <li><a href="<?=$router->buildUri('.feedback')?>"><?=__('admin_menu.feedback')?></a>
                         <ul>
-                            <li><a href="<?=$router->buildUri('.feedback')?>">Активные диалоги</a></li>
-                            <li><a href="#">Архивные диалоги</a></li>
-                            <li><a href="#">Активные заявки</a></li>
-                            <li><a href="#">Архивные заявки</a></li>
+                            <li><a href="<?=$router->buildUri('.feedback')?>"><?=__('admin_feedback.title1')?></a></li>
+                            <li><a href="#"><?=__('admin_feedback.title2')?></a></li>
+                            <li><a href="#"><?=__('admin_feedback.title3')?></a></li>
+                            <li><a href="#"><?=__('admin_feedback.title4')?></a></li>
                         </ul>
                     </li>
 					<li>
-						<a href="#">Модерация</a>
+						<a href="#"><?=__('admin_menu.moderation')?></a>
 						<ul>
 							<li><a href="#">Отзывы о товарах</a></li>
 							<li><a href="#">Комментарии историй</a></li>
@@ -94,13 +94,13 @@ if(Session::get('id')) {
 					<br>
 
 					<li>
-						<a href="#">О нас</a>
+						<a href="#"><?=__('admin_menu.about')?></a>
 					</li>
 					<li>
-						<a href="#">Фото обложки</a>
+						<a href="#"><?=__('admin_menu.photo')?></a>
 					</li>
 					<li>
-						<a href="#">Контакты</a>
+						<a href="#"><?=__('admin_menu.contacts')?></a>
 					</li>
                 </ul>
             </nav>

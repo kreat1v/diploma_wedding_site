@@ -164,6 +164,29 @@ return [
 	],
 
 	'admin_menu' => [
-		'language' => 'RU'
+		'language' => 'RU',
+		'category' => 'Category',
+		'goods' => 'Goods',
+		'orders' => 'Orders',
+		'stories' => 'Stories',
+		'users' => 'Users',
+		'feedback' => 'Feedback',
+		'moderation' => 'Moderation',
+		'about' => 'About us',
+		'photo' => 'Photo cover',
+		'contacts' => 'Contacts'
+	],
+
+	'admin_feedback' => [
+		'title1' => 'Active dialogs',
+		'title2' => 'Archived dialogs',
+		'title3' => 'Active Requests',
+		'title4' => 'Archived Applications',
+		'name' => 'Name',
+		'view' => 'View',
+		'mes_title' => 'Messages from the user',
+		'message' => 'Message',
+		'close_dialog' => 'Close the dialog?',
+		'send' => 'Send'
 	]
 ];

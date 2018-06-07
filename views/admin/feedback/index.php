@@ -8,15 +8,15 @@ $router = \App\Core\App::getRouter();
 
 		<?php if (isset($data['messagesList'])): ?>
 		<div class="title text">
-			<h2>Активные диалоги</h2>
+			<h2><?=__('admin_feedback.title1')?></h2>
 		</div>
 
 		<div class="table text">
 			<table>
 				<tr>
 					<th>id</th>
-					<th>Имя</th>
-					<th>Email</th>
+					<th><?=__('admin_feedback.name')?></th>
+					<th>E-mail</th>
 					<th></th>
 				</tr>
 				<?php foreach ($data['messagesList'] as $value): ?>
@@ -25,7 +25,7 @@ $router = \App\Core\App::getRouter();
 					<td><?=$value['firstName'] . ' ' . $value['secondName']?></td>
 					<td><?=$value['email']?></td>
 					<td>
-						<a class="sm-buttons" href="<?=$router->buildUri('admin.feedback.index.view') . DS . $value['id_users']?>">Просмотр</a>
+						<a class="sm-buttons" href="<?=$router->buildUri('admin.feedback.index.view') . DS . $value['id_users']?>"><?=__('admin_feedback.view')?></a>
 					</td>
 				</tr>
 				<?php endforeach; ?>
@@ -35,8 +35,15 @@ $router = \App\Core\App::getRouter();
 
 		<?php if (isset($data['message'])): ?>
 		<div class="title text">
-			<h2>Сообщения от пользователя ID<?=$data['user']['id']?></h2>
-			<h4><?=$data['user']['email']?></h4>
+			<h2><?=__('admin_feedback.mes_title')?> ID<?=$data['user']['id']?></h2>
+			<h4>
+				<?php
+				if (isset($data['user']['firstName'])){
+					echo $data['user']['firstName'] . ' ' . $data['user']['secondName'] . ', ';
+				}
+				echo $data['user']['email'];
+				?>
+			</h4>
 		</div>
 
 		<div class="messages" id="messages" data-idus="<?=$data['user']['id']?>">
@@ -65,7 +72,7 @@ $router = \App\Core\App::getRouter();
 						<img src="<?=$data['avatar']?>">
 					</div>
 					<div>
-						<span>Вы, <?=$value['date']?></span>
+						<span>User, <?=$value['date']?></span>
 						<p><?=$value['message']?></p>
 					</div>
 				</div>
@@ -76,7 +83,7 @@ $router = \App\Core\App::getRouter();
 		<div class="form text">
 			<form method="post" id="message-form">
 				<label>
-					<span><?=__('user_communications.message')?></span>
+					<span><?=__('admin_feedback.message')?></span>
 					<textarea class="input" name="message" id="message"></textarea>
 					<div class="count">
 						<span></span>
@@ -84,9 +91,9 @@ $router = \App\Core\App::getRouter();
 				</label>
 				<label>
 					<input type="checkbox" name="active" value="0" class="option-input checkbox" checked />
-					<span>Закрыть диалог?</span>
+					<span><?=__('admin_feedback.close_dialog')?></span>
 				</label>
-				<button type="submit" class="submit sm-buttons button text" name="button" value="message"><?=__('user_communications.send')?></button>
+				<button type="submit" class="submit sm-buttons button text" name="button" value="message"><?=__('admin_feedback.send')?></button>
 			</form>
 		</div>
 		<?php endif; ?>

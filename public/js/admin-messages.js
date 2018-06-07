@@ -35,7 +35,7 @@ function scrollalert() {
                     if (typeof element['admin'] === "undefined") {
                         mes += '<div class="mes-user text">' +
                             '<div class="avt"><img src="' + data.avatar + '"></div>' +
-                            '<div><span>Вы, ' + element.date + '</span><p>' + element.message + '</p></div>' +
+                            '<div><span>User, ' + element.date + '</span><p>' + element.message + '</p></div>' +
                             '</div>';
                     } else {
                         mes += '<div class="mes-admin text" data-idmes="' + element.id + '">' +
@@ -90,6 +90,11 @@ $('.edit').click(function() {
             // Получаем id сообщения а так же текст отредактированного сообщения.
             var idMes = $(parent).attr('data-idmes'),
                 newMes = $('#newMes').val();
+
+            // Если отредактированное сообщение пустое, то при нажатии на кнопку сохранения ничего не происходит.
+            if (newMes == '') {
+                return false;
+            }
 
             $.ajax({
                 url: '/admin/feedback/editmessage',
