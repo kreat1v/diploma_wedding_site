@@ -181,7 +181,7 @@ return [
 		'title1' => 'Active dialogs',
 		'title2' => 'Archived dialogs',
 		'title3' => 'Active Requests',
-		'title4' => 'Archived Applications',
+		'title4' => 'Archived Requests',
 		'name' => 'Name',
 		'view' => 'View',
 		'mes_title' => 'Messages from the user',

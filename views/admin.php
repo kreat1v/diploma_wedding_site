@@ -78,7 +78,7 @@ if(Session::get('id')) {
                     <li><a href="<?=$router->buildUri('.feedback')?>"><?=__('admin_menu.feedback')?></a>
                         <ul>
                             <li><a href="<?=$router->buildUri('.feedback')?>"><?=__('admin_feedback.title1')?></a></li>
-                            <li><a href="#"><?=__('admin_feedback.title2')?></a></li>
+                            <li><a href="<?=$router->buildUri('feedback.archiveddialogs')?>"><?=__('admin_feedback.title2')?></a></li>
                             <li><a href="#"><?=__('admin_feedback.title3')?></a></li>
                             <li><a href="#"><?=__('admin_feedback.title4')?></a></li>
                         </ul>

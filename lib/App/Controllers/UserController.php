@@ -318,6 +318,9 @@ class UserController extends Base
 
 					$this->messagesUserModel->save($this->data);
 
+					// Делаем все сообщения юзера активными.
+					$this->messagesUserModel->save(['active' => 1], ['id_users' => $id]);
+
 					App::getSession()->addFlash(__('user_communications.mes5'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('user.communications'));
 				}

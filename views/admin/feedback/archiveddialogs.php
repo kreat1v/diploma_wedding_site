@@ -8,35 +8,35 @@ $router = \App\Core\App::getRouter();
 
 		<?php if (isset($data['messagesList'])): ?>
 		<div class="title text">
-			<h2><?=__('admin_feedback.title1')?></h2>
+			<h2><?=__('admin_feedback.title2')?></h2>
 		</div>
 
-			<?php if (count($data['messagesList']) > 0): ?>
-			<div class="table text">
-				<table>
-					<tr>
-						<th>id</th>
-						<th><?=__('admin_feedback.name')?></th>
-						<th>E-mail</th>
-						<th></th>
-					</tr>
-					<?php foreach ($data['messagesList'] as $value): ?>
-					<tr>
-						<td><?=$value['id_users']?></td>
-						<td><?=$value['firstName'] . ' ' . $value['secondName']?></td>
-						<td><?=$value['email']?></td>
-						<td>
-							<a class="sm-buttons" href="<?=$router->buildUri('feedback.index', ['view', $value['id_users']])?>"><?=__('admin_feedback.view')?></a>
-						</td>
-					</tr>
-					<?php endforeach; ?>
-				</table>
-			</div>
-			<?php else: ?>
-			<div class="text">
-				<p>Активные диалоги отсутствуют.</p>
-			</div>
-			<?php endif; ?>
+            <?php if (count($data['messagesList']) > 0): ?>
+    		<div class="table text">
+    			<table>
+    				<tr>
+    					<th>id</th>
+    					<th><?=__('admin_feedback.name')?></th>
+    					<th>E-mail</th>
+    					<th></th>
+    				</tr>
+    				<?php foreach ($data['messagesList'] as $value): ?>
+    				<tr>
+    					<td><?=$value['id_users']?></td>
+    					<td><?=$value['firstName'] . ' ' . $value['secondName']?></td>
+    					<td><?=$value['email']?></td>
+    					<td>
+    						<a class="sm-buttons" href="<?=$router->buildUri('feedback.archiveddialogs', ['view', $value['id_users']])?>"><?=__('admin_feedback.view')?></a>
+    					</td>
+    				</tr>
+    				<?php endforeach; ?>
+    			</table>
+    		</div>
+            <?php else: ?>
+            <div class="text">
+                <p>Архивные диалоги отсутствуют.</p>
+            </div>
+    		<?php endif; ?>
 		<?php endif; ?>
 
 		<?php if (isset($data['message'])): ?>
@@ -86,22 +86,11 @@ $router = \App\Core\App::getRouter();
 			<?php endforeach; ?>
 		</div>
 
-		<div class="form text">
-			<form method="post" id="message-form">
-				<label>
-					<span><?=__('admin_feedback.message')?></span>
-					<textarea class="input" name="message" id="message"></textarea>
-					<div class="count">
-						<span></span>
-					</div>
-				</label>
-				<label>
-					<input type="checkbox" name="active" value="0" class="option-input checkbox" checked />
-					<span><?=__('admin_feedback.close_dialog')?></span>
-				</label>
-				<button type="submit" class="submit sm-buttons button text" name="button" value="message"><?=__('admin_feedback.send')?></button>
-			</form>
-		</div>
+        <div class="form text">
+            <form method="post">
+                <button type="submit" class="submit sm-buttons button text" name="button" value="activeMessage"><?=__('admin_feedback.activate')?></button>
+            </form>
+        </div>
 		<?php endif; ?>
 
 	</div>

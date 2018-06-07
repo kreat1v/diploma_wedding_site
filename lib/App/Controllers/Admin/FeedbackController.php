@@ -76,7 +76,7 @@ class FeedbackController extends \App\Controllers\Base
 
 		} else {
 
-			$this->data['messagesList'] = $this->messagesUserModel->activeMessages();
+			$this->data['messagesList'] = $this->messagesUserModel->messages();
 
 		}
 
@@ -96,7 +96,7 @@ class FeedbackController extends \App\Controllers\Base
 
 						$this->messagesAdminModel->save($this->data['messageAdmin']);
 
-						App::getSession()->addFlash('Ваше сообщение успешно отправлено');
+						App::getSession()->addFlash(__('admin_feedback.mes1'));
 					}
 
 					// Если установлена отметка об архивации диалога - деактивируем диалог.
@@ -107,7 +107,7 @@ class FeedbackController extends \App\Controllers\Base
 
 						$this->messagesUserModel->save($this->data['active'], ['id_users' => $id_user]);
 
-						App::getSession()->addFlash('Вы успешно закрыли диалог - он перенесён в архивные диалоги. Если пользователь снова напишет сообщение - диалог станет активным.');
+						App::getSession()->addFlash(__('admin_feedback.mes2'));
 					}
 
 					App::getRouter()->redirect(App::getRouter()->buildUri('.feedback'));
@@ -233,6 +233,84 @@ class FeedbackController extends \App\Controllers\Base
 
 			}
 
+		}
+	}
+
+	public function archivedDialogsAction ()
+	{
+		// Получаем параметры.
+		$params = App::getRouter()->getParams();
+
+		// Если в параметрах присутствует "просмотр" - то собираем и отдаем данные для просмотра сообщений, иначе выводим список всех активных диалогов.
+		if (!empty($params) && $params[0] == 'view') {
+
+			// Получем id юзера.
+			$id_user = $params[1];
+
+			// Получаем данные юзера.
+			$user = $this->userModel->list(['id' => $id_user])[0];
+
+			// Получем аватар юзера.
+			if (!file_exists(Config::get('userImgRoot') . $id_user)) {
+				$avatar = Config::get('systemImg') . 'user.png';
+			} else {
+				$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id_user), ['.', '..']));
+				$avatar = Config::get('userImg') . $id_user . DS . $paths[0];
+			}
+
+			// Получаем сообщения юзера.
+			$messageUser = $this->messagesUserModel->list(['id_users' => $id_user], [3, 0], 'date');
+
+			// Получаем сообщения админа. Добавляем в них админскую метку.
+			$messageAdmin = $this->messagesAdminModel->list(['id_users' => $id_user], [3, 0], 'date');
+			foreach ($messageAdmin as $key => $value) {
+				$messageAdmin[$key]['admin'] = true;
+			}
+
+			// Совмещаем сообщения в единый массив, отсортированный по дате.
+			$message = array_merge($messageUser, $messageAdmin);
+			foreach ($message as $key => $row) {
+			    $date[$key]  = $row['date'];
+			}
+			array_multisort($date, SORT_DESC, $message);
+
+			// Отдаем данные юзера и наш диалог.
+			if (!empty($message)) {
+				$this->data['message'] = $message;
+				$this->data['user'] = $user;
+				$this->data['avatar'] = $avatar;
+			} else {
+				$this->page404();
+			}
+
+		} else {
+
+			$this->data['messagesList'] = $this->messagesUserModel->messages(0);
+
+		}
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			try {
+
+				// Обрабатываем отправленное админом сообщение.
+				if (isset($_POST['button']) && $_POST['button'] == 'activeMessage') {
+
+					$this->data = [
+						'active' => 1
+					];
+
+					$this->messagesUserModel->save($this->data, ['id_users' => $id_user]);
+
+					App::getSession()->addFlash(__('admin_feedback.mes3'));
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('.feedback'));
+				}
+
+			} catch (\Exception $exception) {
+
+				App::getSession()->addFlash($exception->getMessage());
+
+			}
 		}
 	}
 }

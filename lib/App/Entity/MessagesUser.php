@@ -39,7 +39,7 @@ class MessagesUser extends Base
 		];
 	}
 
-	public function activeMessages($section = [])
+	public function messages($active = 1, $section = [])
 	{
 		$fieldsMessagesUser = $this->getTableName();
 		$fieldsUser = $this->getUser()->getTableName();
@@ -55,7 +55,7 @@ class MessagesUser extends Base
 		$sql = "SELECT $fieldsMessagesUser.*, $fieldsUser.*
 				FROM $fieldsMessagesUser
 				JOIN $fieldsUser ON $fieldsMessagesUser.id_users = $fieldsUser.id
-				WHERE $fieldsMessagesUser.active = 1
+				WHERE $fieldsMessagesUser.active = $active
 				GROUP BY $fieldsMessagesUser.id_users
 				$strLimit";
 		return $this->conn->query($sql);
