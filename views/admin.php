@@ -266,6 +266,22 @@ if(Session::get('id')) {
 	        </div>
 	    </div> -->
 
+		<div class="modal">
+			<div class="modal-content">
+					<div class="modal-close" id="modal-no">
+						<i class="far fa-times-circle"></i>
+					</div>
+					<div>
+						<span>
+							Вы уверенны, что хотите удалить это сообщение?
+						</span>
+					</div>
+					<div class="modal-button">
+						<button class="text" type="button" id="modal-yes"><i class="fas fa-check"></i></button>
+					</div>
+			</div>
+		</div>
+
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>
 		<script type="text/javascript" src="/js/info-messages.js"></script>

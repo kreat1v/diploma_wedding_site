@@ -50,10 +50,10 @@ class FeedbackController extends \App\Controllers\Base
 			}
 
 			// Получаем сообщения юзера.
-			$messageUser = $this->messagesUserModel->list(['id_users' => $id_user]);
+			$messageUser = $this->messagesUserModel->list(['id_users' => $id_user], [3, 0], 'date');
 
 			// Получаем сообщения админа. Добавляем в них админскую метку.
-			$messageAdmin = $this->messagesAdminModel->list(['id_users' => $id_user]);
+			$messageAdmin = $this->messagesAdminModel->list(['id_users' => $id_user], [3, 0], 'date');
 			foreach ($messageAdmin as $key => $value) {
 				$messageAdmin[$key]['admin'] = true;
 			}
@@ -121,6 +121,59 @@ class FeedbackController extends \App\Controllers\Base
 		}
 	}
 
+	public function getMessagesAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			// Получем id юзера.
+			$id = isset($_POST['id']) ? $_POST['id'] : false;
+
+			if ($id) {
+				// Получаем аватар.
+				if (!file_exists(Config::get('userImgRoot') . $id)) {
+					$avatar = Config::get('systemImg') . 'user.png';
+				} else {
+					$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+					$avatar = Config::get('userImg') . $id . DS . $paths[0];
+				}
+
+				$adminAvatar = Config::get('systemImg') . 'admin.png';
+
+				$start = $_POST['start'];
+				$limit = $_POST['limit'];
+
+				// Получаем сообщения юзера.
+				$messageUser = $this->messagesUserModel->list(['id_users' => $id], [$limit, $start], 'date');
+
+				// Получаем сообщения админа. Добавляем в них админскую метку.
+				$messageAdmin = $this->messagesAdminModel->list(['id_users' => $id], [$limit, $start], 'date');
+				foreach ($messageAdmin as $key => $value) {
+					$messageAdmin[$key]['admin'] = true;
+				}
+
+				// Совмещаем сообщения в единый массив.
+				$message = array_merge($messageUser, $messageAdmin);
+
+				// Если полученный массив не пустой - сортируем его по дате.
+				if(!empty($message)) {
+					foreach ($message as $key => $row) {
+						$date[$key]  = $row['date'];
+					}
+
+					array_multisort($date, SORT_DESC, $message);
+				}
+
+				$arr['data'] = $message;
+				$arr['avatar'] = $avatar;
+				$arr['adminAvatar'] = $adminAvatar;
+
+				echo json_encode($arr);
+				die();
+			}
+
+		}
+	}
+
 	public function editMessageAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -153,66 +206,33 @@ class FeedbackController extends \App\Controllers\Base
 		}
 	}
 
-	public function userAction()
-	{
-		$messages = $this->contactsModel->list();
-
-		if (!empty($messages)) {
-			foreach ($messages as $value) {
-				if (isset($value['id_user'])) {
-					$this->data[] = $value;
-				}
-			}
-		}
-	}
-
-	public function anonymousAction()
-	{
-		$messages = $this->contactsModel->list();
-
-		if (!empty($messages)) {
-			foreach ($messages as $value) {
-				if (!isset($value['id_user'])) {
-					$this->data[] = $value;
-				}
-			}
-		}
-	}
-
-	public function editAction()
+	public function deleteMessageAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
 			try {
-				$id = isset($this->params[0]) ? $this->params[0] : null;
 
-				$this->data = [
-					'messages' => $_POST['messages']
-				];
-				$this->contactsModel->save($this->data, $id);
+				$id = $_POST['id'];
 
-				App::getSession()->addFlash('Message has been saved');
-				App::getRouter()->redirect(App::getRouter()->buildUri('index'));
+				$this->messagesAdminModel->delete($id);
+
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
 			} catch (\Exception $exception) {
-				App::getSession()->addFlash($exception->getMessage());
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
 			}
+
 		}
-
-		if (isset($this->params[0]) && $this->params[0] > 0) {
-			$this->data = $this->contactsModel->getBy('id', $this->params[0]);
-		}
-	}
-
-	public function deleteAction()
-	{
-		$id = isset($this->params[0]) ? $this->params[0] : null;
-
-		if (!$id) {
-			App::getSession()->addFlash('Missing message id');
-		} else {
-			$this->contactsModel->delete($id);
-			App::getSession()->addFlash('Message has been deleted');
-		}
-
-		App::getRouter()->redirect(App::getRouter()->buildUri('index'));
 	}
 }

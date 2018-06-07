@@ -58,6 +58,7 @@
     font-size: 14px;
     color: #FFF;
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .feedback .messages .action div:hover {

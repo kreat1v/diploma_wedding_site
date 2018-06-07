@@ -1,0 +1,65 @@
+.modal {
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    z-index: 5000 !important;
+    overflow-y: hidden;
+    display: none;
+}
+
+.modal .modal-content {
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto;
+    margin: 150px auto 0px auto;
+    width: 300px;
+    color: #FFFFFF;
+    background: #AD7F00;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px #000000;
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.9;
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.modal .modal-content div {
+    padding: 10px;
+}
+
+.modal .modal-content .modal-close {
+    text-align: right;
+    cursor: pointer;
+}
+
+.modal .modal-content .modal-close:hover {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background: #8c6804;
+    opacity: 1;
+}
+
+.modal .modal-button {
+    display: block;
+    text-align: right;
+}
+
+.modal .modal-button button {
+    height: 36px;
+    width: 80px;
+    border-radius: 30px;
+    color: #fff;
+    cursor: pointer;
+    background: inherit;
+    border: 2px solid #FFF;
+    text-transform: uppercase;
+}
+
+.modal .modal-button button:hover {
+    background: #8c6804;
+}

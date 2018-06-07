@@ -39,7 +39,7 @@ $router = \App\Core\App::getRouter();
 			<h4><?=$data['user']['email']?></h4>
 		</div>
 
-		<div class="messages" id="messages">
+		<div class="messages" id="messages" data-idus="<?=$data['user']['id']?>">
 			<?php foreach($data['message'] as $value): ?>
 				<?php if (isset($value['admin'])): ?>
 				<div class="mes-admin text" data-idmes="<?=$value['id']?>">
