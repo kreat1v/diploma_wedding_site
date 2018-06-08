@@ -36,7 +36,7 @@
     overflow: hidden;
     position: relative;
     border-radius: 3px;
-    background: #fff;
+    background: #FFF;
 }
 
 .user .info .body>div, .user .info .avatar-crop>div, .user .info .avatar-select>div {

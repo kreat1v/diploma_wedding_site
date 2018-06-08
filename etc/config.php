@@ -69,8 +69,8 @@ Config::set('userImgRoot', ROOT.DS.'public'.DS.'img'.DS.'user'.DS);
 Config::set('userImg', DS.'img'.DS.'user'.DS);
 
 /**
- * Product gallery
+ * Clothes image
  */
-Config::set('gallery_clothes', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);
-Config::set('imgDir_clothes', DS.'img'.DS.'clothes'.DS);
-Config::set('imgDir_clothes_web', '/img/clothes/');
+Config::set('clothesImgRoot', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);
+Config::set('clothesImg', DS.'img'.DS.'clothes'.DS);
+Config::set('clothesImgWeb', '/img/clothes/');

@@ -26,7 +26,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                     <div class="goods">
 
                         <div class="blur">
-                            <img src="<?=\App\Core\Config::get('imgDir_clothes') . $value['img_dir'] . DS . $value['galery'][0]?>"/>
+                            <img src="<?=\App\Core\Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                         </div>
 
                         <h3 class="text"><?=$value['title']?></h3>
@@ -36,7 +36,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             <div class="card">
 
                                 <div class="image">
-                                    <img src="<?=\App\Core\Config::get('imgDir_clothes') . $value['img_dir'] . DS . $value['galery'][0]?>"/>
+                                    <img src="<?=\App\Core\Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                                 </div>
 
                                 <div class="details text">
@@ -86,7 +86,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                         <span><i class="fas fa-heart fa-lg"></i></span>
                                         <span><?=__('products.favorites')?></span>
                                     </a>
-                                    <a href="#" class="sm-buttons">
+                                    <a href="<?=$router->buildUri('clothes.reviews', [$value['id']])?>" class="sm-buttons">
                                         <span><i class="fas fa-comments fa-lg"></i></span>
                                         <span><?=__('products.reviews')?></span>
                                     </a>
@@ -96,15 +96,17 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                         </div>
 
+                        <?php if ($value['galery']): ?>
                         <div class="galery">
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>
                                 <a href="javascript:void(0)" class="panel">
-                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('imgDir_clothes_web') . $value['img_dir'] . '/' . $img?>');"></div>
+                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('clothesImgWeb') . $value['id'] . '/' . $img?>');"></div>
                                 </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </div>
 
                 </div>

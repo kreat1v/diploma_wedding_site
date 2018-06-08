@@ -1,0 +1,129 @@
+.reviews {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.reviews .body {
+    border-radius: 3px;
+    background: #FFF;
+    padding: 30px;
+}
+
+.reviews .title {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #3CA6C7;
+    width: 500px;
+}
+
+.reviews .title .avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid #3CA6C7;
+}
+
+.reviews .title .avatar img {
+    width: 100%;
+}
+
+.reviews .form {
+    width: 500px;
+    margin: 0 auto;
+    color: #3CA6C7;
+}
+
+.reviews .form textarea {
+    resize: none;
+}
+
+.reviews .form label {
+    display: block;
+    width: 500px;
+    margin: 25px auto 0;
+    text-align: center;
+    position: relative;
+}
+
+.reviews .form label span {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.reviews .form .input, .reviews .form .button {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.reviews .form .input {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    font-size: 16px;
+    border-bottom: 1px solid #3CA6C7;
+    text-align: center;
+}
+
+.reviews .form .button {
+    width: 500px;
+    margin-top: 40px;
+    color: white;
+    font-size: 15px;
+}
+
+.reviews .form .count {
+    display: none;
+    position: absolute;
+    right: -25px;
+    top: 60px;
+}
+
+.reviews .messages {
+    max-width: 500px;
+    max-height: 600px;
+    margin: 30px auto;
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.reviews .messages .container {
+    display: flex;
+    justify-content: space-between;
+    clear: both;
+    margin: 5px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #3CA6C7;
+    text-align: right;
+}
+
+.reviews .messages .avt {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 20px;
+}
+
+.reviews .messages .avt img {
+    width: 100%;
+}
+
+.reviews .messages span {
+    color: #80E1FF;
+    font-size: 11px;
+}
+
+.reviews .messages p {
+    color: white;
+    font-size: 14px;
+}

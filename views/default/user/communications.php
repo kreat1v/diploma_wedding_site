@@ -105,5 +105,5 @@ $router = \App\Core\App::getRouter();
 
 </div>
 
-<script type="text/javascript" src="/js/validation-usercommunications.js"></script>
+<script type="text/javascript" src="/js/user-message.js"></script>
 <script type="text/javascript" src="/js/communications-messages.js"></script>

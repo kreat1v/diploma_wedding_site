@@ -1,58 +1,50 @@
 <?php
 
-/** @var array $data from \App\Views\Base::render() */
-
 $router = \App\Core\App::getRouter();
-$category = $router->getParams()[0];
 
 ?>
-<div class="row">
-    <div class="col-12">
-        <h1><?=$data['category']['title']?></h1>
+<div class="reviews">
+
+    <div class="gradient-border">
+
+        <div class="body">
+
+            <div class="title text">
+                <h2><?=$data['title']?></h2>
+                <div class="avatar">
+                    <img src="<?=$data['avatar']?>" alt="">
+                </div>
+            </div>
+
+            <div class="messages">
+                <div class="container text">
+                    <div>
+                        <span>Вы, 28 28 28</span>
+                        <p> Элемент fieldset предназначен для группирования элементов формы. Такая группировка облегчает работу с формами, содержащими большое число данных. Например, один блок может быть предназначен для ввода текстовой информации, а другой — для флажков. Браузеры для повышения наглядности отображают результат использования тега fieldset в виде рамки. Ее вид зависит от операционной системы, а также используемого браузера (рис. 1, 2). </p>
+                    </div>
+                    <div class="avt">
+                        <img src="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form text">
+                <form method="post" id="message-form">
+                    <label>
+                        <span><?=__('user_communications.message')?></span>
+                        <textarea class="input" name="reviews" id="message"></textarea>
+                        <div class="count">
+                            <span></span>
+                        </div>
+                    </label>
+    				<button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('user_settings.save')?></button>
+                </form>
+            </div>
+
+        </div>
+
     </div>
+
 </div>
 
-<div class="row">
-    <div class="list-group col-12">
-        <?php foreach ($data['news'] as $news): ?>
-            <a href="<?=$router->buildUri('news.view', [$news['id']])?>" class="list-group-item list-group-item-action">
-                <?=$news['title']?>
-            </a>
-        <?php endforeach; ?>
-    </div>
-</div>
-
-<!-- Pagination -->
-<?php if ($data['pagination']): ?>
-<div class="row pt-3">
-    <nav aria-label="">
-        <ul class="pagination">
-            <li class="page-item <?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                <a class="page-link" href="<?=$data['pagination']['back'] ? $router->buildUri('category.view', [$category, 1]) : ''?>" aria-label="First">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-
-            <li class="page-item <?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                <a class="page-link" href="<?=$data['pagination']['back'] ? $router->buildUri('category.view', [$category, $data['pagination']['back']]) : ''?>" tabindex="-1">Previous</a>
-            </li>
-
-            <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
-            <li class="page-item <?=$router->getParams()[1] == $key ? 'active' : ''?>">
-                <a class="page-link" href="<?=$router->buildUri('category.view', [$category, $key])?>"><?=$key?></a>
-            </li>
-            <?php endforeach; ?>
-
-            <li class="page-item <?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                <a class="page-link" href="<?=$data['pagination']['forward'] ? $router->buildUri('category.view', [$category, $data['pagination']['forward']]) : ''?>">Next</a>
-            </li>
-
-            <li class="page-item <?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                <a class="page-link" href="<?=$router->buildUri('category.view', [$category, $data['pagination']['last']])?>" aria-label="Last">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-<?php endif; ?>
+<script type="text/javascript" src="/js/user-message.js"></script>
