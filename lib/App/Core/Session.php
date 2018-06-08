@@ -67,7 +67,7 @@ class Session
 		if (!isset($_SESSION['flash']) || !is_array($_SESSION['flash'])) {
 			$_SESSION['flash'] = [];
 		}
-		
+
 		$_SESSION['flash'][] = $message;
 	}
 
@@ -87,6 +87,36 @@ class Session
 		$data = isset($_SESSION['flash']) ? $_SESSION['flash'] : [];
 
 		$_SESSION['flash'] = [];
+
+		return $data;
+	}
+
+	/**
+	 * @param $message
+	 *
+	 * @return void
+	 */
+	public static function addModal($message)
+	{
+		$_SESSION['modal'] = $message;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function hasModal()
+	{
+		return !empty($_SESSION['modal']);
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getModal()
+	{
+		$data = isset($_SESSION['modal']) ? $_SESSION['modal'] : '';
+
+		$_SESSION['modal'] = '';
 
 		return $data;
 	}

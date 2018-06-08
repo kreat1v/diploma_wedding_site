@@ -79,8 +79,8 @@ if(Session::get('id')) {
                         <ul>
                             <li><a href="<?=$router->buildUri('.feedback')?>"><?=__('admin_feedback.title1')?></a></li>
                             <li><a href="<?=$router->buildUri('feedback.archiveddialogs')?>"><?=__('admin_feedback.title2')?></a></li>
-                            <li><a href="#"><?=__('admin_feedback.title3')?></a></li>
-                            <li><a href="#"><?=__('admin_feedback.title4')?></a></li>
+                            <li><a href="<?=$router->buildUri('feedback.activerequests')?>"><?=__('admin_feedback.title3')?></a></li>
+                            <li><a href="<?=$router->buildUri('feedback.archiverequests')?>"><?=__('admin_feedback.title4')?></a></li>
                         </ul>
                     </li>
 					<li>
@@ -266,6 +266,7 @@ if(Session::get('id')) {
 	        </div>
 	    </div> -->
 
+		<?php if (Session::hasModal()): ?>
 		<div class="modal">
 			<div class="modal-content">
 					<div class="modal-close" id="modal-no">
@@ -273,7 +274,7 @@ if(Session::get('id')) {
 					</div>
 					<div>
 						<span>
-							Вы уверенны, что хотите удалить это сообщение?
+							<?=Session::getModal()?>
 						</span>
 					</div>
 					<div class="modal-button">
@@ -281,6 +282,7 @@ if(Session::get('id')) {
 					</div>
 			</div>
 		</div>
+		<?php endif; ?>
 
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>

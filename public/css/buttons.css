@@ -72,6 +72,7 @@
     text-transform: uppercase;
     transition: all 0.5s linear;
     line-height: 38px;
+    white-space: nowrap;
 }
 
 .sm-buttons:hover {

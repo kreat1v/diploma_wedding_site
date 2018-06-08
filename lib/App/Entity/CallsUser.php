@@ -4,6 +4,17 @@ namespace App\Entity;
 
 class CallsUser extends Base
 {
+	private $user;
+
+	private function getUser()
+	{
+		if (empty($this->user)) {
+			$this->user = new User($this->conn);
+		}
+
+		return $this->user;
+	}
+
 	public function getTableName()
 	{
 		return 'calls_user';
@@ -25,5 +36,26 @@ class CallsUser extends Base
 			'date',
 			'active'
 		];
+	}
+
+	public function calls($active = 1, $section = [])
+	{
+		$fieldsCallsUser = $this->getTableName();
+		$fieldsUser = $this->getUser()->getTableName();
+
+		$strLimit = '';
+		if (!empty($section)) {
+			$limitStart = $section[1];
+			$limit = $section[0];
+
+			$strLimit = ' LIMIT ' . $limit . ' OFFSET ' . $limitStart;
+		}
+
+		$sql = "SELECT $fieldsCallsUser.*, $fieldsUser.*
+				FROM $fieldsCallsUser
+				JOIN $fieldsUser ON $fieldsCallsUser.id_users = $fieldsUser.id
+				WHERE $fieldsCallsUser.active = $active
+				$strLimit";
+		return $this->conn->query($sql);
 	}
 }

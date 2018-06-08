@@ -84,6 +84,10 @@ $router = \App\Core\App::getRouter();
 					<div class="notification text">
 						<p><?=__('user_communications.mes2')?> <a href="<?=$router->buildUri('user.settings')?>"><?=__('user_communications.mes3')?></a> <?=__('user_communications.mes4')?></p>
 					</div>
+					<?php elseif($data['calls']): ?>
+					<div class="notification text">
+						<p><?=__('user_communications.mes7')?></p>
+					</div>
 					<?php else: ?>
 					<div class="form text">
 						<form method="post" id="password-form">

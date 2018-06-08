@@ -12,3 +12,11 @@
     border-bottom: 2px solid #AD7F00;
     padding: 20px;
 }
+
+.table button {
+    border: none;
+    outline: none;
+    background: none;
+    color: #FFF;
+    font-size: 15px;
+}

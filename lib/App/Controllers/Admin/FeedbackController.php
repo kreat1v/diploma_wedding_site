@@ -29,6 +29,9 @@ class FeedbackController extends \App\Controllers\Base
 	public function indexAction()
 	{
 
+		// Задаем модульное сообщение.
+		App::getSession()->addModal(__('admin_feedback.modal1'));
+
 		// Получаем параметры.
 		$params = App::getRouter()->getParams();
 
@@ -238,6 +241,9 @@ class FeedbackController extends \App\Controllers\Base
 
 	public function archivedDialogsAction ()
 	{
+		// Задаем модульное сообщение.
+		App::getSession()->addModal(__('admin_feedback.modal1'));
+
 		// Получаем параметры.
 		$params = App::getRouter()->getParams();
 
@@ -312,5 +318,46 @@ class FeedbackController extends \App\Controllers\Base
 
 			}
 		}
+	}
+
+	public function activeRequestsAction ()
+	{
+
+		// Задаем модульное сообщение.
+		App::getSession()->addModal(__('admin_feedback.modal2'));
+
+		// Получаем список активных заявок.
+		$this->data = $this->callsUserModel->calls();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			try {
+
+				// Получем id юзера.
+				$id = isset($_POST['id']) ? $_POST['id'] : false;
+
+				if ($id) {
+					$this->data = [
+						'active' => 0
+					];
+
+					$this->callsUserModel->save($this->data, ['id_users' => $id]);
+
+					App::getSession()->addFlash(__('admin_feedback.mes4'));
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('feedback.archiverequests'));
+				}
+
+			} catch (\Exception $exception) {
+
+				App::getSession()->addFlash($exception->getMessage());
+
+			}
+		}
+	}
+
+	public function archiveRequestsAction()
+	{
+		// Получаем список архивных заявок.
+		$this->data = $this->callsUserModel->calls(0);
 	}
 }

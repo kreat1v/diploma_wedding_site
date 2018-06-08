@@ -121,6 +121,7 @@ return [
 		'mes4' => 'number in the settings.',
 		'mes5' => 'We received your message and will respond to you as soon as possible!',
 		'mes6' => 'We received your request and will get back to you shortly!',
+		'mes7' => 'We have already received your request and will get back to you shortly!',
 		'call' => 'Call me back'
 	],
 
@@ -183,10 +184,24 @@ return [
 		'title3' => 'Active Requests',
 		'title4' => 'Archived Requests',
 		'name' => 'Name',
+		'tel' => 'Phone',
+		'date' => 'Date',
 		'view' => 'View',
+		'archive' => 'To archive',
 		'mes_title' => 'Messages from the user',
 		'message' => 'Message',
 		'close_dialog' => 'Close the dialog?',
-		'send' => 'Send'
+		'send' => 'Send',
+		'activate' => 'Activate the dialog',
+		'mes1' => 'Your message was successfully sent',
+		'mes2' => 'You have successfully closed the dialog - it is moved to the archive dialog. If the user again writes a message, the dialog will become active.',
+		'mes3' => 'You have successfully activated the dialog',
+		'mes4' => 'You have successfully processed your request',
+		'mes5' => 'There are no active dialogs.',
+		'mes6' => 'Archival dialogs are missing.',
+		'mes7' => 'There are no active applications.',
+		'mes8' => 'There are no archival applications.',
+		'modal1' => 'Are you sure you want to delete this message?',
+		'modal2' => 'Are you sure you want to transfer this application to the archive?'
 	]
 ];

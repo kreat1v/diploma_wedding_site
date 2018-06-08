@@ -34,7 +34,7 @@ $router = \App\Core\App::getRouter();
     		</div>
             <?php else: ?>
             <div class="text">
-                <p>Архивные диалоги отсутствуют.</p>
+                <p><?=__('admin_feedback.mes6')?></p>
             </div>
     		<?php endif; ?>
 		<?php endif; ?>

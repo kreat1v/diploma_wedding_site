@@ -273,8 +273,6 @@ class UserController extends Base
 		if (App::getSession()->get('id')) {
 			$id = App::getSession()->get('id');
 
-			$messageUser = $this->messagesUserModel->list(['id_users' => $id], [3, 9], 'date');
-
 			// Получаем аватар.
 			if (!file_exists(Config::get('userImgRoot') . $id)) {
 				$avatar = Config::get('systemImg') . 'user.png';
@@ -299,6 +297,13 @@ class UserController extends Base
 			}
 			array_multisort($date, SORT_DESC, $message);
 
+			// Получаем заявки юзера.
+			$callUser = $this->callsUserModel->list(['id_users' => $id, 'active' => 1]);
+
+			// Если массив заявок не пустой - отправялем true для того, что бы запретить отправку повторных заявок.
+			$this->data['calls'] = count($callUser) > 0 ? true : false;
+
+			// Отправка данных.
 			$this->data['avatar'] = $avatar;
 			$this->data['info'] = $this->userModel->getBy('id', $id);
 			$this->data['messages'] = $message;
