@@ -2,6 +2,9 @@
 
 $router = \App\Core\App::getRouter();
 
+// echo '<pre>';
+// print_r($data['reviews']);
+
 ?>
 <div class="reviews">
 
@@ -16,7 +19,7 @@ $router = \App\Core\App::getRouter();
                 </div>
             </div>
 
-            <div class="messages">
+            <div class="messages" id="messages">
 
                 <?php foreach($data['reviews'] as $value): ?>
                 <div class="container text">
@@ -66,3 +69,4 @@ $router = \App\Core\App::getRouter();
 </div>
 
 <script type="text/javascript" src="/js/user-message.js"></script>
+<script type="text/javascript" src="/js/reviews.js"></script>

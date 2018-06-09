@@ -183,4 +183,36 @@ class ClothesController extends Base
 			}
 		}
 	}
+
+	public function getReviewsAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			$start = $_POST['start'];
+			$limit = $_POST['limit'];
+
+			// Получаем отзывы юзеров.
+			$reviews = $this->clothesReviewsModel->reviews(1, [$limit, $start]);
+
+			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
+			if(!empty($reviews)) {
+				foreach ($reviews as $key => $value) {
+					$id = $value['id'];
+
+					if (!file_exists(Config::get('userImgRoot') . $id)) {
+						$reviews[$key]['avatar'] = Config::get('systemImg') . 'user.png';
+					} else {
+						$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+						$reviews[$key]['avatar'] = Config::get('userImg') . $id . DS . $paths[0];
+					}
+				}
+			}
+
+			$arr['data'] = $reviews;
+
+			echo json_encode($arr);
+			die();
+
+		}
+	}
 }
