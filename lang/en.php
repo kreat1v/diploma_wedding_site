@@ -136,6 +136,12 @@ return [
 		'not_found' => 'We could not find anything...'
 	],
 
+	'reviews' => [
+		'review' => 'Your feedback',
+		'send' => 'Send',
+		'mes1' => 'Your review has been submitted and will be posted after moderation'
+	],
+
 	'filter' => [
 		'sex' => 'Category',
 		'm' => 'Men\'s',

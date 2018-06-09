@@ -141,11 +141,12 @@ class ClothesController extends Base
 			$avatar = Config::get('clothesImg') . $id . DS . $paths[0];
 
 			// Получаем отзывы.
-			$reviews = $this->clothesReviewsModel->reviews();
+			$reviews = $this->clothesReviewsModel->reviews(1, [5, 0]);
 
 			// Отдаём данные.
 			$this->data['avatar'] = $avatar;
 			$this->data['title'] = $product['title'];
+			$this->data['reviews'] = $reviews;
 
 		} else {
 
@@ -156,18 +157,21 @@ class ClothesController extends Base
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
 
+				// Получаем id юзера.
+				$id_users = App::getSession()->get('id');
+
 				// Отправка отзыва.
 				if (isset($_POST['button']) && $_POST['button'] == 'send') {
 					$this->data = [
-						'id_users' => $id,
+						'id_users' => $id_users,
 						'reviews' => $_POST['reviews'],
 						'date' => date('Y-m-d H:i:s'),
-						'active' => '0'
+						'active' => '1'
 					];
 
 					$this->clothesReviewsModel->save($this->data);
 
-					App::getSession()->addFlash(__('user_communications.mes5'));
+					App::getSession()->addFlash(__('reviews.mes1'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
 				}
 

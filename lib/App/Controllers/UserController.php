@@ -9,8 +9,6 @@ use App\Entity\CallsUser;
 use App\Core\App;
 use App\Core\Config;
 
-
-
 class UserController extends Base
 {
 	private $userModel;

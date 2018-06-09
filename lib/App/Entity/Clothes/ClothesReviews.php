@@ -60,7 +60,7 @@ class ClothesReviews extends \App\Entity\Base
 				FROM $fieldsClothesReviews
 				JOIN $fieldsUser ON $fieldsClothesReviews.id_users = $fieldsUser.id
 				WHERE $fieldsClothesReviews.active = $active
-				GROUP BY $fieldsClothesReviews.id_users
+				ORDER BY $fieldsClothesReviews.date DESC
 				$strLimit";
 		return $this->conn->query($sql);
 	}

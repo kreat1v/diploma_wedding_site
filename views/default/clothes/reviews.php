@@ -17,27 +17,45 @@ $router = \App\Core\App::getRouter();
             </div>
 
             <div class="messages">
+
+                <?php foreach($data['reviews'] as $value): ?>
                 <div class="container text">
                     <div>
-                        <span>Вы, 28 28 28</span>
-                        <p> Элемент fieldset предназначен для группирования элементов формы. Такая группировка облегчает работу с формами, содержащими большое число данных. Например, один блок может быть предназначен для ввода текстовой информации, а другой — для флажков. Браузеры для повышения наглядности отображают результат использования тега fieldset в виде рамки. Ее вид зависит от операционной системы, а также используемого браузера (рис. 1, 2). </p>
+                        <span>
+                            <?php
+                            echo isset($value['firstName']) ? $value['firstName'] : $value['email'];
+                            echo ", ";
+                            echo $value['date'];
+                            ?>
+                        </span>
+                        <p><?=$value['reviews']?></p>
                     </div>
                     <div class="avt">
-                        <img src="">
+                        <?php
+                        if (!file_exists(\App\Core\Config::get('userImgRoot') . $value['id'])) {
+                            $avatar = \App\Core\Config::get('systemImg') . 'user.png';
+                        } else {
+                            $paths = array_values(array_diff(scandir(\App\Core\Config::get('userImgRoot') . $value['id']), ['.', '..']));
+                            $avatar = \App\Core\Config::get('userImg') . $value['id'] . DS . $paths[0];
+                        }
+                        ?>
+                        <img src="<?=$avatar?>">
                     </div>
                 </div>
+                <?php endforeach; ?>
+
             </div>
 
             <div class="form text">
                 <form method="post" id="message-form">
                     <label>
-                        <span><?=__('user_communications.message')?></span>
+                        <span><?=__('reviews.review')?></span>
                         <textarea class="input" name="reviews" id="message"></textarea>
                         <div class="count">
                             <span></span>
                         </div>
                     </label>
-    				<button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('user_settings.save')?></button>
+    				<button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('reviews.send')?></button>
                 </form>
             </div>
 
