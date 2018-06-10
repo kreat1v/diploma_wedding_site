@@ -401,6 +401,11 @@ class UserController extends Base
 		}
 	}
 
+	public function favoritesAction()
+	{
+
+	}
+
 	public function logoutAction()
 	{
 		App::getSession()->destroy();

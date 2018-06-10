@@ -91,6 +91,10 @@
     width: 65%;
 }
 
+.sections .view-product {
+    margin: 0 auto;
+}
+
 .sections .product nav {
     min-width: 200px;
     margin: 0 auto;
@@ -244,7 +248,6 @@
 .sections .body .main-text {
     color: white;
     text-align: justify;
-    margin-bottom: 30px;
     width: 100%;
 }
 
@@ -252,11 +255,13 @@
     margin: 0 0 20px 30px;
 }
 
-.sections .body .bt {
+.sections .bt {
     text-align: center;
+    position: relative;
+    z-index: 100;
 }
 
-.sections .body .bt a {
+.sections .bt a {
     margin: 0 10px;
     padding: 0 20px;
     text-decoration: none;
@@ -264,18 +269,18 @@
     transition: all 0.1s linear;
 }
 
-.sections .body .bt span {
+.sections .bt span {
     display: inline-block;
     float: left;
 }
 
-.sections .body .bt span:last-child {
+.sections .bt span:last-child {
     margin-left: 10px;
     display: none;
 }
 
 .sections .galery {
-    margin: 0 auto 30px;
+    margin: 30px auto;
     display: block;
     width: 100%;
     height: 400px;

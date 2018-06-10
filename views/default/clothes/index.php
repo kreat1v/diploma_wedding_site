@@ -1,7 +1,5 @@
 <?php
 
-/** @var array $data from \App\Views\Base::render() */
-
 use \App\Core\Config;
 
 $router = \App\Core\App::getRouter();
@@ -77,23 +75,25 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     <p><?=__('products.price')?>: <?=$value['price']?></p>
                                 </div>
 
-                                <div class="bt">
-                                    <a href="#" class="sm-buttons">
-                                        <span><i class="fas fa-shopping-cart fa-lg"></i></span>
-                                        <span><?=__('products.basket')?></span>
-                                    </a>
-                                    <a href="#" class="sm-buttons">
-                                        <span><i class="fas fa-heart fa-lg"></i></span>
-                                        <span><?=__('products.favorites')?></span>
-                                    </a>
-                                    <a href="<?=$router->buildUri('clothes.reviews', [$value['id']])?>" class="sm-buttons">
-                                        <span><i class="fas fa-comments fa-lg"></i></span>
-                                        <span><?=__('products.reviews')?></span>
-                                    </a>
-                                </div>
+
 
                             </div>
 
+                        </div>
+
+                        <div class="bt text">
+                            <a href="#" class="sm-buttons">
+                                <span><i class="fas fa-shopping-cart fa-lg"></i></span>
+                                <span><?=__('products.basket')?></span>
+                            </a>
+                            <a href="#" class="sm-buttons">
+                                <span><i class="fas fa-heart fa-lg"></i></span>
+                                <span><?=__('products.favorites')?></span>
+                            </a>
+                            <a href="<?=$router->buildUri('clothes.reviews', [$value['id']])?>" class="sm-buttons">
+                                <span><i class="fas fa-comments fa-lg"></i></span>
+                                <span><?=__('products.reviews')?></span>
+                            </a>
                         </div>
 
                         <?php if ($value['galery']): ?>

@@ -35,18 +35,35 @@ class ClothesReviews extends \App\Entity\Base
 	{
 		return [
 			'id',
+			'id_product',
 			'id_users',
-			'id_clothes',
 			'reviews',
 			'date',
 			'active'
 		];
 	}
 
-	public function reviews($active = 1, $section = [])
+	public function reviews($filter = [], $section = [])
 	{
 		$fieldsClothesReviews = $this->getTableName();
 		$fieldsUser = $this->getUser()->getTableName();
+
+		$where = [];
+		$strWhere = '';
+		if (!empty($filter)) {
+			foreach ($filter as $fieldName => $value) {
+				if (!in_array($fieldName, $this->getFields())) {
+					continue;
+				}
+
+				$value = $this->conn->escape($value);
+				$where[] = "$fieldsClothesReviews.$fieldName = $value";
+			}
+
+			if (!empty($where)) {
+				$strWhere = ' AND ' . implode(' AND ', $where);
+			}
+		}
 
 		$strLimit = '';
 		if (!empty($section)) {
@@ -59,7 +76,7 @@ class ClothesReviews extends \App\Entity\Base
 		$sql = "SELECT $fieldsClothesReviews.*, $fieldsUser.*
 				FROM $fieldsClothesReviews
 				JOIN $fieldsUser ON $fieldsClothesReviews.id_users = $fieldsUser.id
-				WHERE $fieldsClothesReviews.active = $active
+				WHERE 1 $strWhere
 				ORDER BY $fieldsClothesReviews.date DESC
 				$strLimit";
 		return $this->conn->query($sql);

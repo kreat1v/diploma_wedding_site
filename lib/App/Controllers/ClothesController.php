@@ -134,19 +134,25 @@ class ClothesController extends Base
 			$id = $params[0];
 
 			// Получаем данныt товара.
-			$product = $this->clothesMainModel->languageList(['id' => $id])[0];
+			$product = $this->clothesMainModel->languageList(['id' => $id]);
 
 			// Получение изображения товара.
-			$paths = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
-			$avatar = Config::get('clothesImg') . $id . DS . $paths[0];
+			if (file_exists(Config::get('clothesImgRoot') . $id)) {
+				$paths = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
+				$avatar = Config::get('clothesImg') . $id . DS . $paths[0];
+			}
 
 			// Получаем отзывы.
-			$reviews = $this->clothesReviewsModel->reviews(1, [5, 0]);
+			$reviews = $this->clothesReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
 			// Отдаём данные.
-			$this->data['avatar'] = $avatar;
-			$this->data['title'] = $product['title'];
-			$this->data['reviews'] = $reviews;
+			if (!empty($product)) {
+				$this->data['avatar'] = $avatar;
+				$this->data['title'] = $product[0]['title'];
+				$this->data['reviews'] = $reviews;
+			} else {
+				$this->page404();
+			}
 
 		} else {
 
@@ -163,6 +169,7 @@ class ClothesController extends Base
 				// Отправка отзыва.
 				if (isset($_POST['button']) && $_POST['button'] == 'send') {
 					$this->data = [
+						'id_product' => $id,
 						'id_users' => $id_users,
 						'reviews' => $_POST['reviews'],
 						'date' => date('Y-m-d H:i:s'),
@@ -213,6 +220,68 @@ class ClothesController extends Base
 			echo json_encode($arr);
 			die();
 
+		}
+	}
+
+	public function viewAction()
+	{
+		// Получаем параметры.
+		$params = App::getRouter()->getParams();
+
+		// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
+		if (!empty($params)) {
+
+			// Получем id товара.
+			$id = $params[0];
+
+			// Получаем данныt товара.
+			$product = $this->clothesMainModel->languageList(['id' => $id]);
+
+			// Получаем коллекцию изображений. Если директория с id товара существует - то находим в ней изображения.
+			if (file_exists(Config::get('clothesImgRoot') . $id)) {
+				$galery = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
+			} else {
+				$galery = false;
+			}
+
+			// Отдаём данные.
+			if (!empty($product)) {
+				$this->data['product'] = $product[0];
+				$this->data['galery'] = $galery;
+			} else {
+				$this->page404();
+			}
+
+		} else {
+
+			App::getRouter()->redirect(App::getRouter()->buildUri('.clothes'));
+
+		}
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			try {
+
+				// Получаем id юзера.
+				$id_users = App::getSession()->get('id');
+
+				// Отправка отзыва.
+				if (isset($_POST['button']) && $_POST['button'] == 'send') {
+					$this->data = [
+						'id_users' => $id_users
+					];
+
+					// $this->clothesReviewsModel->save($this->data);
+
+					App::getSession()->addFlash(__('reviews.mes1'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
+				}
+
+			} catch (\Exception $exception) {
+
+				App::getSession()->addFlash($exception->getMessage());
+				App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
+
+			}
 		}
 	}
 }
