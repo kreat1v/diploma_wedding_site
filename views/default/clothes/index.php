@@ -5,6 +5,9 @@ use \App\Core\Config;
 $router = \App\Core\App::getRouter();
 $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
+// echo '<pre>';
+// print_r($data);
+
 ?>
 <div class="sections">
 
@@ -24,7 +27,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                     <div class="goods">
 
                         <div class="blur">
-                            <img src="<?=\App\Core\Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                            <img src="<?=Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                         </div>
 
                         <h3 class="text"><?=$value['title']?></h3>
@@ -34,7 +37,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             <div class="card">
 
                                 <div class="image">
-                                    <img src="<?=\App\Core\Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                                    <img src="<?=Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                                 </div>
 
                                 <div class="details text">
@@ -75,22 +78,34 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     <p><?=__('products.price')?>: <?=$value['price']?></p>
                                 </div>
 
-
-
                             </div>
 
                         </div>
 
-                        <div class="bt text">
-                            <a href="#" class="sm-buttons">
-                                <span><i class="fas fa-shopping-cart fa-lg"></i></span>
-                                <span><?=__('products.basket')?></span>
-                            </a>
-                            <a href="#" class="sm-buttons">
-                                <span><i class="fas fa-heart fa-lg"></i></span>
-                                <span><?=__('products.favorites')?></span>
-                            </a>
-                            <a href="<?=$router->buildUri('clothes.reviews', [$value['id']])?>" class="sm-buttons">
+                        <div class="bt">
+                            <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
+                            <form method="post">
+                                <input class="id_products" type="hidden" name="id_products" value="<?=$value['id']?>">
+                                <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
+                                <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
+                                <button class="sm-buttons text basket-bt" type="button">
+                                    <span><i class="fas fa-shopping-cart fa-lg"></i></span>
+                                    <span><?=__('products.basket')?></span>
+                                </button>
+                            </form>
+                                <?php if(!in_array($value['id'], $data['favorites'])): ?>
+                                <form method="post">
+                                    <input class="id_products" type="hidden" name="id_products" value="<?=$value['id']?>">
+                                    <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
+                                    <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
+                                    <button class="sm-buttons text favorites-bt" type="button">
+                                        <span><i class="fas fa-heart fa-lg"></i></span>
+                                        <span><?=__('products.favorites')?></span>
+                                    </button>
+                                </form>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <a href="<?=$router->buildUri('clothes.reviews', [$value['id']])?>" class="sm-buttons text">
                                 <span><i class="fas fa-comments fa-lg"></i></span>
                                 <span><?=__('products.reviews')?></span>
                             </a>
@@ -223,3 +238,4 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
 <script type="text/javascript" src="/js/buttons.js"></script>
 <script type="text/javascript" src="/js/filter-clothes.js"></script>
+<script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>

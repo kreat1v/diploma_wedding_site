@@ -221,3 +221,21 @@
     color: white;
     font-size: 14px;
 }
+
+.user .favorites {
+    width: 80%;
+}
+
+.user .favorites .title {
+    color: #3CA6C7;
+}
+
+.user .favorites .delete {
+    color: #AD7F00;
+    transition: all 0.5s linear;
+    cursor: pointer;
+}
+
+.user .favorites .delete:hover {
+    color: #FAB900;
+}

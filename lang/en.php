@@ -125,6 +125,15 @@ return [
 		'call' => 'Call me back'
 	],
 
+	'user_favorites' => [
+		'title' => 'Favorites',
+		'name' => 'Name',
+		'price' => 'Price',
+		'stock' => 'Promotion price',
+		'view' => 'View',
+		'mes' => 'You have not added any items to your favorites yet.'
+	],
+
 	'products' => [
 		'contacts' => 'Contacts',
 		'size' => 'Sizes',

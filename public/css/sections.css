@@ -246,7 +246,7 @@
 }
 
 .sections .body .main-text {
-    color: white;
+    color: #FFF;
     text-align: justify;
     width: 100%;
 }
@@ -255,26 +255,36 @@
     margin: 0 0 20px 30px;
 }
 
-.sections .bt {
-    text-align: center;
+.sections .goods .bt {
+    display: flex;
+    justify-content: center;
     position: relative;
     z-index: 100;
+    margin-bottom: 30px;
 }
 
-.sections .bt a {
+.sections .goods .bt button {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.sections .goods .bt a, .sections .goods .bt button {
     margin: 0 10px;
     padding: 0 20px;
     text-decoration: none;
     display: inline-block;
     transition: all 0.1s linear;
+    font-size: 15px;
+    color: #FFF;
 }
 
-.sections .bt span {
+.sections .goods .bt span {
     display: inline-block;
     float: left;
 }
 
-.sections .bt span:last-child {
+.sections .goods .bt span:last-child {
     margin-left: 10px;
     display: none;
 }

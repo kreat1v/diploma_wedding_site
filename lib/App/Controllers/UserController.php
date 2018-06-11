@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Entity\MessagesUser;
 use App\Entity\MessagesAdmin;
 use App\Entity\CallsUser;
+use App\Entity\Favorites;
+use App\Entity\Clothes\ClothesMain;
 use App\Core\App;
 use App\Core\Config;
 
@@ -15,15 +17,19 @@ class UserController extends Base
 	private $messagesUserModel;
 	private $messagesAdminModel;
 	private $callsUserModel;
+	private $favoritesModel;
+	private $clothesMainModel;
 
 	public function __construct(array $params = [])
 	{
 		parent::__construct( $params );
 
 		$this->userModel = new User(App::getConnection());
+		$this->favoritesModel = new Favorites(App::getConnection());
 		$this->messagesUserModel = new MessagesUser(App::getConnection());
 		$this->messagesAdminModel = new MessagesAdmin(App::getConnection());
 		$this->callsUserModel = new CallsUser(App::getConnection());
+		$this->clothesMainModel = new ClothesMain(App::getConnection());
 	}
 
 	public function indexAction()
@@ -403,7 +409,74 @@ class UserController extends Base
 
 	public function favoritesAction()
 	{
+		// Получаем данные.
+		if (App::getSession()->get('id')) {
+			$id = App::getSession()->get('id');
 
+			// Получаем закладки юзера.
+			$favorites = $this->favoritesModel->list(['id_users' => $id]);
+
+			$favoritesArr = [];
+			$favKeys = [];
+
+			// Проходимся циклом по массиву закладок. Получаем названия всех используемых моделей. После с помощью функции получаем сами модели. Добавляем всё в массив.
+			foreach ($favorites as $value) {
+				$nameCategoty = $value['category'] . 'MainModel';
+
+				if (!array_key_exists($nameCategoty, $favKeys)) {
+					$favKeys[$nameCategoty] = $this->$nameCategoty->languageList();
+
+					$favoritesArr[$value['id']] = $this->searchProduct($favKeys[$nameCategoty], $value['id_products']);
+				} else {
+					$favoritesArr[$value['id']] = $this->searchProduct($favKeys[$nameCategoty], $value['id_products']);
+				}
+			}
+
+			// Отдаём данные.
+			$this->data = $favoritesArr;
+		}
+	}
+
+	private function searchProduct($categoryModel, $idProduct) {
+
+		foreach ($categoryModel as $value) {
+
+			if ($value['id'] == $idProduct) {
+				return $value;
+			}
+
+		}
+
+	}
+
+	public function deleteFavoritesAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			try {
+
+				$id = $_POST['id'];
+
+				$this->favoritesModel->delete($id);
+
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
+			} catch (\Exception $exception) {
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
+		}
 	}
 
 	public function logoutAction()
