@@ -196,6 +196,14 @@ return [
 		'contacts' => 'Contacts'
 	],
 
+	'admin_category' => [
+		'title' => 'Category editor',
+		'category' => 'Category',
+		'activity1' => 'Activity category',
+		'activity2' => 'Active',
+		'edit' => 'Edit'
+	],
+
 	'admin_feedback' => [
 		'title1' => 'Active dialogs',
 		'title2' => 'Archived dialogs',

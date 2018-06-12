@@ -1,26 +1,36 @@
-<?php // Представление админского контроллера по умолчанию - Index.
+<?php
 
 $router = \App\Core\App::getRouter();
 
 ?>
-<div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-12">
-        <h2>Category management</h2>
-    </div>
-</div>
 
-<div class="row my-margin-bottom">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-12 pt-3">
-        <ul class="list-group">
-            <?php foreach ($data as $category): ?>
-                <li class="list-group-item">
-                    <?=$category['category_name']?>
-                    <?php if ($category['active'] == 1): ?>
-                    <span class="badge badge-danger ml-2">moderation</span>
-                    <?php endif; ?>
-                    <a class="btn btn-sm btn-success" style="float: right" href="<?=$router->buildUri('edit', [$category['id']])?>">Edit</a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+<div class="container">
+    <div class="category">
+
+        <div class="title text">
+            <h2><?=__('admin_category.title')?></h2>
+        </div>
+
+        <div class="table text">
+			<table>
+                <tr>
+                    <th><?=__('admin_category.category')?></th>
+                    <th><?=__('admin_category.activity1')?></th>
+                    <th></th>
+                </tr>
+				<?php foreach ($data as $category): ?>
+				<tr>
+					<td><?=$category['title']?></td>
+                    <td><?=$category['active'] == 1 ? __('admin_category.activity2') : '-'?></td>
+					<td>
+                        <a class="sm-buttons" href="<?=$router->buildUri('admin.category.edit', [$category['id_category']])?>">
+                            <?=__('admin_category.edit')?>
+                        </a>
+                    </td>
+				</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+
     </div>
 </div>

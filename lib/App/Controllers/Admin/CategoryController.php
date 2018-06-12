@@ -9,18 +9,18 @@ class CategoryController extends \App\Controllers\Base
 
 {
 	/** @var Category */
-	private $categoryModel;
+	private $categoryMainModel;
 
 	public function __construct($params = [])
 	{
 		parent::__construct($params);
 
-		$this->categoryModel = new CategoryMain(App::getConnection());
+		$this->categoryMainModel = new CategoryMain(App::getConnection());
 	}
 
 	public function indexAction()
 	{
-		$this->data = $this->categoryModel->list();
+		$this->data = $this->categoryMainModel->languageList();
 	}
 
 	public function editAction()
@@ -47,18 +47,4 @@ class CategoryController extends \App\Controllers\Base
 			$this->data = $this->categoryModel->getBy('id', $this->params[0]);
 		}
 	}
-
-//	public function deleteAction()
-//	{
-//		$id = isset($this->params[0]) ? $this->params[0] : null;
-//
-//		if (!$id) {
-//			App::getSession()->addFlash('Missing category id');
-//		} else {
-//			$this->categoryModel->delete($id);
-//			App::getSession()->addFlash('Category has been deleted');
-//		}
-//
-//		App::getRouter()->redirect(App::getRouter()->buildUri('index'));
-//	}
 }
