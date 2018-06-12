@@ -2,6 +2,8 @@
     background: rgba(250, 185, 0, 0.2);
     border-collapse: collapse;
     text-align: center;
+    width: 100%;
+    margin-bottom: 30px;
 }
 
 .table th {

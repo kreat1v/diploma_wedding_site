@@ -25,6 +25,7 @@
     overflow: hidden;
     flex-shrink: 0;
     border: 3px solid #3CA6C7;
+    margin-left: 30px;
 }
 
 .reviews .title .avatar img {
@@ -125,4 +126,19 @@
 .reviews .messages p {
     color: white;
     font-size: 14px;
+}
+
+.reviews .notification {
+    text-align: center;
+}
+
+.reviews .notification a {
+    text-decoration: none;
+    color: #3CA6C7;
+    font-weight: bold;
+    transition: all 0.5s linear;
+}
+
+.reviews .notification a:hover {
+    color: #80E1FF;
 }

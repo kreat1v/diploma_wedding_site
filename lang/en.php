@@ -148,7 +148,10 @@ return [
 	'reviews' => [
 		'review' => 'Your feedback',
 		'send' => 'Send',
-		'mes1' => 'Your review has been submitted and will be posted after moderation'
+		'mes1' => 'Your review has been submitted and will be posted after moderation',
+		'mes2' => 'In order to leave a review, please ',
+		'mes3' => 'log in',
+		'mes4' => '.',
 	],
 
 	'filter' => [
