@@ -519,6 +519,6 @@ class UserController extends Base
 	public function logoutAction()
 	{
 		App::getSession()->destroy();
-		App::getRouter()->redirect(App::getRouter()->buildUri('.category'));
+		App::getRouter()->redirect(App::getRouter()->buildUri('.'));
 	}
 }

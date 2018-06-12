@@ -2,9 +2,6 @@
 
 $router = \App\Core\App::getRouter();
 
-// echo '<pre>';
-// print_r($data['reviews']);
-
 ?>
 <div class="reviews">
 
@@ -49,6 +46,7 @@ $router = \App\Core\App::getRouter();
 
             </div>
 
+            <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
             <div class="form text">
                 <form method="post" id="message-form">
                     <label>
@@ -61,6 +59,7 @@ $router = \App\Core\App::getRouter();
     				<button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('reviews.send')?></button>
                 </form>
             </div>
+            <?php endif; ?>
 
         </div>
 
