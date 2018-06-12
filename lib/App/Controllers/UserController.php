@@ -36,10 +36,16 @@ class UserController extends Base
 	{
 		// Получаем данные.
 		if (App::getSession()->get('id')) {
+
+			// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+			if (App::getRouter()->getController(true) == 'User' && App::getSession()->get('role') == 'admin') {
+				$this->page404();
+			}
+
+			// id юзера.
 			$id = App::getSession()->get('id');
 
-			$this->data['info'] = $this->userModel->getBy('id', $id);
-
+			// Получаем аватар юзера.
 			if (!file_exists(Config::get('userImgRoot') . $id)) {
 				$avatar = Config::get('systemImg') . 'user.png';
 			} else {
@@ -47,6 +53,8 @@ class UserController extends Base
 				$avatar = Config::get('userImg') . $id . DS . $paths[0];
 			}
 
+			// Отдаём данные.
+			$this->data['info'] = $this->userModel->getBy('id', $id);
 			$this->data['avatar'] = $avatar;
 		}
 	}
@@ -55,10 +63,16 @@ class UserController extends Base
 	{
 		// Получаем данные.
 		if (App::getSession()->get('id')) {
+
+			// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+			if (App::getRouter()->getController(true) == 'User' && App::getSession()->get('role') == 'admin') {
+				$this->page404();
+			}
+
+			// id юзера.
 			$id = App::getSession()->get('id');
 
-			$this->data['info'] = $this->userModel->getBy('id', $id);
-
+			// Получаем аватар юзера.
 			if (!file_exists(Config::get('userImgRoot') . $id)) {
 				$avatar = Config::get('systemImg') . 'user.png';
 			} else {
@@ -66,6 +80,8 @@ class UserController extends Base
 				$avatar = Config::get('userImg') . $id . DS . $paths[0];
 			}
 
+			// Отдаём данные.
+			$this->data['info'] = $this->userModel->getBy('id', $id);
 			$this->data['avatar'] = $avatar;
 		}
 
@@ -275,6 +291,13 @@ class UserController extends Base
 	{
 		// Получаем данные.
 		if (App::getSession()->get('id')) {
+
+			// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+			if (App::getRouter()->getController(true) == 'User' && App::getSession()->get('role') == 'admin') {
+				$this->page404();
+			}
+
+			// id юзера.
 			$id = App::getSession()->get('id');
 
 			// Получаем аватар.
@@ -294,12 +317,17 @@ class UserController extends Base
 				$messageAdmin[$key]['admin'] = true;
 			}
 
-			// Совмещаем сообщения в единый массив, отсортированный по дате.
+			// Совмещаем сообщения в единый массив.
 			$message = array_merge($messageUser, $messageAdmin);
-			foreach ($message as $key => $row) {
-				$date[$key]  = $row['date'];
+
+			// Если полученный массив не пустой - сортируем его по дате.
+			if(!empty($message)) {
+				foreach ($message as $key => $row) {
+					$date[$key]  = $row['date'];
+				}
+
+				array_multisort($date, SORT_DESC, $message);
 			}
-			array_multisort($date, SORT_DESC, $message);
 
 			// Получаем заявки юзера.
 			$callUser = $this->callsUserModel->list(['id_users' => $id, 'active' => 1]);
@@ -411,15 +439,21 @@ class UserController extends Base
 	{
 		// Получаем данные.
 		if (App::getSession()->get('id')) {
+
+			// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+			if (App::getRouter()->getController(true) == 'User' && App::getSession()->get('role') == 'admin') {
+				$this->page404();
+			}
+
+			// id юзера.
 			$id = App::getSession()->get('id');
 
 			// Получаем закладки юзера.
 			$favorites = $this->favoritesModel->list(['id_users' => $id]);
 
+			// Проходимся циклом по массиву закладок. Получаем названия всех используемых моделей. После с помощью функции получаем сами модели. Добавляем всё в массив.
 			$favoritesArr = [];
 			$favKeys = [];
-
-			// Проходимся циклом по массиву закладок. Получаем названия всех используемых моделей. После с помощью функции получаем сами модели. Добавляем всё в массив.
 			foreach ($favorites as $value) {
 				$nameCategoty = $value['category'] . 'MainModel';
 
@@ -437,6 +471,7 @@ class UserController extends Base
 		}
 	}
 
+	// Функция получения моделей.
 	private function searchProduct($categoryModel, $idProduct) {
 
 		foreach ($categoryModel as $value) {
@@ -449,6 +484,7 @@ class UserController extends Base
 
 	}
 
+	// Удаление данных из закладок.
 	public function deleteFavoritesAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -479,6 +515,7 @@ class UserController extends Base
 		}
 	}
 
+	// Выход из системы. Убиваем сессию.
 	public function logoutAction()
 	{
 		App::getSession()->destroy();

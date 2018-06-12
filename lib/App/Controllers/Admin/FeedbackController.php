@@ -28,7 +28,6 @@ class FeedbackController extends \App\Controllers\Base
 
 	public function indexAction()
 	{
-
 		// Задаем модульное сообщение.
 		App::getSession()->addModal(__('admin_feedback.modal1'));
 
@@ -273,12 +272,17 @@ class FeedbackController extends \App\Controllers\Base
 				$messageAdmin[$key]['admin'] = true;
 			}
 
-			// Совмещаем сообщения в единый массив, отсортированный по дате.
+			// Совмещаем сообщения в единый массив.
 			$message = array_merge($messageUser, $messageAdmin);
-			foreach ($message as $key => $row) {
-			    $date[$key]  = $row['date'];
+
+			// Если полученный массив не пустой - сортируем его по дате.
+			if(!empty($message)) {
+				foreach ($message as $key => $row) {
+				    $date[$key]  = $row['date'];
+				}
+
+				array_multisort($date, SORT_DESC, $message);
 			}
-			array_multisort($date, SORT_DESC, $message);
 
 			// Отдаем данные юзера и наш диалог.
 			if (!empty($message)) {

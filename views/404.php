@@ -1,4 +1,7 @@
-<?php
-// 404я страница
-?>
-<h1>Page not found =(</h1>
+<!-- 404я страница -->
+
+<div class="page404">
+    <canvas id='canv'></canvas>
+</div>
+
+<script type="text/javascript" src="/js/page404.js"></script>
