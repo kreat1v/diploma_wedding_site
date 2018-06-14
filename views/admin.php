@@ -55,9 +55,7 @@ if(Session::get('id')) {
 					<li>
 						<a href="#"><?=__('admin_menu.goods')?></a>
 						<ul>
-							<li><a href="#">Оформление</a></li>
-							<li><a href="#">Одежда</a></li>
-							<li><a href="#">Авто</a></li>
+							<?=$data['category']?>
 						</ul>
 					</li>
 					<li>

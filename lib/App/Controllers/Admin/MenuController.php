@@ -13,12 +13,12 @@ class MenuController extends \App\Controllers\Base
 	{
 		parent::__construct($params);
 
-		$this->categoryModel = new CategoryMain(App::getConnection());
+		$this->categoryMainModel = new CategoryMain(App::getConnection());
 	}
 
 	public function getCategory()
 	{
-		$this->data = $this->categoryModel->list();
+		$this->data = $this->categoryMainModel->languageList(['active' => 1]);
 
 		return $this->data;
 	}

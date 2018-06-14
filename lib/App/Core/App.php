@@ -111,15 +111,15 @@ class App
 		);
 		$content = $view->render();
 
-		// Menu::getCategory();
-		// $category = new \App\Views\Base(
-		// 	Menu::getData(),
-		// 	ROOT.DS.'views'.DS.'menu.php'
-		// );
-		// $menu = $category->render();
+		Menu::getCategory();
+		$category = new \App\Views\Base(
+			Menu::getData(),
+			ROOT.DS.'views'.DS.'menu.php'
+		);
+		$menu = $category->render();
 
 		$layout = new \App\Views\Base(
-			['content' => $content],
+			['content' => $content, 'category' => $menu],
 			ROOT.DS.'views'.DS.$route.'.php'
 		);
 
