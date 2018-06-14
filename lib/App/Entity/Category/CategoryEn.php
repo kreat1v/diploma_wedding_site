@@ -11,16 +11,18 @@ class CategoryEn extends \App\Entity\Base
 
 	public function checkFields($data)
 	{
-		// if (!is_string($data['title']) || !strlen($data['title'])) {
-		// 	throw new \Exception('Category title can\'t be empty');
-		// }
+		foreach ($data as $value) {
+			if (empty($value) && !strlen($value)) {
+				throw new \Exception(__('form.field'));
+			}
+		}
 	}
 
 	public function getFields()
 	{
 		return [
 			'id',
-			'id_caregory',
+			'id_category',
 			'title',
 			'full_title',
 			'first_text',

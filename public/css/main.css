@@ -55,6 +55,6 @@ footer {
     color: #fa0202 !important;
 }
 
-.valid input {
+.valid input, .valid textarea {
     border-bottom: 1px solid #fa0202 !important;
 }

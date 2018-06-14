@@ -8,7 +8,7 @@ $router = \App\Core\App::getRouter();
     <div class="category">
 
         <div class="title text">
-            <h2><?=__('admin_category.title')?></h2>
+            <h2><?=__('admin_category.title1')?></h2>
         </div>
 
         <div class="table text">

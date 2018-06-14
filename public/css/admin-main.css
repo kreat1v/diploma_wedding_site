@@ -25,9 +25,28 @@
 }
 
 .form {
-    width: 400px;
     text-align: center;
     margin: 40px auto;
+}
+
+.form fieldset {
+    border-radius: 5px;
+    border: 2px solid #AD7F00;
+    margin-bottom: 30px;
+}
+
+.form legend {
+    color: #AD7F00;
+    font-weight: bold;
+}
+
+.form p {
+    text-align: left;
+}
+
+.form label {
+    margin: 30px 0;
+    display: block;
 }
 
 .form label span {
@@ -47,20 +66,24 @@
     font-size: 15px;
 }
 
-.form .input, .form .button {
+.form .input, .form .button, .form .textarea {
     border: none;
     outline: none;
     background: none;
 }
 
-.form .input {
+.form .input, .form .textarea {
+    box-sizing: border-box;
     background: rgba(128, 225, 255, 0.2);
     display: block;
     width: 100%;
-    margin-top: 5px;
-    padding-bottom: 5px;
+    margin: 5px 0;
+    padding: 0 10px 10px;
     font-size: 16px;
     border-bottom: 2px solid #3CA6C7;
     border-left: 2px solid #3CA6C7;
-    text-align: center;
+}
+
+.form .textarea {
+    height: 300px;
 }

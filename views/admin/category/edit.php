@@ -1,26 +1,106 @@
-<?php
+<div class="container">
+    <div class="category">
 
-$isNew = empty($data) || isset($data['new']);
+        <div class="title text">
+            <h2><?=__('admin_category.title1')?></h2>
+        </div>
 
-?>
-<div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-12">
-	    <h2><?=$isNew ? 'Create' : 'Edit'?></h2>
-    </div>
-</div>
+        <form class="form text" id="category-form" method="post">
+            <fieldset>
+                <legend><?=__('admin_category.title2')?></legend>
 
-<div class="row my-margin-bottom">
-    <div class="col-12 pt-3">
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" value="<?=isset($data['title']) ? $data['title'] : ''?>" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="moderation">Moderation?</label>
-                <input type="checkbox" value="1" id="moderation" name="moderation" <?=($isNew || $data['moderation'] ? 'checked' : '')?> />
-            </div>
-            <button type="submit" class="btn btn-success">Save</button>
+                <p><?=__('admin_category.mes1')?></p>
+
+                <label>
+                    <span><?=__('admin_category.ru')?></span>
+                    <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$data['ru']['title']?>">
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool1')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_category.en')?></span>
+                    <input class="input" id="title-en" type="text" name="titleEn" value="<?=$data['en']['title']?>">
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool2')?></div>
+                    </div>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend><?=__('admin_category.title3')?></legend>
+
+                <p><?=__('admin_category.mes2')?></p>
+
+                <label>
+                    <span><?=__('admin_category.ru')?></span>
+                    <textarea class="textarea" id="first-text-ru" name="firstTextRu"><?=$data['ru']['first_text']?></textarea>
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool3')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_category.en')?></span>
+                    <textarea class="textarea" id="first-text-en" name="firstTextEn"><?=$data['en']['first_text']?></textarea>
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool3')?></div>
+                    </div>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend><?=__('admin_category.title4')?></legend>
+
+                <label>
+                    <span><?=__('admin_category.ru')?></span>
+                    <input class="input" id="full-title-ru" type="text" name="fullTitleRu" value="<?=$data['ru']['full_title']?>">
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool3')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_category.en')?></span>
+                    <input class="input" id="full-title-en" type="text" name="fullTitleEn" value="<?=$data['en']['full_title']?>">
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool3')?></div>
+                    </div>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend><?=__('admin_category.title5')?></legend>
+
+                <p><?=__('admin_category.mes2')?></p>
+
+                <label>
+                    <span><?=__('admin_category.ru')?></span>
+                    <textarea class="textarea" id="second-text-ru" name="secondTextRu"><?=$data['ru']['second_text']?></textarea>
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool3')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_category.en')?></span>
+                    <textarea class="textarea" id="second-text-en" name="secondTextEn"><?=$data['en']['second_text']?></textarea>
+                    <div class="tooltips-left">
+                        <div><?=__('admin_category.tool3')?></div>
+                    </div>
+                </label>
+            </fieldset>
+
+            <label>
+                <input type="checkbox" name="active" value="1" class="option-input checkbox" <?=$data['main']['active'] == 1 ? 'checked' : ''?> />
+                <span><?=__('admin_category.activity2')?></span>
+            </label>
+
+            <button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('admin_category.save')?></button>
         </form>
+
     </div>
 </div>
+
+<script type="text/javascript" src="/js/admin-category.js"></script>

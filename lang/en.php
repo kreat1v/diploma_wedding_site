@@ -197,11 +197,24 @@ return [
 	],
 
 	'admin_category' => [
-		'title' => 'Category editor',
+		'title1' => 'Category editor',
+		'title2' => 'Name of category',
+		'title3' => 'Category description text on the main page',
+		'title4' => 'Extended category name on the page with the service',
+		'title5' => 'Category description text on the page with the service',
 		'category' => 'Category',
 		'activity1' => 'Activity category',
-		'activity2' => 'Active',
-		'edit' => 'Edit'
+		'activity2' => 'Category is active',
+		'edit' => 'Edit',
+		'save' => 'Save',
+		'ru' => 'Russian language',
+		'en' => 'English',
+		'mes1' => 'Enter one word that will indicate the category name.',
+		'mes2' => 'To create a new paragraph, press Enter.',
+		'mes3' => 'Your data has been successfully saved.',
+		'tool1' => 'The field can not be empty, nor can it contain more than one word and foreign characters, or numbers',
+		'tool2' => 'The field can not be empty, nor can it contain more than one word and Russian characters, or numbers',
+		'tool3' => 'The field can not be empty'
 	],
 
 	'admin_feedback' => [
