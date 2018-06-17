@@ -121,8 +121,12 @@
     height: 100%;
 }
 
-.sections .blur img {
+.sections .blur-width img {
     width: 100%;
+}
+
+.sections .blur-height img {
+    height: 100%;
 }
 
 .sections .top {
@@ -156,10 +160,16 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.sections .card .image img {
+.sections .card .image-width img {
     width: 100%;
+    transition: .5s;
+}
+
+.sections .card .image-height img {
+    height: 100%;
     transition: .5s;
 }
 

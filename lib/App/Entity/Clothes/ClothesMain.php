@@ -6,27 +6,27 @@ use \App\Core\Localization;
 
 class ClothesMain extends \App\Entity\Base
 {
-	private $clothesLang;
-	private $clothesSize;
+	private $clothesLangModel;
+	private $clothesSizeModel;
 
 	private function getClothesLang()
 	{
-		if (empty($this->clothesLang)) {
+		if (empty($this->clothesLangModel)) {
 			$langTableName = '\App\Entity\Clothes\Clothes' . ucfirst(Localization::getLang());
 
-			$this->clothesLang = new $langTableName($this->conn);
+			$this->clothesLangModel = new $langTableName($this->conn);
 		}
 
-		return $this->clothesLang;
+		return $this->clothesLangModel;
 	}
 
 	private function getClothesSize()
 	{
-		if (empty($this->clothesSize)) {
-			$this->clothesSize = new ClothesSize($this->conn);
+		if (empty($this->clothesSizeModel)) {
+			$this->clothesSizeModel = new ClothesSize($this->conn);
 		}
 
-		return $this->clothesSize;
+		return $this->clothesSizeModel;
 	}
 
 	public function getTableName()
@@ -35,11 +35,7 @@ class ClothesMain extends \App\Entity\Base
 	}
 
 	public function checkFields($data)
-	{
-		// if (!is_string($data['title']) || !strlen($data['title'])) {
-		// 	throw new \Exception('Category title can\'t be empty');
-		// }
-	}
+	{}
 
 	public function getFields()
 	{
@@ -51,8 +47,7 @@ class ClothesMain extends \App\Entity\Base
 			'telegram',
 			'price',
 			'sex',
-			'brand',
-			'size'
+			'brand'
 		];
 	}
 
@@ -78,7 +73,7 @@ class ClothesMain extends \App\Entity\Base
 		// формируем условия запроса
 		$strWhere = '';
 		if (!empty($filter)) {
-			$str = 'WHERE 1';
+			$strWhere = 'WHERE 1';
 
 			foreach ($filter as $key => $value) {
 				if (is_array($value)) {

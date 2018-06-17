@@ -138,6 +138,7 @@ return [
 		'contacts' => 'Contacts',
 		'size' => 'Sizes',
 		'brand' => 'Brand',
+		'service' => 'Type of service',
 		'price' => 'Price',
 		'basket' => 'Add to cart',
 		'favorites' => 'To favorites',
@@ -215,6 +216,13 @@ return [
 		'tool1' => 'The field can not be empty, nor can it contain more than one word and foreign characters, or numbers',
 		'tool2' => 'The field can not be empty, nor can it contain more than one word and Russian characters, or numbers',
 		'tool3' => 'The field can not be empty'
+	],
+
+	'admin_product' => [
+		'title1' => 'Service Editor',
+		'category' => 'Category',
+		'count' => 'Number of services',
+		'view' => 'View'
 	],
 
 	'admin_feedback' => [

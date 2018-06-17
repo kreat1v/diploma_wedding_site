@@ -5,9 +5,6 @@ use \App\Core\Config;
 $router = \App\Core\App::getRouter();
 $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
-// echo '<pre>';
-// print_r($data);
-
 ?>
 <div class="sections">
 
@@ -27,7 +24,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                     <div class="goods">
 
                         <?php
-                        $image = Config::get('clothesImgRoot') . $value['id'] . DS . $value['galery'][0];
+                        $image = Config::get('decorImgRoot') . $value['id'] . DS . $value['galery'][0];
                         $imageArr = getimagesize($image);
                         if ($imageArr[0] < $imageArr[1]) {
                             $imageClass = 'image-width';
@@ -39,7 +36,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         ?>
 
                         <div class="blur <?=$blurClass?>">
-                            <img src="<?=Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                            <img src="<?=Config::get('decorImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                         </div>
 
                         <h3 class="text"><?=$value['title']?></h3>
@@ -49,7 +46,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             <div class="card">
 
                                 <div class="image <?=$imageClass?>">
-                                    <img src="<?=Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                                    <img src="<?=Config::get('decorImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                                 </div>
 
                                 <div class="details text">
@@ -80,13 +77,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                                 <div class="main-text">
                                     <p><?=$value['text']?></p>
-                                    <p><?=__('products.size')?>:
-                                    <?=$value['s'] ? 'S ' : ''?>
-                                    <?=$value['m'] ? 'M ' : ''?>
-                                    <?=$value['l'] ? 'L ' : ''?>
-                                    <?=$value['xl'] ? 'XL ' : ''?>
-                                    </p>
-                                    <p><?=__('products.brand')?>: <?=$value['brand']?></p>
+                                    <p><?=__('products.service')?>: <?=explode(' - ', $value['service'])[1]?></p>
                                     <p><?=__('products.price')?>: <?=$value['price']?></p>
                                 </div>
 
@@ -105,7 +96,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     <span><?=__('products.basket')?></span>
                                 </button>
                             </form>
-                                <?php if(!in_array($value['id'], $data['favorites'])): ?>
+                                <?php if(!in_array($value['id'] . $data['category'], $data['favorites'])): ?>
                                 <form method="post">
                                     <input class="id_products" type="hidden" name="id_products" value="<?=$value['id']?>">
                                     <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
@@ -117,7 +108,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                 </form>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <a href="<?=$router->buildUri('clothes.reviews', [$value['id']])?>" class="sm-buttons text">
+                            <a href="<?=$router->buildUri('decor.reviews', [$value['id']])?>" class="sm-buttons text">
                                 <span><i class="fas fa-comments fa-lg"></i></span>
                                 <span><?=__('products.reviews')?></span>
                             </a>
@@ -128,7 +119,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>
                                 <a href="javascript:void(0)" class="panel">
-                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('clothesImgWeb') . $value['id'] . '/' . $img?>');"></div>
+                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('decorImgWeb') . $value['id'] . '/' . $img?>');"></div>
                                 </a>
                                 <?php endforeach; ?>
                             </div>
@@ -143,27 +134,27 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 <nav>
                     <ul class="pagination text">
                         <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [1]).$filter : ''?>">
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('decor.index', [1]).$filter : ''?>">
                                 <span>&laquo;</span>
                             </a>
                         </li>
 
                         <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('clothes.index', [$data['pagination']['back']]).$filter : ''?>"><?=__('pagination.previous')?></a>
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('decor.index', [$data['pagination']['back']]).$filter : ''?>"><?=__('pagination.previous')?></a>
                         </li>
 
                         <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
                         <li class="<?=$data['page'] == $key ? 'active' : ''?>">
-                            <a href="<?=$router->buildUri('clothes.index', [$key]).$filter?>"><?=$key?></a>
+                            <a href="<?=$router->buildUri('decor.index', [$key]).$filter?>"><?=$key?></a>
                         </li>
                         <?php endforeach; ?>
 
                         <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('clothes.index', [$data['pagination']['forward']]).$filter : ''?>"><?=__('pagination.next')?></a>
+                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('decor.index', [$data['pagination']['forward']]).$filter : ''?>"><?=__('pagination.next')?></a>
                         </li>
 
                         <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                            <a href="<?=$router->buildUri('clothes.index', [$data['pagination']['last']]).$filter?>">
+                            <a href="<?=$router->buildUri('decor.index', [$data['pagination']['last']]).$filter?>">
                                 <span>&raquo;</span>
                             </a>
                         </li>
@@ -179,15 +170,6 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
         <div class="filter text">
             <form method="get" id="filter-clothes">
-                <div class="sex">
-                    <h4><?=__('filter.sex')?></h4>
-                    <label>
-                        <input type="radio" name="sex" value="m" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'm' ? 'checked' : ''?> /><?=__('filter.m')?>
-                    </label>
-                    <label>
-                        <input type="radio" name="sex" value="f" class="option-input radio" <?=isset($data['get']['sex']) && $data['get']['sex'] == 'f' ? 'checked' : ''?> /><?=__('filter.f')?>
-                    </label>
-                </div>
 
                 <div class="price" id='myform'>
                     <h4><?=__('filter.price')?></h4>
@@ -203,42 +185,29 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                 <div class="brands">
                     <h4><?=__('filter.brand')?></h4>
-                    <?php foreach ($data['filter']['brand'] as $value): ?>
+                    <?php foreach ($data['filter']['service'] as $value): ?>
+                    <?php
+                        $service = explode(' - ', $value['service']);
+                    ?>
                     <label>
-                        <input type="checkbox" value="<?=lcfirst($value['brand'])?>" class="option-input checkbox"
+                        <input type="checkbox" value="<?=$service[0]?>" class="option-input checkbox"
                         <?php
-                        if (isset($data['get']['brand']) && array_search(lcfirst($value['brand']), $data['get']['brand']) !== false) {
+                        if (isset($data['get']['service']) && array_search($service[0], $data['get']['service']) !== false) {
                             echo "checked";
                         }
                         ?>
-                        /><?=$value['brand']?>
+                        /><?=$service[1]?>
                     </label>
                     <?php endforeach; ?>
                 </div>
-                <input id='brand' type='hidden' name='brand' />
-
-                <div class="size">
-                    <h4><?=__('filter.size')?></h4>
-                    <?php foreach ($data['filter']['size'] as $value): ?>
-                    <label>
-                        <input type="checkbox" value="<?=$value?>" class="option-input checkbox"
-                        <?php
-                        if (isset($data['get']['size']) && array_search($value, $data['get']['size']) !== false) {
-                            echo "checked";
-                        }
-                        ?>
-                        /><?=mb_strtoupper($value)?>
-                    </label>
-                    <?php endforeach; ?>
-                </div>
-                <input id='size' type='hidden' name='size' />
+                <input id='brand' type='hidden' name='service' />
 
                 <div class="bt">
                     <div>
                         <input type="submit" value="<?=__('filter.filter')?>" class="sm-buttons text" />
                     </div>
                     <div>
-                        <a class="sm-buttons" href="<?=$router->buildUri('.clothes')?>"><?=__('filter.reset')?></a>
+                        <a class="sm-buttons" href="<?=$router->buildUri('.decor')?>"><?=__('filter.reset')?></a>
                     </div>
                 </div>
             </form>

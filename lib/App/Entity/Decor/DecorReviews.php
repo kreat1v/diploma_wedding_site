@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity\Clothes;
+namespace App\Entity\Decor;
 
 use App\Entity\User;
 
-class ClothesReviews extends \App\Entity\Base
+class DecorReviews extends \App\Entity\Base
 {
 	private $userModel;
 
@@ -19,7 +19,7 @@ class ClothesReviews extends \App\Entity\Base
 
 	public function getTableName()
 	{
-		return 'clothes_reviews';
+		return 'decor_reviews';
 	}
 
 	public function checkFields($data)
@@ -45,7 +45,7 @@ class ClothesReviews extends \App\Entity\Base
 
 	public function reviews($filter = [], $section = [])
 	{
-		$fieldsClothesReviews = $this->getTableName();
+		$fieldsDecorReviews = $this->getTableName();
 		$fieldsUser = $this->getUser()->getTableName();
 
 		$where = [];
@@ -57,7 +57,7 @@ class ClothesReviews extends \App\Entity\Base
 				}
 
 				$value = $this->conn->escape($value);
-				$where[] = "$fieldsClothesReviews.$fieldName = $value";
+				$where[] = "$fieldsDecorReviews.$fieldName = $value";
 			}
 
 			if (!empty($where)) {
@@ -73,11 +73,11 @@ class ClothesReviews extends \App\Entity\Base
 			$strLimit = ' LIMIT ' . $limit . ' OFFSET ' . $limitStart;
 		}
 
-		$sql = "SELECT $fieldsClothesReviews.*, $fieldsUser.*
-				FROM $fieldsClothesReviews
-				JOIN $fieldsUser ON $fieldsClothesReviews.id_users = $fieldsUser.id
+		$sql = "SELECT $fieldsDecorReviews.*, $fieldsUser.*
+				FROM $fieldsDecorReviews
+				JOIN $fieldsUser ON $fieldsDecorReviews.id_users = $fieldsUser.id
 				WHERE 1 $strWhere
-				ORDER BY $fieldsClothesReviews.date DESC
+				ORDER BY $fieldsDecorReviews.date DESC
 				$strLimit";
 		return $this->conn->query($sql);
 	}

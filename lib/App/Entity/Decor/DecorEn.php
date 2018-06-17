@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Entity\Clothes;
+namespace App\Entity\Decor;
 
-class ClothesEn extends \App\Entity\Base
+class DecorEn extends \App\Entity\Base
 {
 	public function getTableName()
 	{
-		return 'clothes_en';
+		return 'decor_en';
 	}
 
 	public function checkFields($data)
@@ -16,10 +16,11 @@ class ClothesEn extends \App\Entity\Base
 	{
 		return [
 			'id',
-			'id_clothes',
+			'id_caregory',
 			'title',
 			'text',
 			'contacts',
+			'service',
 			'id_language'
 		];
 	}

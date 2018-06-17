@@ -2,7 +2,16 @@
 
 $router = \App\Core\App::getRouter();
 
+foreach ($data as $value):
+
+    $categoryName = $value['category_name'];
+
+    if ($router->getRoute() == 'admin') {
+        $link = $router->buildUri("product.$categoryName");
+    } else {
+        $link = $router->buildUri(".$categoryName");
+    }
+
 ?>
-<?php foreach ($data as $value): ?>
-<li><a class="" href="<?=$router->buildUri('product.edit', [$value['category_name']])?>"><?=$value['title']?></a></li>
+<li><a class="" href="<?=$link?>"><?=$value['title']?></a></li>
 <?php endforeach; ?>

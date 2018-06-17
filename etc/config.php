@@ -69,6 +69,13 @@ Config::set('userImgRoot', ROOT.DS.'public'.DS.'img'.DS.'user'.DS);
 Config::set('userImg', DS.'img'.DS.'user'.DS);
 
 /**
+* Decor image
+*/
+Config::set('decorImgRoot', ROOT.DS.'public'.DS.'img'.DS.'decor'.DS);
+Config::set('decorImg', DS.'img'.DS.'decor'.DS);
+Config::set('decorImgWeb', '/img/decor/');
+
+/**
  * Clothes image
  */
 Config::set('clothesImgRoot', ROOT.DS.'public'.DS.'img'.DS.'clothes'.DS);
