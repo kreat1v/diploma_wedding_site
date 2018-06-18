@@ -83,6 +83,13 @@ Config::set('clothesImg', DS.'img'.DS.'clothes'.DS);
 Config::set('clothesImgWeb', '/img/clothes/');
 
 /**
+ * Clothes image
+ */
+Config::set('autoImgRoot', ROOT.DS.'public'.DS.'img'.DS.'auto'.DS);
+Config::set('autoImg', DS.'img'.DS.'auto'.DS);
+Config::set('autoImgWeb', '/img/auto/');
+
+/**
  * Hotel image
  */
 Config::set('hotelImgRoot', ROOT.DS.'public'.DS.'img'.DS.'hotel'.DS);

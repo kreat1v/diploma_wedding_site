@@ -9,6 +9,7 @@ use App\Entity\CallsUser;
 use App\Entity\Favorites;
 use App\Entity\Decor\DecorMain;
 use App\Entity\Clothes\ClothesMain;
+use App\Entity\Auto\AutoMain;
 use App\Entity\Hotel\HotelMain;
 use App\Core\App;
 use App\Core\Config;
@@ -22,6 +23,7 @@ class UserController extends Base
 	private $favoritesModel;
 	private $decorMainModel;
 	private $clothesMainModel;
+	private $autoMainModel;
 	private $hotelMainModel;
 
 	public function __construct(array $params = [])
@@ -35,6 +37,7 @@ class UserController extends Base
 		$this->callsUserModel = new CallsUser(App::getConnection());
 		$this->decorMainModel = new DecorMain(App::getConnection());
 		$this->clothesMainModel = new ClothesMain(App::getConnection());
+		$this->autoMainModel = new AutoMain(App::getConnection());
 		$this->hotelMainModel = new HotelMain(App::getConnection());
 	}
 
