@@ -19,7 +19,7 @@ class DecorController extends Base
 	private $favoritesModel;
 	private $categoryMainModel;
 	private $decorMainModel;
-	private $decorRreviewsModel;
+	private $decorReviewsModel;
 
 	public function __construct(array $params = [])
 	{
@@ -29,7 +29,7 @@ class DecorController extends Base
 		$this->favoritesModel = new Favorites(App::getConnection());
 		$this->categoryMainModel = new CategoryMain(App::getConnection());
 		$this->decorMainModel = new DecorMain(App::getConnection());
-		$this->decorRreviewsModel = new DecorReviews(App::getConnection());
+		$this->decorReviewsModel = new DecorReviews(App::getConnection());
 	}
 
 	public function indexAction()
@@ -157,7 +157,7 @@ class DecorController extends Base
 			}
 
 			// Получаем отзывы.
-			$reviews = $this->decorRreviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
+			$reviews = $this->decorReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
 			// Получаем имя категории.
 			$category = lcfirst(App::getRouter()->getController(true));
@@ -196,7 +196,7 @@ class DecorController extends Base
 						'active' => '1'
 					];
 
-					$this->decorRreviewsModel->save($this->data);
+					$this->decorReviewsModel->save($this->data);
 
 					App::getSession()->addFlash(__('reviews.mes1'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('decor.reviews', [$id]));
@@ -221,7 +221,7 @@ class DecorController extends Base
 			$id_product = $_POST['id_product'];
 
 			// Получаем отзывы юзеров.
-			$reviews = $this->decorRreviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
+			$reviews = $this->decorReviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
 
 			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
 			if(!empty($reviews)) {

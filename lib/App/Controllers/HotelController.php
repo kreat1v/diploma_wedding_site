@@ -19,7 +19,7 @@ class HotelController extends Base
 	private $favoritesModel;
 	private $categoryMainModel;
 	private $hotelMainModel;
-	private $hotelRreviewsModel;
+	private $hotelReviewsModel;
 
 	public function __construct(array $params = [])
 	{
@@ -29,7 +29,7 @@ class HotelController extends Base
 		$this->favoritesModel = new Favorites(App::getConnection());
 		$this->categoryMainModel = new CategoryMain(App::getConnection());
 		$this->hotelMainModel = new HotelMain(App::getConnection());
-		$this->hotelRreviewsModel = new HotelReviews(App::getConnection());
+		$this->hotelReviewsModel = new HotelReviews(App::getConnection());
 	}
 
 	public function indexAction()
@@ -156,7 +156,7 @@ class HotelController extends Base
 			}
 
 			// Получаем отзывы.
-			$reviews = $this->hotelRreviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
+			$reviews = $this->hotelReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
 			// Получаем имя категории.
 			$category = lcfirst(App::getRouter()->getController(true));
@@ -195,7 +195,7 @@ class HotelController extends Base
 						'active' => '1'
 					];
 
-					$this->hotelRreviewsModel->save($this->data);
+					$this->hotelReviewsModel->save($this->data);
 
 					App::getSession()->addFlash(__('reviews.mes1'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('hotel.reviews', [$id]));
@@ -220,7 +220,7 @@ class HotelController extends Base
 			$id_product = $_POST['id_product'];
 
 			// Получаем отзывы юзеров.
-			$reviews = $this->hotelRreviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
+			$reviews = $this->hotelReviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
 
 			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
 			if(!empty($reviews)) {
