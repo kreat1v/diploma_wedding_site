@@ -26,10 +26,17 @@
     flex-shrink: 0;
     border: 3px solid #3CA6C7;
     margin-left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.reviews .title .avatar img {
+.reviews .title .avatar-width img {
     width: 100%;
+}
+
+.reviews .title .avatar-height img {
+    height: 100%;
 }
 
 .reviews .form {

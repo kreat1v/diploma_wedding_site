@@ -11,7 +11,7 @@ $router = \App\Core\App::getRouter();
 
             <div class="title text">
                 <h2><?=$data['title']?></h2>
-                <div class="avatar">
+                <div class="avatar <?=$data['avatar-class']?>">
                     <img src="<?=$data['avatar']?>" alt="">
                 </div>
             </div>

@@ -186,10 +186,18 @@ class ClothesController extends Base
 			// Получаем данныt товара.
 			$product = $this->clothesMainModel->languageList(['id' => $id]);
 
-			// Получение изображения товара.
+			// Получение изображения товара, а так же класса стиля для этого изображения.
 			if (file_exists(Config::get('clothesImgRoot') . $id)) {
 				$paths = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
 				$avatar = Config::get('clothesImg') . $id . DS . $paths[0];
+
+				$imageRoot = Config::get('clothesImgRoot') . $id . DS . $paths[0];
+				$imageArr = getimagesize($imageRoot);
+				if ($imageArr[0] < $imageArr[1]) {
+					$avatarClass = 'avatar-width';
+				} else {
+					$avatarClass = 'avatar-height';
+				}
 			}
 
 			// Получаем отзывы.
@@ -198,6 +206,7 @@ class ClothesController extends Base
 			// Отдаём данные.
 			if (!empty($product)) {
 				$this->data['avatar'] = $avatar;
+				$this->data['avatar-class'] = $avatarClass;
 				$this->data['title'] = $product[0]['title'];
 				$this->data['reviews'] = $reviews;
 			} else {
