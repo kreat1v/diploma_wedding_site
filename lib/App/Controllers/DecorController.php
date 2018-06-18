@@ -159,12 +159,17 @@ class DecorController extends Base
 			// Получаем отзывы.
 			$reviews = $this->decorRreviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
+			// Получаем имя категории.
+			$category = lcfirst(App::getRouter()->getController(true));
+
 			// Отдаём данные.
 			if (!empty($product)) {
 				$this->data['avatar'] = $avatar;
 				$this->data['avatar-class'] = $avatarClass;
 				$this->data['title'] = $product[0]['title'];
 				$this->data['reviews'] = $reviews;
+				$this->data['category'] = $category;
+				$this->data['id_product'] = $id;
 			} else {
 				$this->page404();
 			}
@@ -194,13 +199,13 @@ class DecorController extends Base
 					$this->decorRreviewsModel->save($this->data);
 
 					App::getSession()->addFlash(__('reviews.mes1'));
-					App::getRouter()->redirect(App::getRouter()->buildUri('Decor.reviews', [$id]));
+					App::getRouter()->redirect(App::getRouter()->buildUri('decor.reviews', [$id]));
 				}
 
 			} catch (\Exception $exception) {
 
 				App::getSession()->addFlash($exception->getMessage());
-				App::getRouter()->redirect(App::getRouter()->buildUri('Decor.reviews', [$id]));
+				App::getRouter()->redirect(App::getRouter()->buildUri('decor.reviews', [$id]));
 
 			}
 		}
@@ -210,11 +215,13 @@ class DecorController extends Base
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+			// Получаем начало и конец выборки, а также id продукта.
 			$start = $_POST['start'];
 			$limit = $_POST['limit'];
+			$id_product = $_POST['id_product'];
 
 			// Получаем отзывы юзеров.
-			$reviews = $this->decorRreviewsModel->reviews(1, [$limit, $start]);
+			$reviews = $this->decorRreviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
 
 			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
 			if(!empty($reviews)) {

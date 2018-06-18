@@ -272,7 +272,7 @@ if(Session::get('id')) {
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>
 		<script type="text/javascript" src="/js/info-messages.js"></script>
-		<!-- <script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script> -->
+		<script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script>
 
 		<script type="text/javascript">
 		$(document).ready(function() {

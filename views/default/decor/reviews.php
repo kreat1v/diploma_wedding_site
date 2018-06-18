@@ -3,7 +3,7 @@
 $router = \App\Core\App::getRouter();
 
 ?>
-<div class="reviews">
+<div class="reviews" data-category="<?=$data['category']?>" data-product="<?=$data['id_product']?>">
 
     <div class="gradient-border">
 
