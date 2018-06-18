@@ -16,7 +16,7 @@ class DecorRu extends \App\Entity\Base
 	{
 		return [
 			'id',
-			'id_caregory',
+			'id_decor',
 			'title',
 			'text',
 			'contacts',

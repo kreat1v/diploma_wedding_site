@@ -16,7 +16,7 @@ class AutoRu extends \App\Entity\Base
 	{
 		return [
 			'id',
-			'id_clothes',
+			'id_auto',
 			'title',
 			'text',
 			'contacts',

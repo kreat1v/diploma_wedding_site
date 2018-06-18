@@ -16,7 +16,7 @@ class HotelEn extends \App\Entity\Base
 	{
 		return [
 			'id',
-			'id_caregory',
+			'id_hotel',
 			'title',
 			'text',
 			'contacts',
