@@ -83,11 +83,18 @@ Config::set('clothesImg', DS.'img'.DS.'clothes'.DS);
 Config::set('clothesImgWeb', '/img/clothes/');
 
 /**
- * Clothes image
+ * Auto image
  */
 Config::set('autoImgRoot', ROOT.DS.'public'.DS.'img'.DS.'auto'.DS);
 Config::set('autoImg', DS.'img'.DS.'auto'.DS);
 Config::set('autoImgWeb', '/img/auto/');
+
+/**
+ * Filming image
+ */
+Config::set('filmingImgRoot', ROOT.DS.'public'.DS.'img'.DS.'filming'.DS);
+Config::set('filmingImg', DS.'img'.DS.'filming'.DS);
+Config::set('filmingImgWeb', '/img/filming/');
 
 /**
  * Hotel image
