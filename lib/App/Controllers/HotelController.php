@@ -10,16 +10,16 @@ use App\Core\Session;
 use App\Entity\User;
 use App\Entity\Favorites;
 use App\Entity\Category\CategoryMain;
-use App\Entity\Decor\DecorMain;
-use App\Entity\Decor\DecorReviews;
+use App\Entity\Hotel\HotelMain;
+use App\Entity\Hotel\HotelReviews;
 
-class DecorController extends Base
+class HotelController extends Base
 {
 	private $userModel;
 	private $favoritesModel;
 	private $categoryMainModel;
-	private $decorMainModel;
-	private $decorRreviewsModel;
+	private $hotelMainModel;
+	private $hotelRreviewsModel;
 
 	public function __construct(array $params = [])
 	{
@@ -28,8 +28,8 @@ class DecorController extends Base
 		$this->userModel = new User(App::getConnection());
 		$this->favoritesModel = new Favorites(App::getConnection());
 		$this->categoryMainModel = new CategoryMain(App::getConnection());
-		$this->decorMainModel = new DecorMain(App::getConnection());
-		$this->decorRreviewsModel = new DecorReviews(App::getConnection());
+		$this->hotelMainModel = new HotelMain(App::getConnection());
+		$this->hotelRreviewsModel = new HotelReviews(App::getConnection());
 	}
 
 	public function indexAction()
@@ -46,7 +46,7 @@ class DecorController extends Base
 				if (array_key_exists('price', $_GET)) {
 					$price = explode('-', trim($_GET['price'], '-'));
 					$price = array_map('intval', $price);
-					$maxVal = $this->decorMainModel->getMaxPrice();
+					$maxVal = $this->hotelMainModel->getMaxPrice();
 
 					if ($price[0] <= $price[1] && $price[1] <= $maxVal && $price[1] != 0) {
 						$get['price'] = $price;
@@ -55,15 +55,15 @@ class DecorController extends Base
 					}
 				}
 
-				if (array_key_exists('service', $_GET)) {
-					$service = explode('-', $_GET['service']);
-					$get['service'] = $service;
+				if (array_key_exists('stars', $_GET)) {
+					$stars = explode('-', $_GET['stars']);
+					$get['stars'] = $stars;
 				}
 			}
 
 			// Пагинация.
 			$page = isset($this->params[0]) ? $this->params[0] : 1;
-			$productsCount = count($this->decorMainModel->languageList($get));
+			$productsCount = count($this->hotelMainModel->languageList($get));
 
 			$pag = new Pagination();
 			$pagination = $pag->getLinks(
@@ -90,11 +90,10 @@ class DecorController extends Base
 			}
 
 			// Формируем data.
-			$this->data['filter']['service'] = $this->decorMainModel->getService();
 			$this->data['title'] = $category['full_title'];
 			$this->data['text'] = $category['second_text'];
 			$this->data['page'] = $page;
-			$this->data['product'] = $this->decorMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
+			$this->data['product'] = $this->hotelMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
 			$this->data['favorites'] = $favoritesArr;
 			$this->data['category'] = $controller;
 
@@ -106,8 +105,8 @@ class DecorController extends Base
 			foreach ($this->data['product'] as $key => $value) {
 
 				// Если директория с id товара существует - то находим в ней изображения.
-				if (file_exists(Config::get('decorImgRoot') . $value['id'])) {
-					$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('decorImgRoot') . $value['id']), ['.', '..']));
+				if (file_exists(Config::get('hotelImgRoot') . $value['id'])) {
+					$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('hotelImgRoot') . $value['id']), ['.', '..']));
 				} else {
 					$this->data['product'][$key]['galery'] = false;
 				}
@@ -122,7 +121,7 @@ class DecorController extends Base
 	public function priceFilterAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$maxVal = $this->decorMainModel->getMaxPrice();
+			$maxVal = $this->hotelMainModel->getMaxPrice();
 			echo json_encode($maxVal);
 			die();
 		}
@@ -140,14 +139,14 @@ class DecorController extends Base
 			$id = $params[0];
 
 			// Получаем данныt товара.
-			$product = $this->decorMainModel->languageList(['id' => $id]);
+			$product = $this->hotelMainModel->languageList(['id' => $id]);
 
 			// Получение изображения товара, а так же класса стиля для этого изображения.
-			if (file_exists(Config::get('decorImgRoot') . $id)) {
-				$paths = array_values(array_diff(scandir(Config::get('decorImgRoot') . $id), ['.', '..']));
-				$avatar = Config::get('decorImg') . $id . DS . $paths[0];
+			if (file_exists(Config::get('hotelImgRoot') . $id)) {
+				$paths = array_values(array_diff(scandir(Config::get('hotelImgRoot') . $id), ['.', '..']));
+				$avatar = Config::get('hotelImg') . $id . DS . $paths[0];
 
-				$imageRoot = Config::get('decorImgRoot') . $id . DS . $paths[0];
+				$imageRoot = Config::get('hotelImgRoot') . $id . DS . $paths[0];
 				$imageArr = getimagesize($imageRoot);
 				if ($imageArr[0] < $imageArr[1]) {
 					$avatarClass = 'avatar-width';
@@ -157,7 +156,7 @@ class DecorController extends Base
 			}
 
 			// Получаем отзывы.
-			$reviews = $this->decorRreviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
+			$reviews = $this->hotelRreviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
 			// Получаем имя категории.
 			$category = lcfirst(App::getRouter()->getController(true));
@@ -176,7 +175,7 @@ class DecorController extends Base
 
 		} else {
 
-			App::getRouter()->redirect(App::getRouter()->buildUri('.decor'));
+			App::getRouter()->redirect(App::getRouter()->buildUri('.hotel'));
 
 		}
 
@@ -196,16 +195,16 @@ class DecorController extends Base
 						'active' => '1'
 					];
 
-					$this->decorRreviewsModel->save($this->data);
+					$this->hotelRreviewsModel->save($this->data);
 
 					App::getSession()->addFlash(__('reviews.mes1'));
-					App::getRouter()->redirect(App::getRouter()->buildUri('decor.reviews', [$id]));
+					App::getRouter()->redirect(App::getRouter()->buildUri('hotel.reviews', [$id]));
 				}
 
 			} catch (\Exception $exception) {
 
 				App::getSession()->addFlash($exception->getMessage());
-				App::getRouter()->redirect(App::getRouter()->buildUri('decor.reviews', [$id]));
+				App::getRouter()->redirect(App::getRouter()->buildUri('hotel.reviews', [$id]));
 
 			}
 		}
@@ -221,7 +220,7 @@ class DecorController extends Base
 			$id_product = $_POST['id_product'];
 
 			// Получаем отзывы юзеров.
-			$reviews = $this->decorRreviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
+			$reviews = $this->hotelRreviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
 
 			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
 			if(!empty($reviews)) {
@@ -257,7 +256,7 @@ class DecorController extends Base
 			$id = $params[0];
 
 			// Получаем данные товара.
-			$product = $this->decorMainModel->languageList(['id' => $id]);
+			$product = $this->hotelMainModel->languageList(['id' => $id]);
 
 			// id юзера.
 			$id_user = Session::get('id');
@@ -270,8 +269,8 @@ class DecorController extends Base
 			}
 
 			// Получаем коллекцию изображений. Если директория с id товара существует - то находим в ней изображения.
-			if (file_exists(Config::get('decorImgRoot') . $id)) {
-				$galery = array_values(array_diff(scandir(Config::get('decorImgRoot') . $id), ['.', '..']));
+			if (file_exists(Config::get('hotelImgRoot') . $id)) {
+				$galery = array_values(array_diff(scandir(Config::get('hotelImgRoot') . $id), ['.', '..']));
 			} else {
 				$galery = false;
 			}
@@ -287,7 +286,7 @@ class DecorController extends Base
 
 		} else {
 
-			App::getRouter()->redirect(App::getRouter()->buildUri('.decor'));
+			App::getRouter()->redirect(App::getRouter()->buildUri('.hotel'));
 
 		}
 	}
