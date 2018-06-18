@@ -15,8 +15,20 @@ $router = \App\Core\App::getRouter();
 
                 <div class="goods">
 
-                    <div class="blur">
-                        <img src="<?=Config::get('clothesImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
+                    <?php
+                    $image = Config::get('decorImgRoot') . $data['product']['id'] . DS . $data['galery'][0];
+                    $imageArr = getimagesize($image);
+                    if ($imageArr[0] < $imageArr[1]) {
+                        $imageClass = 'image-width';
+                        $blurClass = 'blur-width';
+                    } else {
+                        $imageClass = 'image-height';
+                        $blurClass = 'blur-height';
+                    }
+                    ?>
+
+                    <div class="blur <?=$blurClass?>">
+                        <img src="<?=Config::get('decorImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
                     </div>
 
                     <h3 class="text"><?=$data['product']['title']?></h3>
@@ -25,8 +37,8 @@ $router = \App\Core\App::getRouter();
 
                         <div class="card">
 
-                            <div class="image">
-                                <img src="<?=Config::get('clothesImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
+                            <div class="image <?=$imageClass?>">
+                                <img src="<?=Config::get('decorImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
                             </div>
 
                             <div class="details text">
@@ -57,13 +69,7 @@ $router = \App\Core\App::getRouter();
 
                             <div class="main-text">
                                 <p><?=$data['product']['text']?></p>
-                                <p><?=__('products.size')?>:
-                                <?=$data['product']['s'] ? 'S ' : ''?>
-                                <?=$data['product']['m'] ? 'M ' : ''?>
-                                <?=$data['product']['l'] ? 'L ' : ''?>
-                                <?=$data['product']['xl'] ? 'XL ' : ''?>
-                                </p>
-                                <p><?=__('products.brand')?>: <?=$data['product']['brand']?></p>
+                                <p><?=__('products.service')?>: <?=explode(' - ', $data['product']['service'])[1]?></p>
                                 <p><?=__('products.price')?>: <?=$data['product']['price']?></p>
                             </div>
 
@@ -94,7 +100,7 @@ $router = \App\Core\App::getRouter();
                             </form>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <a href="<?=$router->buildUri('clothes.reviews', [$data['product']['id']])?>" class="sm-buttons text">
+                        <a href="<?=$router->buildUri('decor.reviews', [$data['product']['id']])?>" class="sm-buttons text">
                             <span><i class="fas fa-comments fa-lg"></i></span>
                             <span><?=__('products.reviews')?></span>
                         </a>
@@ -105,7 +111,7 @@ $router = \App\Core\App::getRouter();
                         <div class="panels">
                             <?php foreach ($data['galery'] as $img): ?>
                             <a href="javascript:void(0)" class="panel">
-                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('clothesImgWeb') . $data['product']['id'] . '/' . $img?>');"></div>
+                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('decorImgWeb') . $data['product']['id'] . '/' . $img?>');"></div>
                             </a>
                             <?php endforeach; ?>
                         </div>
