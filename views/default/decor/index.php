@@ -169,7 +169,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         </div>
 
         <div class="filter text">
-            <form method="get" id="filter-clothes">
+            <form method="get" id="filter-decor">
 
                 <div class="price" id='myform'>
                     <h4><?=__('filter.price')?></h4>
@@ -184,7 +184,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 <input id='price' type='hidden' name='price' />
 
                 <div class="brands">
-                    <h4><?=__('filter.brand')?></h4>
+                    <h4><?=__('filter.service')?></h4>
                     <?php foreach ($data['filter']['service'] as $value): ?>
                     <?php
                         $service = explode(' - ', $value['service']);
@@ -218,5 +218,5 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 </div>
 
 <script type="text/javascript" src="/js/buttons.js"></script>
-<script type="text/javascript" src="/js/filter-clothes.js"></script>
+<script type="text/javascript" src="/js/filter-decor.js"></script>
 <script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>

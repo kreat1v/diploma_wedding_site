@@ -128,40 +128,6 @@ class DecorController extends Base
 		}
 	}
 
-	public function addFavoritesAction()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-			try {
-
-				$this->data = [
-					'id_products' => $_POST['id_products'],
-					'category' => $_POST['category'],
-					'id_users' => $_POST['id_users']
-				];
-
-				$this->favoritesModel->save($this->data);
-
-				echo json_encode([
-					'result' => 'success'
-				]);
-
-				die();
-
-			} catch (\Exception $exception) {
-
-				echo json_encode([
-					'result' => 'error',
-					'msg' => $exception->getMessage()
-				]);
-
-				die();
-
-			}
-
-		}
-	}
-
 	public function reviewsAction()
 	{
 		// Получаем параметры.

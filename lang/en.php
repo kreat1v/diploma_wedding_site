@@ -164,6 +164,7 @@ return [
 		'to' => 'to',
 		'brand' => 'Brand',
 		'size' => 'Size',
+		'service' => 'Type of service',
 		'filter' => 'Filter',
 		'reset' => 'Reset'
 	],
