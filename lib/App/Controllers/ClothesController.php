@@ -95,7 +95,7 @@ class ClothesController extends Base
 			$favorites = $this->favoritesModel->list(['id_users' => $id_user]);
 			$favoritesArr = [];
 			foreach ($favorites as $key => $value) {
-				$favoritesArr[] = $value['id_products'];
+				$favoritesArr[] = $value['id_products'] . $value['category'];
 			}
 
 			// Формируем data.
@@ -106,6 +106,7 @@ class ClothesController extends Base
 			$this->data['page'] = $page;
 			$this->data['product'] = $this->clothesMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
 			$this->data['favorites'] = $favoritesArr;
+			$this->data['category'] = $controller;
 
 			if (isset($get)) {
 				$this->data['get'] = $get;

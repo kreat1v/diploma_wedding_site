@@ -37,7 +37,7 @@ $router = \App\Core\App::getRouter();
 						<td><?=$value['price']?></td>
 						<td><?=isset($value['stock']) ? $value['stock'] : '-'?></td>
 						<td>
-							<a class="sm-buttons" href="<?=$router->buildUri('clothes.view', [$value['id']])?>">
+							<a class="sm-buttons" href="<?=$router->buildUri("$value[category].view", [$value['id']])?>">
 								<?=__('user_favorites.view')?>
 							</a>
 						</td>

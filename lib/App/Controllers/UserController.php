@@ -7,6 +7,7 @@ use App\Entity\MessagesUser;
 use App\Entity\MessagesAdmin;
 use App\Entity\CallsUser;
 use App\Entity\Favorites;
+use App\Entity\Decor\DecorMain;
 use App\Entity\Clothes\ClothesMain;
 use App\Core\App;
 use App\Core\Config;
@@ -18,6 +19,7 @@ class UserController extends Base
 	private $messagesAdminModel;
 	private $callsUserModel;
 	private $favoritesModel;
+	private $decorMainModel;
 	private $clothesMainModel;
 
 	public function __construct(array $params = [])
@@ -29,6 +31,7 @@ class UserController extends Base
 		$this->messagesUserModel = new MessagesUser(App::getConnection());
 		$this->messagesAdminModel = new MessagesAdmin(App::getConnection());
 		$this->callsUserModel = new CallsUser(App::getConnection());
+		$this->decorMainModel = new DecorMain(App::getConnection());
 		$this->clothesMainModel = new ClothesMain(App::getConnection());
 	}
 
@@ -451,7 +454,7 @@ class UserController extends Base
 			// Получаем закладки юзера.
 			$favorites = $this->favoritesModel->list(['id_users' => $id]);
 
-			// Проходимся циклом по массиву закладок. Получаем названия всех используемых моделей. После с помощью функции получаем сами модели. Добавляем всё в массив.
+			// Проходимся циклом по массиву закладок. Получаем названия всех используемых моделей. После с помощью функции получаем сами модели. Добавляем всё в массив. Так же добавляем в каждій єллемент массива название категории.
 			$favoritesArr = [];
 			$favKeys = [];
 			foreach ($favorites as $value) {
@@ -464,6 +467,8 @@ class UserController extends Base
 				} else {
 					$favoritesArr[$value['id']] = $this->searchProduct($favKeys[$nameCategoty], $value['id_products']);
 				}
+
+				$favoritesArr[$value['id']]['category'] = $value['category'];
 			}
 
 			// Отдаём данные.

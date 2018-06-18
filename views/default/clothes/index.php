@@ -2,15 +2,16 @@
 
 use \App\Core\Config;
 
+// Получаем роутер.
 $router = \App\Core\App::getRouter();
-$filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
-// echo '<pre>';
-// print_r($data);
+// Получаем get-запрос.
+$filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
 ?>
 <div class="sections">
 
+    <!-- Заголовок и сопроводительный текст. -->
     <div class="format text">
         <h1><?=$data['title']?></h1>
         <?=$data['text']?>
@@ -20,12 +21,14 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
         <div class="product">
 
+            <!-- Проходим циклом по массиву $data['product'] и обрабатываем данные. -->
             <?php if (!empty($data['product'])):
                 foreach ($data['product'] as $value): ?>
                 <div class="gradient-border">
 
                     <div class="goods">
 
+                        <!-- Получаем информацию об изображении. Добавляем соответствующие классы, в зависимости от размера изображения. -->
                         <?php
                         $image = Config::get('clothesImgRoot') . $value['id'] . DS . $value['galery'][0];
                         $imageArr = getimagesize($image);
@@ -38,14 +41,17 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         }
                         ?>
 
+                        <!-- Размытый фон карточки товара. -->
                         <div class="blur <?=$blurClass?>">
                             <img src="<?=Config::get('clothesImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                         </div>
 
+                        <!-- Заголовок -->
                         <h3 class="text"><?=$value['title']?></h3>
 
                         <div class="top">
 
+                            <!-- Контакты товара и фото. -->
                             <div class="card">
 
                                 <div class="image <?=$imageClass?>">
@@ -76,6 +82,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                             </div>
 
+                            <!-- Описание товара и параметры. -->
                             <div class="body text">
 
                                 <div class="main-text">
@@ -94,6 +101,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                         </div>
 
+                        <!-- Кнопки действий. -->
                         <div class="bt">
                             <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
                             <form method="post">
@@ -105,7 +113,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     <span><?=__('products.basket')?></span>
                                 </button>
                             </form>
-                                <?php if(!in_array($value['id'], $data['favorites'])): ?>
+                                <?php if(!in_array($value['id'] . $data['category'], $data['favorites'])): ?>
                                 <form method="post">
                                     <input class="id_products" type="hidden" name="id_products" value="<?=$value['id']?>">
                                     <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
@@ -123,6 +131,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             </a>
                         </div>
 
+                        <!-- Галерея фото товара. -->
                         <?php if ($value['galery']): ?>
                         <div class="galery">
                             <div class="panels">
@@ -139,6 +148,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 </div>
                 <?php endforeach; ?>
 
+                <!-- Пагинация для вывода карточек товаров. -->
                 <?php if ($data['pagination']): ?>
                 <nav>
                     <ul class="pagination text">
@@ -177,8 +187,10 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         <?php endif; ?>
         </div>
 
+        <!-- Фильтр товаров. -->
         <div class="filter text">
             <form method="get" id="filter-clothes">
+                
                 <div class="sex">
                     <h4><?=__('filter.sex')?></h4>
                     <label>
