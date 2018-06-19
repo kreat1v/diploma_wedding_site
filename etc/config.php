@@ -97,6 +97,13 @@ Config::set('filmingImg', DS.'img'.DS.'filming'.DS);
 Config::set('filmingImgWeb', '/img/filming/');
 
 /**
+ * Leading image
+ */
+Config::set('leadingImgRoot', ROOT.DS.'public'.DS.'img'.DS.'leading'.DS);
+Config::set('leadingImg', DS.'img'.DS.'leading'.DS);
+Config::set('leadingImgWeb', '/img/leading/');
+
+/**
  * Hotel image
  */
 Config::set('hotelImgRoot', ROOT.DS.'public'.DS.'img'.DS.'hotel'.DS);

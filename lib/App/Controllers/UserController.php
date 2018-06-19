@@ -11,6 +11,7 @@ use App\Entity\Decor\DecorMain;
 use App\Entity\Clothes\ClothesMain;
 use App\Entity\Auto\AutoMain;
 use App\Entity\Filming\FilmingMain;
+use App\Entity\Leading\LeadingMain;
 use App\Entity\Hotel\HotelMain;
 use App\Core\App;
 use App\Core\Config;
@@ -26,6 +27,7 @@ class UserController extends Base
 	private $clothesMainModel;
 	private $autoMainModel;
 	private $filmingMainModel;
+	private $leadingMainModel;
 	private $hotelMainModel;
 
 	public function __construct(array $params = [])
@@ -41,6 +43,7 @@ class UserController extends Base
 		$this->clothesMainModel = new ClothesMain(App::getConnection());
 		$this->autoMainModel = new AutoMain(App::getConnection());
 		$this->filmingMainModel = new FilmingMain(App::getConnection());
+		$this->leadingMainModel = new LeadingMain(App::getConnection());
 		$this->hotelMainModel = new HotelMain(App::getConnection());
 	}
 
