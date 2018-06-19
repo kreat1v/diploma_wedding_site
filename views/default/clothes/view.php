@@ -94,7 +94,7 @@ $router = \App\Core\App::getRouter();
                                 <span><?=__('products.basket')?></span>
                             </button>
                         </form>
-                            <?php if(!in_array($data['product']['id'], $data['favorites'])): ?>
+                            <?php if(!in_array($data['product']['id'] . $data['category'], $data['favorites'])): ?>
                             <form method="post">
                                 <input class="id_products" type="hidden" name="id_products" value="<?=$data['product']['id']?>">
                                 <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
@@ -112,7 +112,7 @@ $router = \App\Core\App::getRouter();
                         </a>
                     </div>
 
-                    <?php if ($data['galery']): ?>
+                    <?php if ($data['galery'] && count($data['galery']) > 1): ?>
                     <div class="galery">
                         <div class="panels">
                             <?php foreach ($data['galery'] as $img): ?>

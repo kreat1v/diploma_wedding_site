@@ -2,16 +2,12 @@
 
 use \App\Core\Config;
 
-// Получаем роутер.
 $router = \App\Core\App::getRouter();
-
-// Получаем get-запрос.
 $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
 ?>
 <div class="sections">
 
-    <!-- Заголовок и сопроводительный текст. -->
     <div class="format text">
         <h1><?=$data['title']?></h1>
         <?=$data['text']?>
@@ -21,16 +17,14 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
         <div class="product">
 
-            <!-- Проходим циклом по массиву $data['product'] и обрабатываем данные. -->
             <?php if (!empty($data['product'])):
                 foreach ($data['product'] as $value): ?>
                 <div class="gradient-border">
 
                     <div class="goods">
 
-                        <!-- Получаем информацию об изображении. Добавляем соответствующие классы, в зависимости от размера изображения. -->
                         <?php
-                        $image = Config::get('autoImgRoot') . $value['id'] . DS . $value['galery'][0];
+                        $image = Config::get('cakeImgRoot') . $value['id'] . DS . $value['galery'][0];
                         $imageArr = getimagesize($image);
                         if ($imageArr[0] < $imageArr[1]) {
                             $imageClass = 'image-width';
@@ -41,21 +35,18 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         }
                         ?>
 
-                        <!-- Размытый фон карточки товара. -->
                         <div class="blur <?=$blurClass?>">
-                            <img src="<?=Config::get('autoImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                            <img src="<?=Config::get('cakeImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                         </div>
 
-                        <!-- Заголовок -->
                         <h3 class="text"><?=$value['title']?></h3>
 
                         <div class="top">
 
-                            <!-- Контакты товара и фото. -->
                             <div class="card">
 
                                 <div class="image <?=$imageClass?>">
-                                    <img src="<?=Config::get('autoImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                                    <img src="<?=Config::get('cakeImg') . $value['id'] . DS . $value['galery'][0]?>"/>
                                 </div>
 
                                 <div class="details text">
@@ -82,12 +73,10 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                             </div>
 
-                            <!-- Описание товара и параметры. -->
                             <div class="body text">
 
                                 <div class="main-text">
                                     <p><?=$value['text']?></p>
-                                    <p><?=__('products.brand')?>: <?=$value['brand']?></p>
                                     <p><?=__('products.price')?>: <?=$value['price']?></p>
                                 </div>
 
@@ -95,7 +84,6 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                         </div>
 
-                        <!-- Кнопки действий. -->
                         <div class="bt">
                             <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
                             <form method="post">
@@ -119,19 +107,18 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                 </form>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <a href="<?=$router->buildUri('auto.reviews', [$value['id']])?>" class="sm-buttons text">
+                            <a href="<?=$router->buildUri('cake.reviews', [$value['id']])?>" class="sm-buttons text">
                                 <span><i class="fas fa-comments fa-lg"></i></span>
                                 <span><?=__('products.reviews')?></span>
                             </a>
                         </div>
 
-                        <!-- Галерея фото товара. -->
                         <?php if ($value['galery'] && count($value['galery']) > 1): ?>
                         <div class="galery">
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>
                                 <a href="javascript:void(0)" class="panel">
-                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('autoImgWeb') . $value['id'] . '/' . $img?>');"></div>
+                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('cakeImgWeb') . $value['id'] . '/' . $img?>');"></div>
                                 </a>
                                 <?php endforeach; ?>
                             </div>
@@ -142,32 +129,31 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 </div>
                 <?php endforeach; ?>
 
-                <!-- Пагинация для вывода карточек товаров. -->
                 <?php if ($data['pagination']): ?>
                 <nav>
                     <ul class="pagination text">
                         <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('auto.index', [1]).$filter : ''?>">
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('cake.index', [1]).$filter : ''?>">
                                 <span>&laquo;</span>
                             </a>
                         </li>
 
                         <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('auto.index', [$data['pagination']['back']]).$filter : ''?>"><?=__('pagination.previous')?></a>
+                            <a href="<?=$data['pagination']['back'] ? $router->buildUri('cake.index', [$data['pagination']['back']]).$filter : ''?>"><?=__('pagination.previous')?></a>
                         </li>
 
                         <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
                         <li class="<?=$data['page'] == $key ? 'active' : ''?>">
-                            <a href="<?=$router->buildUri('auto.index', [$key]).$filter?>"><?=$key?></a>
+                            <a href="<?=$router->buildUri('cake.index', [$key]).$filter?>"><?=$key?></a>
                         </li>
                         <?php endforeach; ?>
 
                         <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('auto.index', [$data['pagination']['forward']]).$filter : ''?>"><?=__('pagination.next')?></a>
+                            <a href="<?=$data['pagination']['forward'] ? $router->buildUri('cake.index', [$data['pagination']['forward']]).$filter : ''?>"><?=__('pagination.next')?></a>
                         </li>
 
                         <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                            <a href="<?=$router->buildUri('auto.index', [$data['pagination']['last']]).$filter?>">
+                            <a href="<?=$router->buildUri('cake.index', [$data['pagination']['last']]).$filter?>">
                                 <span>&raquo;</span>
                             </a>
                         </li>
@@ -181,10 +167,8 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         <?php endif; ?>
         </div>
 
-        <!-- Фильтр товаров. -->
         <div class="filter text">
-            <form method="get" id="filter-auto">
-
+            <form method="get" id="filter-cake">
 
                 <div class="price" id='myform'>
                     <h4><?=__('filter.price')?></h4>
@@ -198,28 +182,12 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 </div>
                 <input id='price' type='hidden' name='price' />
 
-                <div class="brands">
-                    <h4><?=__('filter.brand')?></h4>
-                    <?php foreach ($data['filter']['brand'] as $value): ?>
-                    <label>
-                        <input type="checkbox" value="<?=lcfirst($value['brand'])?>" class="option-input checkbox"
-                        <?php
-                        if (isset($data['get']['brand']) && array_search(lcfirst($value['brand']), $data['get']['brand']) !== false) {
-                            echo "checked";
-                        }
-                        ?>
-                        /><?=$value['brand']?>
-                    </label>
-                    <?php endforeach; ?>
-                </div>
-                <input id='brand' type='hidden' name='brand' />
-
                 <div class="bt">
                     <div>
                         <input type="submit" value="<?=__('filter.filter')?>" class="sm-buttons text" />
                     </div>
                     <div>
-                        <a class="sm-buttons" href="<?=$router->buildUri('.auto')?>"><?=__('filter.reset')?></a>
+                        <a class="sm-buttons" href="<?=$router->buildUri('.cake')?>"><?=__('filter.reset')?></a>
                     </div>
                 </div>
             </form>
@@ -230,5 +198,5 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 </div>
 
 <script type="text/javascript" src="/js/buttons.js"></script>
-<script type="text/javascript" src="/js/filter-auto.js"></script>
+<script type="text/javascript" src="/js/filter-cake.js"></script>
 <script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>

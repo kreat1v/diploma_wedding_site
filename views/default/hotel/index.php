@@ -119,7 +119,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             </a>
                         </div>
 
-                        <?php if ($value['galery']): ?>
+                        <?php if ($value['galery'] && count($value['galery']) > 1): ?>
                         <div class="galery">
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>

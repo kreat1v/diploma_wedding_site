@@ -132,7 +132,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         </div>
 
                         <!-- Галерея фото товара. -->
-                        <?php if ($value['galery']): ?>
+                        <?php if ($value['galery'] && count($value['galery']) > 1): ?>
                         <div class="galery">
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>
@@ -190,7 +190,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         <!-- Фильтр товаров. -->
         <div class="filter text">
             <form method="get" id="filter-clothes">
-                
+
                 <div class="sex">
                     <h4><?=__('filter.sex')?></h4>
                     <label>

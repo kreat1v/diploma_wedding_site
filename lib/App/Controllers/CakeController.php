@@ -10,16 +10,16 @@ use App\Core\Session;
 use App\Entity\User;
 use App\Entity\Favorites;
 use App\Entity\Category\CategoryMain;
-use App\Entity\Auto\AutoMain;
-use App\Entity\Auto\AutoReviews;
+use App\Entity\Cake\CakeMain;
+use App\Entity\Cake\CakeReviews;
 
-class AutoController extends Base
+class CakeController extends Base
 {
 	private $userModel;
 	private $favoritesModel;
 	private $categoryMainModel;
-	private $autoMainModel;
-	private $autoReviewsModel;
+	private $cakeMainModel;
+	private $cakeReviewsModel;
 
 	public function __construct(array $params = [])
 	{
@@ -28,8 +28,8 @@ class AutoController extends Base
 		$this->userModel = new User(App::getConnection());
 		$this->favoritesModel = new Favorites(App::getConnection());
 		$this->categoryMainModel = new CategoryMain(App::getConnection());
-		$this->autoMainModel = new AutoMain(App::getConnection());
-		$this->autoReviewsModel = new AutoReviews(App::getConnection());
+		$this->cakeMainModel = new CakeMain(App::getConnection());
+		$this->cakeReviewsModel = new CakeReviews(App::getConnection());
 	}
 
 	public function indexAction()
@@ -46,7 +46,7 @@ class AutoController extends Base
 				if (array_key_exists('price', $_GET)) {
 					$price = explode('-', trim($_GET['price'], '-'));
 					$price = array_map('intval', $price);
-					$maxVal = $this->autoMainModel->getMaxPrice();
+					$maxVal = $this->cakeMainModel->getMaxPrice();
 
 					if ($price[0] <= $price[1] && $price[1] <= $maxVal && $price[1] != 0) {
 						$get['price'] = $price;
@@ -54,16 +54,11 @@ class AutoController extends Base
 						$get['price'] = [0, $maxVal['max']];
 					}
 				}
-
-				if (array_key_exists('brand', $_GET)) {
-					$brand = explode('-', $_GET['brand']);
-					$get['brand'] = $brand;
-				}
 			}
 
 			// Пагинация.
 			$page = isset($this->params[0]) ? $this->params[0] : 1;
-			$productsCount = count($this->autoMainModel->languageList($get));
+			$productsCount = count($this->cakeMainModel->languageList($get));
 
 			$pag = new Pagination();
 			$pagination = $pag->getLinks(
@@ -90,11 +85,10 @@ class AutoController extends Base
 			}
 
 			// Формируем data.
-			$this->data['filter']['brand'] = $this->autoMainModel->getBrand();
 			$this->data['title'] = $category['full_title'];
 			$this->data['text'] = $category['second_text'];
 			$this->data['page'] = $page;
-			$this->data['product'] = $this->autoMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
+			$this->data['product'] = $this->cakeMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
 			$this->data['favorites'] = $favoritesArr;
 			$this->data['category'] = $controller;
 
@@ -106,8 +100,8 @@ class AutoController extends Base
 			foreach ($this->data['product'] as $key => $value) {
 
 				// Если директория с id товара существует - то находим в ней изображения.
-				if (file_exists(Config::get('autoImgRoot') . $value['id'])) {
-					$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('autoImgRoot') . $value['id']), ['.', '..']));
+				if (file_exists(Config::get('cakeImgRoot') . $value['id'])) {
+					$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('cakeImgRoot') . $value['id']), ['.', '..']));
 				} else {
 					$this->data['product'][$key]['galery'] = false;
 				}
@@ -122,7 +116,7 @@ class AutoController extends Base
 	public function priceFilterAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$maxVal = $this->autoMainModel->getMaxPrice();
+			$maxVal = $this->cakeMainModel->getMaxPrice();
 			echo json_encode($maxVal);
 			die();
 		}
@@ -140,14 +134,14 @@ class AutoController extends Base
 			$id = $params[0];
 
 			// Получаем данныt товара.
-			$product = $this->autoMainModel->languageList(['id' => $id]);
+			$product = $this->cakeMainModel->languageList(['id' => $id]);
 
 			// Получение изображения товара, а так же класса стиля для этого изображения.
-			if (file_exists(Config::get('autoImgRoot') . $id)) {
-				$paths = array_values(array_diff(scandir(Config::get('autoImgRoot') . $id), ['.', '..']));
-				$avatar = Config::get('autoImg') . $id . DS . $paths[0];
+			if (file_exists(Config::get('cakeImgRoot') . $id)) {
+				$paths = array_values(array_diff(scandir(Config::get('cakeImgRoot') . $id), ['.', '..']));
+				$avatar = Config::get('cakeImg') . $id . DS . $paths[0];
 
-				$imageRoot = Config::get('autoImgRoot') . $id . DS . $paths[0];
+				$imageRoot = Config::get('cakeImgRoot') . $id . DS . $paths[0];
 				$imageArr = getimagesize($imageRoot);
 				if ($imageArr[0] < $imageArr[1]) {
 					$avatarClass = 'avatar-width';
@@ -157,7 +151,7 @@ class AutoController extends Base
 			}
 
 			// Получаем отзывы.
-			$reviews = $this->autoReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
+			$reviews = $this->cakeReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
 			// Получаем имя категории.
 			$category = lcfirst(App::getRouter()->getController(true));
@@ -176,7 +170,7 @@ class AutoController extends Base
 
 		} else {
 
-			App::getRouter()->redirect(App::getRouter()->buildUri('.auto'));
+			App::getRouter()->redirect(App::getRouter()->buildUri('.cake'));
 
 		}
 
@@ -196,16 +190,16 @@ class AutoController extends Base
 						'active' => '1'
 					];
 
-					$this->autoReviewsModel->save($this->data);
+					$this->cakeReviewsModel->save($this->data);
 
 					App::getSession()->addFlash(__('reviews.mes1'));
-					App::getRouter()->redirect(App::getRouter()->buildUri('auto.reviews', [$id]));
+					App::getRouter()->redirect(App::getRouter()->buildUri('cake.reviews', [$id]));
 				}
 
 			} catch (\Exception $exception) {
 
 				App::getSession()->addFlash($exception->getMessage());
-				App::getRouter()->redirect(App::getRouter()->buildUri('auto.reviews', [$id]));
+				App::getRouter()->redirect(App::getRouter()->buildUri('cake.reviews', [$id]));
 
 			}
 		}
@@ -221,7 +215,7 @@ class AutoController extends Base
 			$id_product = $_POST['id_product'];
 
 			// Получаем отзывы юзеров.
-			$reviews = $this->autoReviewsModel->reviews(['id_product' => $id_product, 'active' => 1], [$limit, $start]);
+			$reviews = $this->cakeReviewsModel->reviews(['id_product' => $id_product,'active' => 1], [$limit, $start]);
 
 			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
 			if(!empty($reviews)) {
@@ -260,7 +254,7 @@ class AutoController extends Base
 			$controller = lcfirst(App::getRouter()->getController(true));
 
 			// Получаем данные товара.
-			$product = $this->autoMainModel->languageList(['id' => $id]);
+			$product = $this->cakeMainModel->languageList(['id' => $id]);
 
 			// id юзера.
 			$id_user = Session::get('id');
@@ -273,8 +267,8 @@ class AutoController extends Base
 			}
 
 			// Получаем коллекцию изображений. Если директория с id товара существует - то находим в ней изображения.
-			if (file_exists(Config::get('autoImgRoot') . $id)) {
-				$galery = array_values(array_diff(scandir(Config::get('autoImgRoot') . $id), ['.', '..']));
+			if (file_exists(Config::get('cakeImgRoot') . $id)) {
+				$galery = array_values(array_diff(scandir(Config::get('cakeImgRoot') . $id), ['.', '..']));
 			} else {
 				$galery = false;
 			}
@@ -291,7 +285,7 @@ class AutoController extends Base
 
 		} else {
 
-			App::getRouter()->redirect(App::getRouter()->buildUri('.auto'));
+			App::getRouter()->redirect(App::getRouter()->buildUri('.cake'));
 
 		}
 	}

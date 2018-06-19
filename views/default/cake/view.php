@@ -16,7 +16,7 @@ $router = \App\Core\App::getRouter();
                 <div class="goods">
 
                     <?php
-                    $image = Config::get('hotelImgRoot') . $data['product']['id'] . DS . $data['galery'][0];
+                    $image = Config::get('cakeImgRoot') . $data['product']['id'] . DS . $data['galery'][0];
                     $imageArr = getimagesize($image);
                     if ($imageArr[0] < $imageArr[1]) {
                         $imageClass = 'image-width';
@@ -28,7 +28,7 @@ $router = \App\Core\App::getRouter();
                     ?>
 
                     <div class="blur <?=$blurClass?>">
-                        <img src="<?=Config::get('hotelImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
+                        <img src="<?=Config::get('cakeImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
                     </div>
 
                     <h3 class="text"><?=$data['product']['title']?></h3>
@@ -38,7 +38,7 @@ $router = \App\Core\App::getRouter();
                         <div class="card">
 
                             <div class="image <?=$imageClass?>">
-                                <img src="<?=Config::get('hotelImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
+                                <img src="<?=Config::get('cakeImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
                             </div>
 
                             <div class="details text">
@@ -69,12 +69,6 @@ $router = \App\Core\App::getRouter();
 
                             <div class="main-text">
                                 <p><?=$data['product']['text']?></p>
-                                <p>
-                                    <?=__('products.stars') . ': '?>
-                                    <?php for ($i = 1; $i <= $data['product']['stars']; $i++): ?>
-                                    <i class="fas fa-star"></i>
-                                    <?php endfor; ?>
-                                </p>
                                 <p><?=__('products.price')?>: <?=$data['product']['price']?></p>
                             </div>
 
@@ -105,7 +99,7 @@ $router = \App\Core\App::getRouter();
                             </form>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <a href="<?=$router->buildUri('hotel.reviews', [$data['product']['id']])?>" class="sm-buttons text">
+                        <a href="<?=$router->buildUri('cake.reviews', [$data['product']['id']])?>" class="sm-buttons text">
                             <span><i class="fas fa-comments fa-lg"></i></span>
                             <span><?=__('products.reviews')?></span>
                         </a>
@@ -116,7 +110,7 @@ $router = \App\Core\App::getRouter();
                         <div class="panels">
                             <?php foreach ($data['galery'] as $img): ?>
                             <a href="javascript:void(0)" class="panel">
-                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('hotelImgWeb') . $data['product']['id'] . '/' . $img?>');"></div>
+                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('cakeImgWeb') . $data['product']['id'] . '/' . $img?>');"></div>
                             </a>
                             <?php endforeach; ?>
                         </div>

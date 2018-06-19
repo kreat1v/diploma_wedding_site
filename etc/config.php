@@ -104,6 +104,13 @@ Config::set('leadingImg', DS.'img'.DS.'leading'.DS);
 Config::set('leadingImgWeb', '/img/leading/');
 
 /**
+ * Cake image
+ */
+Config::set('cakeImgRoot', ROOT.DS.'public'.DS.'img'.DS.'cake'.DS);
+Config::set('cakeImg', DS.'img'.DS.'cake'.DS);
+Config::set('cakeImgWeb', '/img/cake/');
+
+/**
  * Hotel image
  */
 Config::set('hotelImgRoot', ROOT.DS.'public'.DS.'img'.DS.'hotel'.DS);

@@ -256,6 +256,9 @@ class DecorController extends Base
 			// Получем id товара.
 			$id = $params[0];
 
+			// Получаем имя категории.
+			$controller = lcfirst(App::getRouter()->getController(true));
+
 			// Получаем данные товара.
 			$product = $this->decorMainModel->languageList(['id' => $id]);
 
@@ -266,7 +269,7 @@ class DecorController extends Base
 			$favorites = $this->favoritesModel->list(['id_users' => $id_user]);
 			$favoritesArr = [];
 			foreach ($favorites as $key => $value) {
-				$favoritesArr[] = $value['id_products'];
+				$favoritesArr[] = $value['id_products'] . $value['category'];
 			}
 
 			// Получаем коллекцию изображений. Если директория с id товара существует - то находим в ней изображения.
@@ -281,6 +284,7 @@ class DecorController extends Base
 				$this->data['product'] = $product[0];
 				$this->data['galery'] = $galery;
 				$this->data['favorites'] = $favoritesArr;
+				$this->data['category'] = $controller;
 			} else {
 				$this->page404();
 			}
