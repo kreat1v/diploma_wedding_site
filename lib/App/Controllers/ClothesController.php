@@ -38,6 +38,7 @@ class ClothesController extends Base
 		$controller = lcfirst(App::getRouter()->getController(true));
 		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
 
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
 		if ($category['active'] != 0) {
 
 			// Если есть GET-запрос, то формируем данные из него.
@@ -179,84 +180,92 @@ class ClothesController extends Base
 
 	public function reviewsAction()
 	{
-		// Получаем параметры.
-		$params = App::getRouter()->getParams();
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getController(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
 
-		// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
-		if (!empty($params)) {
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
 
-			// Получем id товара.
-			$id = $params[0];
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
 
-			// Получаем данныt товара.
-			$product = $this->clothesMainModel->languageList(['id' => $id]);
+			// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
+			if (!empty($params)) {
 
-			// Получение изображения товара, а так же класса стиля для этого изображения.
-			if (file_exists(Config::get('clothesImgRoot') . $id)) {
-				$paths = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
-				$avatar = Config::get('clothesImg') . $id . DS . $paths[0];
+				// Получем id товара.
+				$id = $params[0];
 
-				$imageRoot = Config::get('clothesImgRoot') . $id . DS . $paths[0];
-				$imageArr = getimagesize($imageRoot);
-				if ($imageArr[0] < $imageArr[1]) {
-					$avatarClass = 'avatar-width';
-				} else {
-					$avatarClass = 'avatar-height';
+				// Получаем данныt товара.
+				$product = $this->clothesMainModel->languageList(['id' => $id]);
+
+				// Получение изображения товара, а так же класса стиля для этого изображения.
+				if (file_exists(Config::get('clothesImgRoot') . $id)) {
+					$paths = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
+					$avatar = Config::get('clothesImg') . $id . DS . $paths[0];
+
+					$imageRoot = Config::get('clothesImgRoot') . $id . DS . $paths[0];
+					$imageArr = getimagesize($imageRoot);
+					if ($imageArr[0] < $imageArr[1]) {
+						$avatarClass = 'avatar-width';
+					} else {
+						$avatarClass = 'avatar-height';
+					}
 				}
+
+				// Получаем отзывы.
+				$reviews = $this->clothesReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
+
+				// Отдаём данные.
+				if (!empty($product)) {
+					$this->data['avatar'] = $avatar;
+					$this->data['avatar-class'] = $avatarClass;
+					$this->data['title'] = $product[0]['title'];
+					$this->data['reviews'] = $reviews;
+					$this->data['category'] = $controller;
+					$this->data['id_product'] = $id;
+				} else {
+					$this->page404();
+				}
+
+			} else {
+
+				App::getRouter()->redirect(App::getRouter()->buildUri('.clothes'));
+
 			}
 
-			// Получаем отзывы.
-			$reviews = $this->clothesReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				try {
 
-			// Получаем имя категории.
-			$category = lcfirst(App::getRouter()->getController(true));
+					// Получаем id юзера.
+					$id_users = App::getSession()->get('id');
 
-			// Отдаём данные.
-			if (!empty($product)) {
-				$this->data['avatar'] = $avatar;
-				$this->data['avatar-class'] = $avatarClass;
-				$this->data['title'] = $product[0]['title'];
-				$this->data['reviews'] = $reviews;
-				$this->data['category'] = $category;
-				$this->data['id_product'] = $id;
-			} else {
-				$this->page404();
+					// Отправка отзыва.
+					if (isset($_POST['button']) && $_POST['button'] == 'send') {
+						$this->data = [
+							'id_product' => $id,
+							'id_users' => $id_users,
+							'reviews' => $_POST['reviews'],
+							'date' => date('Y-m-d H:i:s'),
+							'active' => '1'
+						];
+
+						$this->clothesReviewsModel->save($this->data);
+
+						App::getSession()->addFlash(__('reviews.mes1'));
+						App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
+					}
+
+				} catch (\Exception $exception) {
+
+					App::getSession()->addFlash($exception->getMessage());
+					App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
+
+				}
 			}
 
 		} else {
-
-			App::getRouter()->redirect(App::getRouter()->buildUri('.clothes'));
-
-		}
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			try {
-
-				// Получаем id юзера.
-				$id_users = App::getSession()->get('id');
-
-				// Отправка отзыва.
-				if (isset($_POST['button']) && $_POST['button'] == 'send') {
-					$this->data = [
-						'id_product' => $id,
-						'id_users' => $id_users,
-						'reviews' => $_POST['reviews'],
-						'date' => date('Y-m-d H:i:s'),
-						'active' => '1'
-					];
-
-					$this->clothesReviewsModel->save($this->data);
-
-					App::getSession()->addFlash(__('reviews.mes1'));
-					App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
-				}
-
-			} catch (\Exception $exception) {
-
-				App::getSession()->addFlash($exception->getMessage());
-				App::getRouter()->redirect(App::getRouter()->buildUri('clothes.reviews', [$id]));
-
-			}
+			$this->page404();
 		}
 	}
 
@@ -296,52 +305,63 @@ class ClothesController extends Base
 
 	public function viewAction()
 	{
-		// Получаем параметры.
-		$params = App::getRouter()->getParams();
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getController(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
 
-		// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
-		if (!empty($params)) {
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
 
-			// Получем id товара.
-			$id = $params[0];
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
 
-			// Получаем имя категории.
-			$controller = lcfirst(App::getRouter()->getController(true));
+			// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
+			if (!empty($params)) {
 
-			// Получаем данные товара.
-			$product = $this->clothesMainModel->languageList(['id' => $id]);
+				// Получем id товара.
+				$id = $params[0];
 
-			// id юзера.
-			$id_user = Session::get('id');
+				// Получаем имя категории.
+				$controller = lcfirst(App::getRouter()->getController(true));
 
-			// Получаем закладки юзера.
-			$favorites = $this->favoritesModel->list(['id_users' => $id_user]);
-			$favoritesArr = [];
-			foreach ($favorites as $key => $value) {
-				$favoritesArr[] = $value['id_products'] . $value['category'];
-			}
+				// Получаем данные товара.
+				$product = $this->clothesMainModel->languageList(['id' => $id]);
 
-			// Получаем коллекцию изображений. Если директория с id товара существует - то находим в ней изображения.
-			if (file_exists(Config::get('clothesImgRoot') . $id)) {
-				$galery = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
+				// id юзера.
+				$id_user = Session::get('id');
+
+				// Получаем закладки юзера.
+				$favorites = $this->favoritesModel->list(['id_users' => $id_user]);
+				$favoritesArr = [];
+				foreach ($favorites as $key => $value) {
+					$favoritesArr[] = $value['id_products'] . $value['category'];
+				}
+
+				// Получаем коллекцию изображений. Если директория с id товара существует - то находим в ней изображения.
+				if (file_exists(Config::get('clothesImgRoot') . $id)) {
+					$galery = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $id), ['.', '..']));
+				} else {
+					$galery = false;
+				}
+
+				// Отдаём данные.
+				if (!empty($product)) {
+					$this->data['product'] = $product[0];
+					$this->data['galery'] = $galery;
+					$this->data['favorites'] = $favoritesArr;
+					$this->data['category'] = $controller;
+				} else {
+					$this->page404();
+				}
+
 			} else {
-				$galery = false;
-			}
 
-			// Отдаём данные.
-			if (!empty($product)) {
-				$this->data['product'] = $product[0];
-				$this->data['galery'] = $galery;
-				$this->data['favorites'] = $favoritesArr;
-				$this->data['category'] = $controller;
-			} else {
-				$this->page404();
+				App::getRouter()->redirect(App::getRouter()->buildUri('.clothes'));
+
 			}
 
 		} else {
-
-			App::getRouter()->redirect(App::getRouter()->buildUri('.clothes'));
-
+			$this->page404();
 		}
 	}
 }
