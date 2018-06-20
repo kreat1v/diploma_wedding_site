@@ -36,7 +36,9 @@ class AutoMain extends \App\Entity\Base
 			'inst',
 			'telegram',
 			'price',
-			'brand'
+			'stock',
+			'brand',
+			'active'
 		];
 	}
 

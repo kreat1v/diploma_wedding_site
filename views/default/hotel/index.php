@@ -21,6 +21,10 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                 foreach ($data['product'] as $value): ?>
                 <div class="gradient-border">
 
+                    <?php if (isset($value['stock'])): ?>
+                    <div class="ribbon text"><span><?=__('products.stock')?></span></div>
+                    <?php endif; ?>
+
                     <div class="goods">
 
                         <?php
@@ -83,7 +87,19 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                         <i class="fas fa-star"></i>
                                         <?php endfor; ?>
                                     </p>
-                                    <p><?=__('products.price')?>: <?=$value['price']?></p>
+                                    <p>
+                                        <span>
+                                            <?=__('products.price')?>:
+                                        </span>
+                                        <span class="<?=isset($value['stock']) ? 'old-price' : ''?>">
+                                            <?=$value['price']?>
+                                        </span>
+                                        <?php if (isset($value['stock'])): ?>
+                                        <span>
+                                            <?=$value['stock']?>
+                                        </span>
+                                        <?php endif; ?>
+                                    </p>
                                 </div>
 
                             </div>

@@ -53,7 +53,7 @@ if(Session::get('id')) {
 						<a href="<?=$router->buildUri('.category')?>"><?=__('admin_menu.category')?></a>
 					</li>
 					<li>
-						<a href="#"><?=__('admin_menu.goods')?></a>
+						<a href="<?=$router->buildUri('.product')?>"><?=__('admin_menu.goods')?></a>
 						<ul>
 							<?=$data['category']?>
 						</ul>

@@ -35,7 +35,10 @@ class HotelMain extends \App\Entity\Base
 			'fb',
 			'inst',
 			'telegram',
-			'stars'
+			'stars',
+			'price',
+			'stock',
+			'active'
 		];
 	}
 

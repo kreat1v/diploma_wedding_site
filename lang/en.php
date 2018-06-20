@@ -141,6 +141,7 @@ return [
 		'service' => 'Type of service',
 		'stars' => 'Number of stars',
 		'price' => 'Price',
+		'stock' => 'Stock',
 		'basket' => 'Add to cart',
 		'favorites' => 'To favorites',
 		'reviews' => 'Reviews',
@@ -225,7 +226,14 @@ return [
 		'title1' => 'Service Editor',
 		'category' => 'Category',
 		'count' => 'Number of services',
-		'view' => 'View'
+		'view' => 'View',
+		'id' => 'Service ID',
+		'name' => 'Name',
+		'activity1' => 'Service Activity',
+		'activity2' => 'The service is active',
+		'stock1' => 'Stock',
+		'stock2' => 'Promotion is active',
+		'edit' => 'Edit'
 	],
 
 	'admin_feedback' => [

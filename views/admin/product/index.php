@@ -27,7 +27,7 @@ $router = \App\Core\App::getRouter();
                     echo $data[$categoryName];
                     ?></td>
 					<td>
-                        <a class="sm-buttons" href="<?=$router->buildUri('admin.product.edit', [$category['id_category']])?>">
+                        <a class="sm-buttons" href="<?=$router->buildUri("product.$categoryName")?>">
                             <?=__('admin_product.view')?>
                         </a>
                     </td>

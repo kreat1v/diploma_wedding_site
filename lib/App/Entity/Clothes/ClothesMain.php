@@ -46,8 +46,10 @@ class ClothesMain extends \App\Entity\Base
 			'inst',
 			'telegram',
 			'price',
+			'stock',
 			'sex',
-			'brand'
+			'brand',
+			'active'
 		];
 	}
 

@@ -35,7 +35,9 @@ class CakeMain extends \App\Entity\Base
 			'fb',
 			'inst',
 			'telegram',
-			'price'
+			'price',
+			'stock',
+			'active'
 		];
 	}
 

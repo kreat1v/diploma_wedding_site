@@ -13,6 +13,10 @@ $router = \App\Core\App::getRouter();
 
             <div class="gradient-border">
 
+                <?php if (isset($data['product']['stock'])): ?>
+                <div class="ribbon text"><span><?=__('products.stock')?></span></div>
+                <?php endif; ?>
+
                 <div class="goods">
 
                     <?php
@@ -69,7 +73,19 @@ $router = \App\Core\App::getRouter();
 
                             <div class="main-text">
                                 <p><?=$data['product']['text']?></p>
-                                <p><?=__('products.price')?>: <?=$data['product']['price']?></p>
+                                <p>
+                                    <span>
+                                        <?=__('products.price')?>:
+                                    </span>
+                                    <span class="<?=isset($data['product']['stock']) ? 'old-price' : ''?>">
+                                        <?=$data['product']['price']?>
+                                    </span>
+                                    <?php if (isset($data['product']['stock'])): ?>
+                                    <span>
+                                        <?=$data['product']['stock']?>
+                                    </span>
+                                    <?php endif; ?>
+                                </p>
                             </div>
 
                         </div>

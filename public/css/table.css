@@ -4,6 +4,7 @@
     text-align: center;
     width: 100%;
     margin-bottom: 30px;
+    font-size: 15px;
 }
 
 .table th {
@@ -26,4 +27,8 @@
     background: none;
     color: #FFF;
     font-size: 15px;
+}
+
+.table button, .table .sm-buttons {
+    font-size: 12px;
 }
