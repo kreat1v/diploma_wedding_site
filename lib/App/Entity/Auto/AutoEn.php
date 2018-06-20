@@ -2,7 +2,7 @@
 
 namespace App\Entity\Auto;
 
-class AutosEn extends \App\Entity\Base
+class AutoEn extends \App\Entity\Base
 {
 	public function getTableName()
 	{

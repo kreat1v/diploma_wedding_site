@@ -67,7 +67,7 @@ class LeadingController extends Base
 				$page,
 				Config::get('pagButtonLimit'));
 
-			if (!empty($pagination)) {
+			if (!empty($pagination) && !$pagination['page404']) {
 				$this->data['pagination'] = $pagination;
 			} else {
 				$this->data['pagination'] = null;
@@ -84,28 +84,32 @@ class LeadingController extends Base
 				$favoritesArr[] = $value['id_products'] . $value['category'];
 			}
 
-			// Формируем data.
-			$this->data['title'] = $category['full_title'];
-			$this->data['text'] = $category['second_text'];
-			$this->data['page'] = $page;
-			$this->data['product'] = $this->leadingMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
-			$this->data['favorites'] = $favoritesArr;
-			$this->data['category'] = $controller;
+			// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+			if (!$pagination['page404']) {
+				$this->data['title'] = $category['full_title'];
+				$this->data['text'] = $category['second_text'];
+				$this->data['page'] = $page;
+				$this->data['product'] = $this->leadingMainModel->languageList($get, [Config::get('pagLimit'), $offset]);
+				$this->data['favorites'] = $favoritesArr;
+				$this->data['category'] = $controller;
 
-			if (isset($get)) {
-				$this->data['get'] = $get;
-			}
-
-			// Получаем коллекции изображений.
-			foreach ($this->data['product'] as $key => $value) {
-
-				// Если директория с id товара существует - то находим в ней изображения.
-				if (file_exists(Config::get('leadingImgRoot') . $value['id'])) {
-					$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('leadingImgRoot') . $value['id']), ['.', '..']));
-				} else {
-					$this->data['product'][$key]['galery'] = false;
+				if (isset($get)) {
+					$this->data['get'] = $get;
 				}
 
+				// Получаем коллекции изображений.
+				foreach ($this->data['product'] as $key => $value) {
+
+					// Если директория с id товара существует - то находим в ней изображения.
+					if (file_exists(Config::get('leadingImgRoot') . $value['id'])) {
+						$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('leadingImgRoot') . $value['id']), ['.', '..']));
+					} else {
+						$this->data['product'][$key]['galery'] = false;
+					}
+
+				}
+			} else {
+				$this->page404();
 			}
 		} else {
 			$this->page404();
