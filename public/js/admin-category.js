@@ -63,10 +63,8 @@ $(document).ready(function() {
         switch (id) {
 
             case 'title-ru':
-                console.log(1);
                 var title = /^[а-яё]+$/iu;
                 if (val != '' && title.test(val)) {
-                    console.log(2);
                     errorOff($(context));
                 } else {
                     errorOn($(context));
