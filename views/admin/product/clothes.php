@@ -1,17 +1,27 @@
 <?php
 
+use \App\Core\Config;
+
 $router = \App\Core\App::getRouter();
+$edit = isset($data['edit']) ? true : false;
 
 ?>
 
 <div class="container">
     <div class="category">
 
+        <!-- Если есть $data со списком услуг - выводим таблицу всех доступных услуг в данной категории. -->
         <?php if (isset($data['product'])): ?>
 
             <div class="title text">
                 <h2><?=__('admin_product.title1')?></h2>
-                <h5><?=__('admin_product.title1')?></h5>
+                <h4><?=$data['category']?></h4>
+            </div>
+
+            <div class="bt text">
+                <a class="sm-buttons" href="<?=$router->buildUri('product.clothes', ['new'])?>">
+                    <?=__('admin_product.new')?>
+                </a>
             </div>
 
             <div class="table text">
@@ -26,17 +36,17 @@ $router = \App\Core\App::getRouter();
                     </tr>
     				<?php foreach ($data['product'] as $value): ?>
     				<tr>
-    					<td><?=$value['id']?></td>
+    					<td><?=$value['id_clothes']?></td>
     					<td><?=$value['title']?></td>
                         <td><?=$value['active'] == 1 ? __('admin_product.activity2') : '-'?></td>
                         <td><?=$value['stock'] ? __('admin_product.stock2') : '-'?></td>
     					<td>
-                            <a class="sm-buttons" href="<?=$router->buildUri('default.clothes.view', [$value['id']])?>">
+                            <a class="sm-buttons" href="<?=$router->buildUri('default.clothes.view', [$value['id_clothes']])?>">
                                 <?=__('admin_product.view')?>
                             </a>
                         </td>
     					<td>
-                            <a class="sm-buttons" href="<?=$router->buildUri('admin.product.clothes', ['edit', $value['id']])?>">
+                            <a class="sm-buttons" href="<?=$router->buildUri('admin.product.clothes', ['edit', $value['id_clothes']])?>">
                                 <?=__('admin_product.edit')?>
                             </a>
                         </td>
@@ -78,106 +88,203 @@ $router = \App\Core\App::getRouter();
             </nav>
             <?php endif; ?>
 
-        <?php elseif (isset($data['edit'])): ?>
+        <!-- Иначе выводим редактор услуги. -->
+        <?php else: ?>
 
-            <form class="form text" id="category-form" method="post">
+            <div class="title text">
+                <?php if($edit): ?>
+                <h2><?=__('admin_product.title2')?></h2>
+                <?php else: ?>
+                <h2><?=__('admin_product.title3')?></h2>
+                <?php endif; ?>
+                <h4><?=$data['category']?></h4>
+            </div>
+
+            <form class="form text" id="product-form" method="post" enctype="multipart/form-data">
                 <fieldset>
-                    <legend><?=__('admin_category.title2')?></legend>
-
-                    <p><?=__('admin_category.mes1')?></p>
+                    <legend><?=__('admin_product.title4')?></legend>
 
                     <label>
-                        <span><?=__('admin_category.ru')?></span>
-                        <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$data['ru']['title']?>">
+                        <span><?=__('admin_product.ru')?></span>
+                        <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$edit ? $data['edit']['ru']['title'] : ''?>">
                         <div class="tooltips-left">
-                            <div><?=__('admin_category.tool1')?></div>
+                            <div><?=__('admin_product.tool1')?></div>
                         </div>
                     </label>
 
                     <label>
-                        <span><?=__('admin_category.en')?></span>
-                        <input class="input" id="title-en" type="text" name="titleEn" value="<?=$data['en']['title']?>">
+                        <span><?=__('admin_product.en')?></span>
+                        <input class="input" id="title-en" type="text" name="titleEn" value="<?=$edit ? $data['edit']['en']['title'] : ''?>">
                         <div class="tooltips-left">
-                            <div><?=__('admin_category.tool2')?></div>
+                            <div><?=__('admin_product.tool1')?></div>
                         </div>
                     </label>
                 </fieldset>
 
                 <fieldset>
-                    <legend><?=__('admin_category.title3')?></legend>
-
-                    <p><?=__('admin_category.mes2')?></p>
+                    <legend><?=__('admin_product.title5')?></legend>
 
                     <label>
-                        <span><?=__('admin_category.ru')?></span>
-                        <textarea class="textarea" id="first-text-ru" name="firstTextRu"><?=$data['ru']['first_text']?></textarea>
+                        <span><?=__('admin_product.ru')?></span>
+                        <textarea class="textarea" id="text-ru" name="textRu"><?=$edit ? $data['edit']['ru']['text'] : ''?></textarea>
                         <div class="tooltips-left">
-                            <div><?=__('admin_category.tool3')?></div>
+                            <div><?=__('admin_product.tool1')?></div>
                         </div>
                     </label>
 
                     <label>
-                        <span><?=__('admin_category.en')?></span>
-                        <textarea class="textarea" id="first-text-en" name="firstTextEn"><?=$data['en']['first_text']?></textarea>
+                        <span><?=__('admin_product.en')?></span>
+                        <textarea class="textarea" id="text-en" name="textEn"><?=$edit ? $data['edit']['en']['text'] : ''?></textarea>
                         <div class="tooltips-left">
-                            <div><?=__('admin_category.tool3')?></div>
-                        </div>
-                    </label>
-                </fieldset>
-
-                <fieldset>
-                    <legend><?=__('admin_category.title4')?></legend>
-
-                    <label>
-                        <span><?=__('admin_category.ru')?></span>
-                        <input class="input" id="full-title-ru" type="text" name="fullTitleRu" value="<?=$data['ru']['full_title']?>">
-                        <div class="tooltips-left">
-                            <div><?=__('admin_category.tool3')?></div>
-                        </div>
-                    </label>
-
-                    <label>
-                        <span><?=__('admin_category.en')?></span>
-                        <input class="input" id="full-title-en" type="text" name="fullTitleEn" value="<?=$data['en']['full_title']?>">
-                        <div class="tooltips-left">
-                            <div><?=__('admin_category.tool3')?></div>
+                            <div><?=__('admin_product.tool1')?></div>
                         </div>
                     </label>
                 </fieldset>
 
                 <fieldset>
-                    <legend><?=__('admin_category.title5')?></legend>
-
-                    <p><?=__('admin_category.mes2')?></p>
+                    <legend><?=__('admin_product.title6')?></legend>
 
                     <label>
-                        <span><?=__('admin_category.ru')?></span>
-                        <textarea class="textarea" id="second-text-ru" name="secondTextRu"><?=$data['ru']['second_text']?></textarea>
+                        <span><?=__('admin_product.price')?></span>
+                        <input class="input" id="price" type="text" name="price" value="<?=$edit ? $data['edit']['main']['price'] : ''?>">
                         <div class="tooltips-left">
-                            <div><?=__('admin_category.tool3')?></div>
+                            <div><?=__('admin_product.tool2')?></div>
                         </div>
                     </label>
 
                     <label>
-                        <span><?=__('admin_category.en')?></span>
-                        <textarea class="textarea" id="second-text-en" name="secondTextEn"><?=$data['en']['second_text']?></textarea>
+                        <span><?=__('admin_product.stock')?></span>
+                        <input class="input" id="stock" type="text" name="stock" value="<?=$edit ? $data['edit']['main']['stock'] : ''?>">
                         <div class="tooltips-left">
-                            <div><?=__('admin_category.tool3')?></div>
+                            <div><?=__('admin_product.tool7')?></div>
                         </div>
                     </label>
+
+                    <label>
+                        <span><?=__('admin_product.sex')?></span>
+                        <label id="sex">
+                            <input type="radio" name="sex" value="m" class="option-input radio" <?=$edit && $data['edit']['main']['sex'] == 'm' ? 'checked' : ''?> />
+                            <span><?=__('filter.m')?></span>
+                            <input type="radio" name="sex" value="f" class="option-input radio" <?=$edit && $data['edit']['main']['sex'] == 'f' ? 'checked' : ''?> />
+                            <span><?=__('filter.f')?></span>
+                        </label>
+                        <div class="tooltips-left">
+                            <div><?=__('admin_product.tool3')?></div>
+                        </div>
+                    </label>
+
+                    <label>
+                        <span><?=__('admin_product.brand')?></span>
+                        <input class="input" id="brand" type="text" name="brand" value="<?=$edit ? $data['edit']['main']['brand'] : ''?>">
+                        <div class="tooltips-left">
+                            <div><?=__('admin_product.tool4')?></div>
+                        </div>
+                    </label>
+
+                    <label>
+                        <span><?=__('admin_product.size')?></span>
+                        <label id="size">
+                            <input type="checkbox" name="s" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['s'] ? 'checked' : ''?> />
+                            <span>S</span>
+                            <input type="checkbox" name="m" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['m'] ? 'checked' : ''?> />
+                            <span>M</span>
+                            <input type="checkbox" name="l" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['l'] ? 'checked' : ''?> />
+                            <span>L</span>
+                            <input type="checkbox" name="xl" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['xl'] ? 'checked' : ''?> />
+                            <span>XL</span>
+                        </label>
+                        <div class="tooltips-left">
+                            <div><?=__('admin_product.tool5')?></div>
+                        </div>
+                    </label>
+                </fieldset>
+
+                <fieldset>
+                    <legend><?=__('admin_product.title7')?></legend>
+
+                    <p><?=__('admin_product.mes2')?></p>
+
+                    <label>
+                        <span><?=__('admin_product.ru')?></span>
+                        <textarea class="input" id="contacts-ru" name="contactsRu"><?=$edit ? $data['edit']['ru']['contacts'] : ''?></textarea>
+                        <div class="tooltips-left">
+                            <div><?=__('admin_product.tool6')?></div>
+                        </div>
+                        <div class="count">
+                            <span>100</span>
+                        </div>
+                    </label>
+
+                    <label>
+                        <span><?=__('admin_product.en')?></span>
+                        <textarea class="input" id="contacts-en" name="contactsEn"><?=$edit ? $data['edit']['en']['contacts'] : ''?></textarea>
+                        <div class="tooltips-left">
+                            <div><?=__('admin_product.tool6')?></div>
+                        </div>
+                        <div class="count">
+                            <span>100</span>
+                        </div>
+                    </label>
+
+                    <label>
+                        <span><?=__('admin_product.tel')?></span>
+                        <input class="input" id="telephone" type="tel" name="tel" value="<?=$edit ? $data['edit']['main']['tel'] : ''?>" />
+                        <div class="tooltips-left">
+                            <div><?=__('admin_product.tool1')?></div>
+                        </div>
+                    </label>
+
+                    <p><?=__('admin_product.mes3')?></p>
+
+                    <label>
+                        <span><?=__('admin_product.fb')?></span>
+                        <input type="text" name="fb" value="<?=$edit ? $data['edit']['main']['fb'] : ''?>" class="input" />
+                    </label>
+
+                    <label>
+                        <span><?=__('admin_product.inst')?></span>
+                        <input type="text" name="inst" value="<?=$edit ? $data['edit']['main']['inst'] : ''?>" class="input" />
+                    </label>
+
+                    <label>
+                        <span><?=__('admin_product.teleg')?></span>
+                        <input type="text" name="telegram" value="<?=$edit ? $data['edit']['main']['telegram'] : ''?>" class="input" />
+                    </label>
+                </fieldset>
+
+                <fieldset id="galery">
+                    <legend><?=__('admin_product.title8')?></legend>
+
+                    <p><?=__('admin_product.mes4')?></p>
+
+                    <?php if($data['edit']['galery']): ?>
+                        <?php foreach ($data['edit']['galery'] as $img): ?>
+                        <div class="file-upload"
+                                data-name="<?=$img?>"
+                                data-category="<?=$data['edit']['category']?>"
+                                data-id="<?=$data['edit']['main']['id']?>">
+                            <img style="display: block;" src="<?=Config::get('clothesImg') . $data['edit']['main']['id'] . DS . $img?>" />
+                            <span class="delete-image">
+                                <i class="fas fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
                 </fieldset>
 
                 <label>
-                    <input type="checkbox" name="active" value="1" class="option-input checkbox" <?=$data['main']['active'] == 1 ? 'checked' : ''?> />
-                    <span><?=__('admin_category.activity2')?></span>
+                    <input type="checkbox" name="active" value="1" class="option-input checkbox" <?=$edit && $data['edit']['main']['active'] ? 'checked' : ''?> />
+                    <span><?=__('admin_product.activity2')?></span>
                 </label>
 
-                <button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('admin_category.save')?></button>
+                <button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('admin_product.save')?></button>
             </form>
-
-        <?php else: ?>
 
         <?php endif; ?>
 
     </div>
 </div>
+
+<script type="text/javascript" src="/js/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="/js/admin-product.js"></script>

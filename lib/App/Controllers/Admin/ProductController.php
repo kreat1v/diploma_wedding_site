@@ -139,29 +139,41 @@ class ProductController extends \App\Controllers\Base
 			// Получаем параметры.
 			$params = App::getRouter()->getParams();
 
-			if (!empty($params) && $params[0] == 'new') {
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
 
-			// Если первый параметр 'edit' то получаем данные основной модели, а так же языковых моделей.
-			} elseif (!empty($params) && $params[0] == 'edit') {
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
 
-				// Если в параметрах есть id услуги - то продолжаем получение и обработку данных, иначе делаем переадресацию на страницу списка услуг.
-				if (isset($params[1]) && $params[1] > 0) {
-
-					$id_product = $params[1];
+					$idProduct = $params[1];
 
 					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
-					$mainModel = $this->clothesMainModel->languageList(['id' => $params[1]]);
+					$mainModel = $this->clothesMainModel->list(['id' => $idProduct]);
 
 					if (!empty($mainModel)) {
 
 						// Получаем обе языковые модели
-						$ruModel = $this->clothesRuModel->languageList(['id_clothes' => $params[1]]);
-						$enModel = $this->clothesEnModel->languageList(['id_clothes' => $params[1]]);
+						$ruModel = $this->clothesRuModel->list(['id_clothes' => $idProduct]);
+						$enModel = $this->clothesEnModel->list(['id_clothes' => $idProduct]);
+
+						// Получаем модель размеров.
+						$sizeModel = $this->clothesSizeModel->list(['id_clothes' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('clothesImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
 
 						// Отдаём данные.
 						$this->data['edit']['main'] = $mainModel[0];
 						$this->data['edit']['ru'] = $ruModel[0];
 						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['size'] = $sizeModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
 
 					} else {
 
@@ -169,13 +181,107 @@ class ProductController extends \App\Controllers\Base
 
 					}
 
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
 				} else {
 
 					App::getRouter()->redirect(App::getRouter()->buildUri('product.clothes'));
 
 				}
 
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'sex' => $_POST['sex'],
+								'brand' => !empty($_POST['brand']) ? $_POST['brand'] : null,
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							$this->data['size'] = [
+								's' => !empty($_POST['s']) ? $_POST['s'] : 0,
+								'm' => !empty($_POST['m']) ? $_POST['m'] : 0,
+								'l' => !empty($_POST['l']) ? $_POST['l'] : 0,
+								'xl' => !empty($_POST['xl']) ? $_POST['xl'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->clothesMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->clothesMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_clothes'] = $newId;
+								$this->data['en']['id_clothes'] = $newId;
+								$this->data['size']['id_clothes'] = $newId;
+							}
+
+							$this->clothesRuModel->save($this->data['ru'], $idProduct ? ['id_clothes' => $idProduct] : []);
+							$this->clothesEnModel->save($this->data['en'], $idProduct ? ['id_clothes' => $idProduct] : []);
+							$this->clothesSizeModel->save($this->data['size'], $idProduct ? ['id_clothes' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('clothesImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.clothes'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
 			} else {
+
 				// Пагинация.
 				$page = isset($this->params[0]) ? $this->params[0] : 1;
 				$productsCount = count($this->clothesMainModel->languageList());
@@ -198,6 +304,7 @@ class ProductController extends \App\Controllers\Base
 				if (!$pagination['page404']) {
 					$this->data['page'] = $page;
 					$this->data['product'] = $this->clothesMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
 				} else {
 					$this->page404();
 				}
@@ -208,119 +315,124 @@ class ProductController extends \App\Controllers\Base
 		}
 	}
 
-	public function editAction()
+	// Преобразование массива $_FILES в более удобную структуру.
+	private function reArrayFiles($file_post)
 	{
+		$file_ary = [];
+		$file_count = count($file_post['name']);
+		$file_keys = array_keys($file_post);
 
-		// Если в параметрах есть id категории - то продолжаем получение и обработку данных, иначе делаем переадресацию на страницу списка категорий.
-		if (isset($this->params[0]) && $this->params[0] > 0) {
+		for ($i=0; $i < $file_count; $i++) {
+			foreach ($file_keys as $key) {
+				$file_ary[$i][$key] = $file_post[$key][$i];
+			}
+		}
 
-			// id категории.
-			$idCategory = $this->params[0];
+		return $file_ary;
+	}
 
-			// Получаем категорию.
-			$mainModel = $this->categoryMainModel->list(['id' => $idCategory]);
+	// Сохранение изображений.
+	private function saveImage($imageArray, $nameDir)
+	{
+		foreach ($imageArray as $key => $value) {
 
-			// Если категория существует, то продолжаем получать и обрабатывать данные, иначе выдаём 404ю страницу.
-			if (!empty($mainModel)) {
-
-				// Получаем обе языковые модели
-				$ruModel = $this->categoryRuModel->list(['id_category' => $idCategory]);
-				$enModel = $this->categoryEnModel->list(['id_category' => $idCategory]);
-
-				// Отдаём данные.
-				$this->data['main'] = $mainModel[0];
-				$this->data['ru'] = $ruModel[0];
-				$this->data['en'] = $enModel[0];
-
-				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-					try {
-
-						if (isset($_POST['button']) && $_POST['button'] == 'send') {
-
-							// Обрабатываем полученный русский текст для сохранения в БД.
-							$ruFirstText = $_POST['firstTextRu'];
-							$ruSecondText = $_POST['secondTextRu'];
-							$ruFirstText = $this->formattingTextForDatabase($ruFirstText);
-							$ruSecondText = $this->formattingTextForDatabase($ruSecondText);
-
-							// Формируем массив для сохранения.
-							$this->data['ru'] = [
-								'title' => $_POST['titleRu'],
-								'first_text' => $ruFirstText,
-								'full_title' => $_POST['fullTitleRu'],
-								'second_text' => $ruSecondText
-							];
-
-							// Обрабатываем полученный английский текст для сохранения в БД.
-							$enFirstText = $_POST['firstTextEn'];
-							$enSecondText = $_POST['secondTextEn'];
-							$enFirstText = $this->formattingTextForDatabase($enFirstText);
-							$enSecondText = $this->formattingTextForDatabase($enSecondText);
-
-							// Формируем массив для сохранения.
-							$this->data['en'] = [
-								'title' => $_POST['titleEn'],
-								'first_text' => $enFirstText,
-								'full_title' => $_POST['fullTitleEn'],
-								'second_text' => $enSecondText
-							];
-
-							// Формируем массив активности категории.
-							$this->data['main'] = [
-								'active' => $_POST['active']
-							];
-
-							// Сохраняем данные.
-							$this->categoryRuModel->save($this->data['ru'], ['id_category' => $idCategory]);
-							$this->categoryEnModel->save($this->data['en'], ['id_category' => $idCategory]);
-							$this->categoryMainModel->save($this->data['main'], ['id' => $idCategory]);
-
-							App::getSession()->addFlash(__('admin_category.mes3'));
-							App::getRouter()->redirect(App::getRouter()->buildUri('.category'));
-						}
-
-					} catch (\Exception $exception) {
-
-						App::getSession()->addFlash($exception->getMessage());
-
-					}
-				}
-
-				// Заменяем текстовые блоки для вывода с помощью нашей функции.
-				$this->data['ru']['first_text'] = $this->formattingTextForOutput($this->data['ru']['first_text']);
-				$this->data['en']['first_text'] = $this->formattingTextForOutput($this->data['en']['first_text']);
-				$this->data['ru']['second_text'] = $this->formattingTextForOutput($this->data['ru']['second_text']);
-				$this->data['en']['second_text'] = $this->formattingTextForOutput($this->data['en']['second_text']);
-
-			} else {
-
-				$this->page404();
-
+			// Проверяем загрузку изображения - если нету ошибок, то продолжаем сохранение.
+			if ($imageArray[$key]['error'] != 0) {
+				continue;
 			}
 
-		} else {
+			// Проверка на наличие загружаемого изображения.
+			if (!file_exists($imageArray[$key]['tmp_name'])) {
+				throw new \Exception(__('user_settings.error1'));
+			}
 
-			App::getRouter()->redirect(App::getRouter()->buildUri('.category'));
+			// Проверка на тип файла. Получение расширения изображения.
+			switch(getimagesize($imageArray[$key]['tmp_name'])['mime']) {
+				case 'image/gif':
+					$fileType = '.gif';
+					break;
+				case 'image/jpeg':
+					$fileType = '.jpg';
+					break;
+				case 'image/png':
+					$fileType = '.png';
+					break;
+				default:
+					throw new \Exception(__('user_settings.error2'));
+			}
 
+			// Проверка наличия директории. Если нету таковой - то создание новой.
+			if (!file_exists($nameDir)) {
+				mkdir($nameDir, 0777);
+			}
+
+			// Путь к изображению.
+			$paths = $nameDir . DS . uniqid('img_') . $fileType;
+
+			// Загрузка изображения. Если происходит ошибка - выбрасываем исключение.
+			if (!move_uploaded_file($imageArray[$key]['tmp_name'], $paths)) {
+
+				// Если директория остается пустой - то удаляем директорию.
+				$arrayImages = array_values(array_diff(scandir($nameDir), ['.', '..']));
+
+				if (count($arrayImages) == 0) {
+					rmdir($nameDir);
+				}
+
+				throw new \Exception(__('user_settings.error3'));
+			}
 		}
 	}
 
-	// Функция обработки текста для сохранения в БД.
-	private function formattingTextForDatabase($string)
+	// Метод удаления изображений.
+	public function deleteImageAction()
 	{
-		$string = '<p>' . str_replace(PHP_EOL . PHP_EOL, '</p><p>', $string) . '</p>';
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-		return $string;
-	}
+			try {
 
-	// Функция форматирования текстовых блоков - убираем теги абзаца и заменяем их на переносы строки.
-	private function formattingTextForOutput($string)
-	{
-		$string = ltrim($string, '<p>');
-		$string = rtrim($string, '</p>');
-		$string = str_replace('</p><p>', PHP_EOL . PHP_EOL, $string);
+				// Получаем то, что пришело в POST запросе.
+				$idProduct = $_POST['id'];
+				$category = $_POST['category'];
+				$nameImage = $_POST['name'];
 
-		return $string;
+				// Получаем нужную директорию.
+				$imagesPathName = $category . 'ImgRoot';
+				$imagesPath = Config::get($imagesPathName) . $idProduct;
+
+				// Если директория существует - выполняем операции.
+				if (file_exists($imagesPath)) {
+
+					// Удаляем изображение.
+					unlink($imagesPath . DS . $nameImage);
+
+					// Если директория остается пустой - то удаляем и директорию.
+					$arrayImages = array_values(array_diff(scandir($imagesPath), ['.', '..']));
+
+					if (count($arrayImages) == 0) {
+						rmdir($imagesPath);
+					}
+				}
+
+				// Посылаем сигнал об успешности операции.
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
+			} catch (\Exception $exception) {
+
+				// Если была ошибка при удалении - посылаем тект ошибки.
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
+		}
 	}
 }
