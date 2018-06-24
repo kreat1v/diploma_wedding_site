@@ -20,7 +20,7 @@ $router = \App\Core\App::getRouter();
                 <div class="goods">
 
                     <?php
-                    $image = Config::get('cakeImgRoot') . $data['product']['id'] . DS . $data['galery'][0];
+                    $image = Config::get('cakeImgRoot') . $data['product']['id_cake'] . DS . $data['galery'][0];
                     $imageArr = getimagesize($image);
                     if ($imageArr[0] < $imageArr[1]) {
                         $imageClass = 'image-width';
@@ -32,7 +32,7 @@ $router = \App\Core\App::getRouter();
                     ?>
 
                     <div class="blur <?=$blurClass?>">
-                        <img src="<?=Config::get('cakeImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
+                        <img src="<?=Config::get('cakeImg') . $data['product']['id_cake'] . DS . $data['galery'][0]?>"/>
                     </div>
 
                     <h3 class="text"><?=$data['product']['title']?></h3>
@@ -42,7 +42,7 @@ $router = \App\Core\App::getRouter();
                         <div class="card">
 
                             <div class="image <?=$imageClass?>">
-                                <img src="<?=Config::get('cakeImg') . $data['product']['id'] . DS . $data['galery'][0]?>"/>
+                                <img src="<?=Config::get('cakeImg') . $data['product']['id_cake'] . DS . $data['galery'][0]?>"/>
                             </div>
 
                             <div class="details text">
@@ -54,13 +54,13 @@ $router = \App\Core\App::getRouter();
                                     <span></span>
                                     <ul>
                                         <?php if (isset($data['product']['fb'])): ?>
-                                        <li><a href="<?='https://www.'.$data['product']['fb']?>"><i class="fab fa-facebook-square"></i></a></li>
+                                        <li><a href="<?='https://www.facebook.com/'.$data['product']['fb']?>"><i class="fab fa-facebook-square"></i></a></li>
                                         <?php endif; ?>
                                         <?php if (isset($data['product']['inst'])): ?>
-                                        <li><a href="<?='https://www.'.$data['product']['inst']?>"><i class="fab fa-instagram"></i></a></li>
+                                        <li><a href="<?='https://www.instagram.com/'.$data['product']['inst']?>"><i class="fab fa-instagram"></i></a></li>
                                         <?php endif; ?>
                                         <?php if (isset($data['product']['telegram'])): ?>
-                                        <li><a href="<?='https://www.'.$data['product']['telegram']?>"><i class="fab fa-telegram-plane"></i></a></li>
+                                        <li><a href="<?='https://www.telegram.me/'.$data['product']['telegram']?>"><i class="fab fa-telegram-plane"></i></a></li>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
@@ -95,7 +95,7 @@ $router = \App\Core\App::getRouter();
                     <div class="bt">
                         <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
                         <form method="post">
-                            <input class="id_products" type="hidden" name="id_products" value="<?=$data['product']['id']?>">
+                            <input class="id_products" type="hidden" name="id_products" value="<?=$data['product']['id_cake']?>">
                             <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
                             <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
                             <button class="sm-buttons text basket-bt" type="button">
@@ -103,9 +103,9 @@ $router = \App\Core\App::getRouter();
                                 <span><?=__('products.basket')?></span>
                             </button>
                         </form>
-                            <?php if(!in_array($data['product']['id'] . $data['category'], $data['favorites'])): ?>
+                            <?php if(!in_array($data['product']['id_cake'] . $data['category'], $data['favorites'])): ?>
                             <form method="post">
-                                <input class="id_products" type="hidden" name="id_products" value="<?=$data['product']['id']?>">
+                                <input class="id_products" type="hidden" name="id_products" value="<?=$data['product']['id_cake']?>">
                                 <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
                                 <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
                                 <button class="sm-buttons text favorites-bt" type="button">
@@ -115,7 +115,7 @@ $router = \App\Core\App::getRouter();
                             </form>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <a href="<?=$router->buildUri('cake.reviews', [$data['product']['id']])?>" class="sm-buttons text">
+                        <a href="<?=$router->buildUri('cake.reviews', [$data['product']['id_cake']])?>" class="sm-buttons text">
                             <span><i class="fas fa-comments fa-lg"></i></span>
                             <span><?=__('products.reviews')?></span>
                         </a>
@@ -126,7 +126,7 @@ $router = \App\Core\App::getRouter();
                         <div class="panels">
                             <?php foreach ($data['galery'] as $img): ?>
                             <a href="javascript:void(0)" class="panel">
-                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('cakeImgWeb') . $data['product']['id'] . '/' . $img?>');"></div>
+                                <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('cakeImgWeb') . $data['product']['id_cake'] . '/' . $img?>');"></div>
                             </a>
                             <?php endforeach; ?>
                         </div>

@@ -28,7 +28,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                     <div class="goods">
 
                         <?php
-                        $image = Config::get('filmingImgRoot') . $value['id'] . DS . $value['galery'][0];
+                        $image = Config::get('filmingImgRoot') . $value['id_filming'] . DS . $value['galery'][0];
                         $imageArr = getimagesize($image);
                         if ($imageArr[0] < $imageArr[1]) {
                             $imageClass = 'image-width';
@@ -40,7 +40,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         ?>
 
                         <div class="blur <?=$blurClass?>">
-                            <img src="<?=Config::get('filmingImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                            <img src="<?=Config::get('filmingImg') . $value['id_filming'] . DS . $value['galery'][0]?>"/>
                         </div>
 
                         <h3 class="text"><?=$value['title']?></h3>
@@ -50,7 +50,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             <div class="card">
 
                                 <div class="image <?=$imageClass?>">
-                                    <img src="<?=Config::get('filmingImg') . $value['id'] . DS . $value['galery'][0]?>"/>
+                                    <img src="<?=Config::get('filmingImg') . $value['id_filming'] . DS . $value['galery'][0]?>"/>
                                 </div>
 
                                 <div class="details text">
@@ -62,13 +62,13 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                         <span></span>
                                         <ul>
                                             <?php if (isset($value['fb'])): ?>
-                                            <li><a href="<?='https://www.'.$value['fb']?>"><i class="fab fa-facebook-square"></i></a></li>
+                                            <li><a href="<?='https://www.facebook.com/'.$value['fb']?>"><i class="fab fa-facebook-square"></i></a></li>
                                             <?php endif; ?>
                                             <?php if (isset($value['inst'])): ?>
-                                            <li><a href="<?='https://www.'.$value['inst']?>"><i class="fab fa-instagram"></i></a></li>
+                                            <li><a href="<?='https://www.instagram.com/'.$value['inst']?>"><i class="fab fa-instagram"></i></a></li>
                                             <?php endif; ?>
                                             <?php if (isset($value['telegram'])): ?>
-                                            <li><a href="<?='https://www.'.$value['telegram']?>"><i class="fab fa-telegram-plane"></i></a></li>
+                                            <li><a href="<?='https://www.telegram.me/'.$value['telegram']?>"><i class="fab fa-telegram-plane"></i></a></li>
                                             <?php endif; ?>
                                         </ul>
                                     </div>
@@ -103,7 +103,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         <div class="bt">
                             <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
                             <form method="post">
-                                <input class="id_products" type="hidden" name="id_products" value="<?=$value['id']?>">
+                                <input class="id_products" type="hidden" name="id_products" value="<?=$value['id_filming']?>">
                                 <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
                                 <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
                                 <button class="sm-buttons text basket-bt" type="button">
@@ -111,9 +111,9 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     <span><?=__('products.basket')?></span>
                                 </button>
                             </form>
-                                <?php if(!in_array($value['id'] . $data['category'], $data['favorites'])): ?>
+                                <?php if(!in_array($value['id_filming'] . $data['category'], $data['favorites'])): ?>
                                 <form method="post">
-                                    <input class="id_products" type="hidden" name="id_products" value="<?=$value['id']?>">
+                                    <input class="id_products" type="hidden" name="id_products" value="<?=$value['id_filming']?>">
                                     <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
                                     <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
                                     <button class="sm-buttons text favorites-bt" type="button">
@@ -123,7 +123,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                 </form>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <a href="<?=$router->buildUri('filming.reviews', [$value['id']])?>" class="sm-buttons text">
+                            <a href="<?=$router->buildUri('filming.reviews', [$value['id_filming']])?>" class="sm-buttons text">
                                 <span><i class="fas fa-comments fa-lg"></i></span>
                                 <span><?=__('products.reviews')?></span>
                             </a>
@@ -134,7 +134,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>
                                 <a href="javascript:void(0)" class="panel">
-                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('filmingImgWeb') . $value['id'] . '/' . $img?>');"></div>
+                                    <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('filmingImgWeb') . $value['id_filming'] . '/' . $img?>');"></div>
                                 </a>
                                 <?php endforeach; ?>
                             </div>
