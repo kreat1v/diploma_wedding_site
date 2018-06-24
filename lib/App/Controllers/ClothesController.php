@@ -42,7 +42,8 @@ class ClothesController extends Base
 		if ($category['active'] != 0) {
 
 			// Если есть GET-запрос, то формируем данные из него.
-			$get = [];
+			// В массив $get допишем данные об активной услуге.
+			$get = ['active' => 1];
 			if (!empty($_GET)) {
 				if (array_key_exists('sex', $_GET)) {
 					$get['sex'] = $_GET['sex'];
@@ -118,8 +119,8 @@ class ClothesController extends Base
 				foreach ($this->data['product'] as $key => $value) {
 
 					// Если директория с id товара существует - то находим в ней изображения.
-					if (file_exists(Config::get('clothesImgRoot') . $value['id'])) {
-						$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $value['id']), ['.', '..']));
+					if (file_exists(Config::get('clothesImgRoot') . $value['id_clothes'])) {
+						$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('clothesImgRoot') . $value['id_clothes']), ['.', '..']));
 					} else {
 						$this->data['product'][$key]['galery'] = false;
 					}

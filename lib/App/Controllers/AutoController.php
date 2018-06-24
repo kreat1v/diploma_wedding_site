@@ -41,7 +41,7 @@ class AutoController extends Base
 		if ($category['active'] != 0) {
 
 			// Если есть GET-запрос, то формируем данные из него.
-			$get = [];
+			$get = ['active' => 1];
 			if (!empty($_GET)) {
 				if (array_key_exists('price', $_GET)) {
 					$price = explode('-', trim($_GET['price'], '-'));
@@ -107,8 +107,8 @@ class AutoController extends Base
 				foreach ($this->data['product'] as $key => $value) {
 
 					// Если директория с id товара существует - то находим в ней изображения.
-					if (file_exists(Config::get('autoImgRoot') . $value['id'])) {
-						$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('autoImgRoot') . $value['id']), ['.', '..']));
+					if (file_exists(Config::get('autoImgRoot') . $value['id_auto'])) {
+						$this->data['product'][$key]['galery'] = array_values(array_diff(scandir(Config::get('autoImgRoot') . $value['id_auto']), ['.', '..']));
 					} else {
 						$this->data['product'][$key]['galery'] = false;
 					}
