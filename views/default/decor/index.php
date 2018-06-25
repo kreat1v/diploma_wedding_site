@@ -81,7 +81,8 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
                                 <div class="main-text">
                                     <p><?=$value['text']?></p>
-                                    <p><?=__('products.service')?>: <?=explode(' - ', $value['service'])[1]?></p>
+                                    <?php $decor = $value['service'];?>
+                                    <p><?=__('products.service')?>: <?=__("decor.$decor")?></p>
                                     <p>
                                         <span>
                                             <?=__('products.price')?>:
@@ -203,16 +204,16 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                     <h4><?=__('filter.service')?></h4>
                     <?php foreach ($data['filter']['service'] as $value): ?>
                     <?php
-                        $service = explode(' - ', $value['service']);
+                        $service = $value['service'];
                     ?>
                     <label>
-                        <input type="checkbox" value="<?=$service[0]?>" class="option-input checkbox"
+                        <input type="checkbox" value="<?=$service?>" class="option-input checkbox"
                         <?php
-                        if (isset($data['get']['service']) && array_search($service[0], $data['get']['service']) !== false) {
+                        if (isset($data['get']['service']) && array_search($service, $data['get']['service']) !== false) {
                             echo "checked";
                         }
                         ?>
-                        /><?=$service[1]?>
+                        /><?=__("decor.$service")?>
                     </label>
                     <?php endforeach; ?>
                 </div>

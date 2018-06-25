@@ -78,7 +78,7 @@ $(document).ready(function() {
 
             // Получаем данные загруженного изображения.
             reader.onload = function(e) {
-                label.find('img').attr('src', e.target.result).css('display', 'block');
+                label.find('img').attr('src', e.target.result).css('display', 'block').addClass('product-image');
                 label.find('.delete-previous').css('display', 'block');
                 label.find('label').css('display', 'none');
             };
@@ -240,6 +240,22 @@ $(document).ready(function() {
 
     }
 
+    // Валидация загрузки изображений.
+    function validImage() {
+
+        var imagesCount = $('.product-image').length;
+
+        // Если изображений нету, то покажем ошибку.
+        if (imagesCount != 0) {
+            $('#galery').removeClass('error').addClass('not_error');
+            $('.image-error').fadeOut();
+        } else {
+            $('#galery').removeClass('not_error').addClass('error');
+            $('.image-error').fadeIn();
+        }
+
+    }
+
     // Устанавливаем обработчик потери фокуса для полей формы данных.
     $('input#title-ru, input#title-en, textarea#text-ru, textarea#text-en, input#price, input#stock, input#brand')
         .unbind()
@@ -274,6 +290,14 @@ $(document).ready(function() {
 
     });
 
+    // При клике на загрузку изображения скрываем сообщение об ошибке.
+    $('.file-upload').click(function() {
+
+        $('#galery').removeClass('error').addClass('not_error');
+        $('.image-error').fadeOut();
+
+    });
+
     // Событие при отправке формы.
     $('form#product-form').submit(function() {
 
@@ -290,6 +314,7 @@ $(document).ready(function() {
         validData($('#telephone'));
         validCheck($('#sex'));
         validCheck($('#size'));
+        validImage();
 
         // Если количество полей с классом ошибки больше 0, мы возвращаем false, останавливая отправку данных в невалидной форме.
         if ($('.error').length > 0) {

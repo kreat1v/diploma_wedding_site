@@ -37,6 +37,7 @@ class DecorMain extends \App\Entity\Base
 			'telegram',
 			'price',
 			'stock',
+			'service',
 			'active'
 		];
 	}
@@ -49,7 +50,7 @@ class DecorMain extends \App\Entity\Base
 
 	public function getService()
 	{
-		$sql = 'SELECT service FROM ' .  $this->getDecorLang()->getTableName() . ' GROUP BY service';
+		$sql = 'SELECT service FROM ' .  $this->getTableName() . ' GROUP BY service';
 		return $this->conn->query($sql);
 	}
 
@@ -75,16 +76,9 @@ class DecorMain extends \App\Entity\Base
 
 				if ($key == 'price') {
 					$strWhere .= " AND $fieldsMain.$key BETWEEN $value[0] AND $value[1]";
-				}
-
-				if ($key == 'service') {
-					$service = [];
-
-					foreach ($value as $serviceName) {
-						$service[] = "$fieldsLang.service LIKE " . substr_replace($serviceName, '%', -1, 0);
-					}
-
-					$strWhere .= " AND " . implode(" OR ", $service);
+				} else {
+					$in = is_array($value) ? implode(', ', $value) : $value;
+					$strWhere .= " AND $fieldsMain.$key IN ($in)";
 				}
 			}
 		}

@@ -70,9 +70,7 @@ class HotelMain extends \App\Entity\Base
 
 				if ($key == 'price') {
 					$strWhere .= " AND $fieldsMain.$key BETWEEN $value[0] AND $value[1]";
-				}
-
-				if ($key == 'stars') {
+				} else {
 					$in = is_array($value) ? implode(', ', $value) : $value;
 					$strWhere .= " AND $fieldsMain.$key IN ($in)";
 				}

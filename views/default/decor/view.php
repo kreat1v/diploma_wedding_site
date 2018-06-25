@@ -73,7 +73,8 @@ $router = \App\Core\App::getRouter();
 
                             <div class="main-text">
                                 <p><?=$data['product']['text']?></p>
-                                <p><?=__('products.service')?>: <?=explode(' - ', $data['product']['service'])[1]?></p>
+                                <?php $decor = $data['product']['service'];?>
+                                <p><?=__('products.service')?>: <?=__("decor.$decor")?></p>
                                 <p>
                                     <span>
                                         <?=__('products.price')?>:

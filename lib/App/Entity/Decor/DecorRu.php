@@ -20,7 +20,6 @@ class DecorRu extends \App\Entity\Base
 			'title',
 			'text',
 			'contacts',
-			'service',
 			'id_language'
 		];
 	}

@@ -148,6 +148,12 @@ return [
 		'not_found' => 'We could not find anything...'
 	],
 
+	'decor' => [
+		'beach' => 'Wedding on the beach',
+		'nature' => 'Wedding in nature',
+		'restaurant' => 'Decoration of the restaurant'
+	],
+
 	'reviews' => [
 		'review' => 'Your feedback',
 		'send' => 'Send',
