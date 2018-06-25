@@ -127,6 +127,181 @@ class ProductController extends \App\Controllers\Base
 		}
 	}
 
+	public function decorAction()
+	{
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getAction(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
+
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
+
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
+
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
+
+					$idProduct = $params[1];
+
+					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+					$mainModel = $this->decorMainModel->list(['id' => $idProduct]);
+
+					if (!empty($mainModel)) {
+
+						// Получаем обе языковые модели
+						$ruModel = $this->decorRuModel->list(['id_decor' => $idProduct]);
+						$enModel = $this->decorEnModel->list(['id_decor' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('decorImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('decorImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
+
+						// Отдаём данные.
+						$this->data['edit']['main'] = $mainModel[0];
+						$this->data['edit']['ru'] = $ruModel[0];
+						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
+
+					} else {
+
+						$this->page404();
+
+					}
+
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
+				} else {
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('product.decor'));
+
+				}
+
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'service' => $_POST['service'],
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->decorMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->decorMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_decor'] = $newId;
+								$this->data['en']['id_decor'] = $newId;
+								$this->data['size']['id_decor'] = $newId;
+							}
+
+							$this->decorRuModel->save($this->data['ru'], $idProduct ? ['id_decor' => $idProduct] : []);
+							$this->decorEnModel->save($this->data['en'], $idProduct ? ['id_decor' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('decorImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.decor'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
+			} else {
+
+				// Пагинация.
+				$page = isset($this->params[0]) ? $this->params[0] : 1;
+				$productsCount = count($this->decorMainModel->languageList());
+
+				$pag = new Pagination();
+				$pagination = $pag->getLinks(
+					$productsCount,
+					Config::get('pagLimit'),
+					$page,
+					Config::get('pagButtonLimit'));
+
+				if (!empty($pagination) && !$pagination['page404']) {
+					$this->data['pagination'] = $pagination;
+				} else {
+					$this->data['pagination'] = null;
+				}
+				$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+				// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+				if (!$pagination['page404']) {
+					$this->data['page'] = $page;
+					$this->data['product'] = $this->decorMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
+				} else {
+					$this->page404();
+				}
+			}
+
+		} else {
+			$this->page404();
+		}
+	}
+
 	public function clothesAction()
 	{
 		// Получаем данные о категории.
@@ -304,6 +479,878 @@ class ProductController extends \App\Controllers\Base
 				if (!$pagination['page404']) {
 					$this->data['page'] = $page;
 					$this->data['product'] = $this->clothesMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
+				} else {
+					$this->page404();
+				}
+			}
+
+		} else {
+			$this->page404();
+		}
+	}
+
+	public function autoAction()
+	{
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getAction(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
+
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
+
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
+
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
+
+					$idProduct = $params[1];
+
+					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+					$mainModel = $this->autoMainModel->list(['id' => $idProduct]);
+
+					if (!empty($mainModel)) {
+
+						// Получаем обе языковые модели
+						$ruModel = $this->autoRuModel->list(['id_auto' => $idProduct]);
+						$enModel = $this->autoEnModel->list(['id_auto' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('autoImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('autoImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
+
+						// Отдаём данные.
+						$this->data['edit']['main'] = $mainModel[0];
+						$this->data['edit']['ru'] = $ruModel[0];
+						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
+
+					} else {
+
+						$this->page404();
+
+					}
+
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
+				} else {
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('product.auto'));
+
+				}
+
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'brand' => !empty($_POST['brand']) ? $_POST['brand'] : null,
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->autoMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->autoMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_auto'] = $newId;
+								$this->data['en']['id_auto'] = $newId;
+								$this->data['size']['id_auto'] = $newId;
+							}
+
+							$this->autoRuModel->save($this->data['ru'], $idProduct ? ['id_auto' => $idProduct] : []);
+							$this->autoEnModel->save($this->data['en'], $idProduct ? ['id_auto' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('autoImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.auto'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
+			} else {
+
+				// Пагинация.
+				$page = isset($this->params[0]) ? $this->params[0] : 1;
+				$productsCount = count($this->autoMainModel->languageList());
+
+				$pag = new Pagination();
+				$pagination = $pag->getLinks(
+					$productsCount,
+					Config::get('pagLimit'),
+					$page,
+					Config::get('pagButtonLimit'));
+
+				if (!empty($pagination) && !$pagination['page404']) {
+					$this->data['pagination'] = $pagination;
+				} else {
+					$this->data['pagination'] = null;
+				}
+				$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+				// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+				if (!$pagination['page404']) {
+					$this->data['page'] = $page;
+					$this->data['product'] = $this->autoMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
+				} else {
+					$this->page404();
+				}
+			}
+
+		} else {
+			$this->page404();
+		}
+	}
+
+	public function filmingAction()
+	{
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getAction(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
+
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
+
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
+
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
+
+					$idProduct = $params[1];
+
+					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+					$mainModel = $this->filmingMainModel->list(['id' => $idProduct]);
+
+					if (!empty($mainModel)) {
+
+						// Получаем обе языковые модели
+						$ruModel = $this->filmingRuModel->list(['id_filming' => $idProduct]);
+						$enModel = $this->filmingEnModel->list(['id_filming' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('filmingImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('filmingImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
+
+						// Отдаём данные.
+						$this->data['edit']['main'] = $mainModel[0];
+						$this->data['edit']['ru'] = $ruModel[0];
+						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
+
+					} else {
+
+						$this->page404();
+
+					}
+
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
+				} else {
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('product.filming'));
+
+				}
+
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->filmingMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->filmingMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_filming'] = $newId;
+								$this->data['en']['id_filming'] = $newId;
+								$this->data['size']['id_filming'] = $newId;
+							}
+
+							$this->filmingRuModel->save($this->data['ru'], $idProduct ? ['id_filming' => $idProduct] : []);
+							$this->filmingEnModel->save($this->data['en'], $idProduct ? ['id_filming' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('filmingImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.filming'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
+			} else {
+
+				// Пагинация.
+				$page = isset($this->params[0]) ? $this->params[0] : 1;
+				$productsCount = count($this->filmingMainModel->languageList());
+
+				$pag = new Pagination();
+				$pagination = $pag->getLinks(
+					$productsCount,
+					Config::get('pagLimit'),
+					$page,
+					Config::get('pagButtonLimit'));
+
+				if (!empty($pagination) && !$pagination['page404']) {
+					$this->data['pagination'] = $pagination;
+				} else {
+					$this->data['pagination'] = null;
+				}
+				$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+				// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+				if (!$pagination['page404']) {
+					$this->data['page'] = $page;
+					$this->data['product'] = $this->filmingMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
+				} else {
+					$this->page404();
+				}
+			}
+
+		} else {
+			$this->page404();
+		}
+	}
+
+	public function leadingAction()
+	{
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getAction(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
+
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
+
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
+
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
+
+					$idProduct = $params[1];
+
+					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+					$mainModel = $this->leadingMainModel->list(['id' => $idProduct]);
+
+					if (!empty($mainModel)) {
+
+						// Получаем обе языковые модели
+						$ruModel = $this->leadingRuModel->list(['id_leading' => $idProduct]);
+						$enModel = $this->leadingEnModel->list(['id_leading' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('leadingImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('leadingImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
+
+						// Отдаём данные.
+						$this->data['edit']['main'] = $mainModel[0];
+						$this->data['edit']['ru'] = $ruModel[0];
+						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
+
+					} else {
+
+						$this->page404();
+
+					}
+
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
+				} else {
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('product.leading'));
+
+				}
+
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->leadingMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->leadingMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_leading'] = $newId;
+								$this->data['en']['id_leading'] = $newId;
+								$this->data['size']['id_leading'] = $newId;
+							}
+
+							$this->leadingRuModel->save($this->data['ru'], $idProduct ? ['id_leading' => $idProduct] : []);
+							$this->leadingEnModel->save($this->data['en'], $idProduct ? ['id_leading' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('leadingImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.leading'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
+			} else {
+
+				// Пагинация.
+				$page = isset($this->params[0]) ? $this->params[0] : 1;
+				$productsCount = count($this->leadingMainModel->languageList());
+
+				$pag = new Pagination();
+				$pagination = $pag->getLinks(
+					$productsCount,
+					Config::get('pagLimit'),
+					$page,
+					Config::get('pagButtonLimit'));
+
+				if (!empty($pagination) && !$pagination['page404']) {
+					$this->data['pagination'] = $pagination;
+				} else {
+					$this->data['pagination'] = null;
+				}
+				$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+				// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+				if (!$pagination['page404']) {
+					$this->data['page'] = $page;
+					$this->data['product'] = $this->leadingMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
+				} else {
+					$this->page404();
+				}
+			}
+
+		} else {
+			$this->page404();
+		}
+	}
+
+	public function cakeAction()
+	{
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getAction(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
+
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
+
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
+
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
+
+					$idProduct = $params[1];
+
+					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+					$mainModel = $this->cakeMainModel->list(['id' => $idProduct]);
+
+					if (!empty($mainModel)) {
+
+						// Получаем обе языковые модели
+						$ruModel = $this->cakeRuModel->list(['id_cake' => $idProduct]);
+						$enModel = $this->cakeEnModel->list(['id_cake' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('cakeImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('cakeImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
+
+						// Отдаём данные.
+						$this->data['edit']['main'] = $mainModel[0];
+						$this->data['edit']['ru'] = $ruModel[0];
+						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
+
+					} else {
+
+						$this->page404();
+
+					}
+
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
+				} else {
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('product.cake'));
+
+				}
+
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->cakeMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->cakeMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_cake'] = $newId;
+								$this->data['en']['id_cake'] = $newId;
+								$this->data['size']['id_cake'] = $newId;
+							}
+
+							$this->cakeRuModel->save($this->data['ru'], $idProduct ? ['id_cake' => $idProduct] : []);
+							$this->cakeEnModel->save($this->data['en'], $idProduct ? ['id_cake' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('cakeImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.cake'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
+			} else {
+
+				// Пагинация.
+				$page = isset($this->params[0]) ? $this->params[0] : 1;
+				$productsCount = count($this->cakeMainModel->languageList());
+
+				$pag = new Pagination();
+				$pagination = $pag->getLinks(
+					$productsCount,
+					Config::get('pagLimit'),
+					$page,
+					Config::get('pagButtonLimit'));
+
+				if (!empty($pagination) && !$pagination['page404']) {
+					$this->data['pagination'] = $pagination;
+				} else {
+					$this->data['pagination'] = null;
+				}
+				$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+				// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+				if (!$pagination['page404']) {
+					$this->data['page'] = $page;
+					$this->data['product'] = $this->cakeMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+					$this->data['category'] = $category['title'];
+				} else {
+					$this->page404();
+				}
+			}
+
+		} else {
+			$this->page404();
+		}
+	}
+
+	public function hotelAction()
+	{
+		// Получаем данные о категории.
+		$controller = lcfirst(App::getRouter()->getAction(true));
+		$category = $this->categoryMainModel->languageList(['category_name' => $controller])[0];
+
+		// Если категория активна - то начинаем сбор данных, иначе отдаём 404ю страницу.
+		if ($category['active'] != 0) {
+
+			// Получаем параметры.
+			$params = App::getRouter()->getParams();
+
+			// Если первый параметр 'edit' или 'new', то продолжаем сбор данных, иначе отдаем данные таблицы всех имеющихся товаров.
+			if (!empty($params) && ($params[0] == 'edit' || $params[0] == 'new')) {
+
+				// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+				if ($params[0] == 'edit' && isset($params[1]) && $params[1] > 0) {
+
+					$idProduct = $params[1];
+
+					// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+					$mainModel = $this->hotelMainModel->list(['id' => $idProduct]);
+
+					if (!empty($mainModel)) {
+
+						// Получаем обе языковые модели
+						$ruModel = $this->hotelRuModel->list(['id_cake' => $idProduct]);
+						$enModel = $this->hotelEnModel->list(['id_cake' => $idProduct]);
+
+						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+						if (file_exists(Config::get('hotelImgRoot') . $idProduct)) {
+							$galery = array_values(array_diff(scandir(Config::get('hotelImgRoot') . $idProduct), ['.', '..']));
+						} else {
+							$galery = false;
+						}
+
+						// Отдаём данные.
+						$this->data['edit']['main'] = $mainModel[0];
+						$this->data['edit']['ru'] = $ruModel[0];
+						$this->data['edit']['en'] = $enModel[0];
+						$this->data['edit']['galery'] = $galery;
+						$this->data['edit']['category'] = $controller;
+						$this->data['category'] = $category['title'];
+
+					} else {
+
+						$this->page404();
+
+					}
+
+				// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+				} elseif ($params[0] == 'new') {
+
+					$idProduct = null;
+
+					// Отдаём имя категории.
+					$this->data['category'] = $category['title'];
+
+
+				// Иначе делаем переадресацию на страницу списка услуг.
+				} else {
+
+					App::getRouter()->redirect(App::getRouter()->buildUri('product.hotel'));
+
+				}
+
+				// Если есть post запрос, обарабатываем и сохраняем полученные данные.
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					try {
+
+						if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
+							// Формируем массивы для сохранения.
+							$this->data['ru'] = [
+								'title' => $_POST['titleRu'],
+								'text' => $_POST['textRu'],
+								'contacts' => $_POST['contactsRu']
+							];
+
+							$this->data['en'] = [
+								'title' => $_POST['titleEn'],
+								'text' => $_POST['textEn'],
+								'contacts' => $_POST['contactsEn']
+							];
+
+							$this->data['main'] = [
+								'tel' => $_POST['tel'],
+								'fb' => !empty($_POST['fb']) ? $_POST['fb'] : null,
+								'inst' => !empty($_POST['inst']) ? $_POST['inst'] : null,
+								'telegram' => !empty($_POST['telegram']) ? $_POST['telegram'] : null,
+								'stars' => $_POST['stars'],
+								'price' => $_POST['price'],
+								'stock' => !empty($_POST['stock']) ? $_POST['stock'] : null,
+								'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+							];
+
+							// Сохраняем данные. Если это обновление данных, то обновляем их с помощью id продутка, иначе передаём null.
+							$this->hotelMainModel->save($this->data['main'], $idProduct ? ['id' => $idProduct] : []);
+
+							// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+							if (!$idProduct) {
+
+								// Получаем последнюю запись main таблицы, а из неё id.
+								$main = $this->hotelMainModel->list([], [1, 0], 'id');
+								$newId = $main[0]['id'];
+
+								// Дополняем модели новыми id.
+								$this->data['ru']['id_hotel'] = $newId;
+								$this->data['en']['id_hotel'] = $newId;
+								$this->data['size']['id_hotel'] = $newId;
+							}
+
+							$this->hotelRuModel->save($this->data['ru'], $idProduct ? ['id_hotel' => $idProduct] : []);
+							$this->hotelEnModel->save($this->data['en'], $idProduct ? ['id_hotel' => $idProduct] : []);
+
+							// Обрабатываем и сохраняем полученные изображения.
+							// Имя директории для сохранения.
+							$dir = Config::get('hotelImgRoot') . ($idProduct ? $idProduct : $newId);
+
+							// Массив с изображениями.
+							$image = $_FILES['photo'];
+
+							//Обрабатываем в более удобную форму полученные фото.
+							$image = $this->reArrayFiles($image);
+
+							// Сохраняем.
+							$this->saveImage($image, $dir);
+
+							App::getSession()->addFlash(__('admin_product.mes1'));
+							App::getRouter()->redirect(App::getRouter()->buildUri('product.hotel'));
+						}
+
+					} catch (\Exception $exception) {
+
+						App::getSession()->addFlash($exception->getMessage());
+
+					}
+
+				}
+
+			} else {
+
+				// Пагинация.
+				$page = isset($this->params[0]) ? $this->params[0] : 1;
+				$productsCount = count($this->hotelMainModel->languageList());
+
+				$pag = new Pagination();
+				$pagination = $pag->getLinks(
+					$productsCount,
+					Config::get('pagLimit'),
+					$page,
+					Config::get('pagButtonLimit'));
+
+				if (!empty($pagination) && !$pagination['page404']) {
+					$this->data['pagination'] = $pagination;
+				} else {
+					$this->data['pagination'] = null;
+				}
+				$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+				// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+				if (!$pagination['page404']) {
+					$this->data['page'] = $page;
+					$this->data['product'] = $this->hotelMainModel->languageList([], [Config::get('pagLimit'), $offset]);
 					$this->data['category'] = $category['title'];
 				} else {
 					$this->page404();

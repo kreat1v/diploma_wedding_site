@@ -170,7 +170,7 @@ class HotelController extends Base
 				$reviews = $this->hotelReviewsModel->reviews(['id_product' => $id, 'active' => 1], [5, 0]);
 
 				// Отдаём данные.
-				if (!empty($product)) {
+				if (!empty($product) && $product[0]['active'] == 1) {
 					$this->data['avatar'] = $avatar;
 					$this->data['avatar-class'] = $avatarClass;
 					$this->data['title'] = $product[0]['title'];
@@ -295,7 +295,7 @@ class HotelController extends Base
 				}
 
 				// Отдаём данные.
-				if (!empty($product)) {
+				if (!empty($product) && $product[0]['active'] == 1) {
 					$this->data['product'] = $product[0];
 					$this->data['galery'] = $galery;
 					$this->data['favorites'] = $favoritesArr;

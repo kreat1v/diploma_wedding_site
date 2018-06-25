@@ -250,6 +250,7 @@ return [
 		'stock' => 'Promotional price (if any)',
 		'sex' => 'For him or her',
 		'service' => 'Type of service',
+		'stars' => 'Number of stars',
 		'brand' => 'Brand',
 		'size' => 'Available sizes',
 		'tel' => 'Phone number',
@@ -271,7 +272,8 @@ return [
 		'tool4' => 'The field can not be empty, and it can not contain any symbols other than Latin',
 		'tool5' => 'Please select at least one size',
 		'tool6' => 'The field can not be empty, nor can it contain more than 100 characters',
-		'tool7' => 'The field can not contain any symbols other than digits'
+		'tool7' => 'The field can not contain any symbols other than digits',
+		'tool8' => 'Upload at least one image'
 	],
 
 	'admin_feedback' => [

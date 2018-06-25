@@ -19,7 +19,7 @@ $edit = isset($data['edit']) ? true : false;
             </div>
 
             <div class="bt text">
-                <a class="sm-buttons" href="<?=$router->buildUri('product.clothes', ['new'])?>">
+                <a class="sm-buttons" href="<?=$router->buildUri('product.decor', ['new'])?>">
                     <?=__('admin_product.new')?>
                 </a>
             </div>
@@ -36,13 +36,13 @@ $edit = isset($data['edit']) ? true : false;
                     </tr>
     				<?php foreach ($data['product'] as $value): ?>
     				<tr>
-    					<td><?=$value['id_clothes']?></td>
+    					<td><?=$value['id_decor']?></td>
     					<td><?=$value['title']?></td>
                         <td><?=$value['active'] == 1 ? __('admin_product.activity2') : '-'?></td>
                         <td><?=$value['stock'] ? __('admin_product.stock2') : '-'?></td>
                         <?php if ($value['active'] == 1): ?>
     					<td>
-                            <a class="sm-buttons" href="<?=$router->buildUri('default.clothes.view', [$value['id_clothes']])?>">
+                            <a class="sm-buttons" href="<?=$router->buildUri('default.decor.view', [$value['id_decor']])?>">
                                 <?=__('admin_product.view')?>
                             </a>
                         </td>
@@ -50,7 +50,7 @@ $edit = isset($data['edit']) ? true : false;
                         <td></td>
                         <?php endif; ?>
     					<td>
-                            <a class="sm-buttons" href="<?=$router->buildUri('admin.product.clothes', ['edit', $value['id_clothes']])?>">
+                            <a class="sm-buttons" href="<?=$router->buildUri('admin.product.decor', ['edit', $value['id_decor']])?>">
                                 <?=__('admin_product.edit')?>
                             </a>
                         </td>
@@ -64,27 +64,27 @@ $edit = isset($data['edit']) ? true : false;
             <nav>
                 <ul class="pagination text">
                     <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('admin.product.clothes', [1]) : ''?>">
+                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('admin.product.decor', [1]) : ''?>">
                             <span>&laquo;</span>
                         </a>
                     </li>
 
                     <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('admin.product.clothes', [$data['pagination']['back']]) : ''?>"><?=__('pagination.previous')?></a>
+                        <a href="<?=$data['pagination']['back'] ? $router->buildUri('admin.product.decor', [$data['pagination']['back']]) : ''?>"><?=__('pagination.previous')?></a>
                     </li>
 
                     <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
                     <li class="<?=$data['page'] == $key ? 'active' : ''?>">
-                        <a href="<?=$router->buildUri('admin.product.clothes', [$key])?>"><?=$key?></a>
+                        <a href="<?=$router->buildUri('admin.product.decor', [$key])?>"><?=$key?></a>
                     </li>
                     <?php endforeach; ?>
 
                     <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                        <a href="<?=$data['pagination']['forward'] ? $router->buildUri('admin.product.clothes', [$data['pagination']['forward']]) : ''?>"><?=__('pagination.next')?></a>
+                        <a href="<?=$data['pagination']['forward'] ? $router->buildUri('admin.product.decor', [$data['pagination']['forward']]) : ''?>"><?=__('pagination.next')?></a>
                     </li>
 
                     <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
-                        <a href="<?=$router->buildUri('admin.product.clothes', [$data['pagination']['last']])?>">
+                        <a href="<?=$router->buildUri('admin.product.decor', [$data['pagination']['last']])?>">
                             <span>&raquo;</span>
                         </a>
                     </li>
@@ -165,40 +165,17 @@ $edit = isset($data['edit']) ? true : false;
                     </label>
 
                     <label>
-                        <span><?=__('admin_product.sex')?></span>
-                        <label id="sex">
-                            <input type="radio" name="sex" value="m" class="option-input radio" <?=$edit && $data['edit']['main']['sex'] == 'm' ? 'checked' : ''?> />
-                            <span><?=__('filter.m')?></span>
-                            <input type="radio" name="sex" value="f" class="option-input radio" <?=$edit && $data['edit']['main']['sex'] == 'f' ? 'checked' : ''?> />
-                            <span><?=__('filter.f')?></span>
+                        <span><?=__('admin_product.service')?></span>
+                        <label id="service">
+                            <input type="radio" name="service" value="beach" class="option-input radio" <?=$edit && $data['edit']['main']['service'] == 'beach' ? 'checked' : ''?> />
+                            <span><?=__('decor.beach')?></span>
+                            <input type="radio" name="service" value="nature" class="option-input radio" <?=$edit && $data['edit']['main']['service'] == 'nature' ? 'checked' : ''?> />
+                            <span><?=__('decor.nature')?></span>
+                            <input type="radio" name="service" value="restaurant" class="option-input radio" <?=$edit && $data['edit']['main']['service'] == 'restaurant' ? 'checked' : ''?> />
+                            <span><?=__('decor.restaurant')?></span>
                         </label>
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool3')?></div>
-                        </div>
-                    </label>
-
-                    <label>
-                        <span><?=__('admin_product.brand')?></span>
-                        <input class="input" id="brand" type="text" name="brand" value="<?=$edit ? $data['edit']['main']['brand'] : ''?>">
-                        <div class="tooltips-left">
-                            <div><?=__('admin_product.tool4')?></div>
-                        </div>
-                    </label>
-
-                    <label>
-                        <span><?=__('admin_product.size')?></span>
-                        <label id="size">
-                            <input type="checkbox" name="s" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['s'] ? 'checked' : ''?> />
-                            <span>S</span>
-                            <input type="checkbox" name="m" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['m'] ? 'checked' : ''?> />
-                            <span>M</span>
-                            <input type="checkbox" name="l" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['l'] ? 'checked' : ''?> />
-                            <span>L</span>
-                            <input type="checkbox" name="xl" value="1" class="option-input checkbox" <?=$edit && $data['edit']['size']['xl'] ? 'checked' : ''?> />
-                            <span>XL</span>
-                        </label>
-                        <div class="tooltips-left">
-                            <div><?=__('admin_product.tool5')?></div>
                         </div>
                     </label>
                 </fieldset>
@@ -269,7 +246,7 @@ $edit = isset($data['edit']) ? true : false;
                                     data-name="<?=$img?>"
                                     data-category="<?=$data['edit']['category']?>"
                                     data-id="<?=$data['edit']['main']['id']?>">
-                                <img class="product-image" style="display: block;" src="<?=Config::get('clothesImg') . $data['edit']['main']['id'] . DS . $img?>" />
+                                <img class="product-image" style="display: block;" src="<?=Config::get('decorImg') . $data['edit']['main']['id'] . DS . $img?>" />
                                 <span class="delete-image">
                                     <i class="fas fa-times-circle"></i>
                                 </span>

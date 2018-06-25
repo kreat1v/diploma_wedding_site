@@ -275,7 +275,7 @@ $(document).ready(function() {
     });
 
     // Устанавливаем обработчик при изменении радиокнопок.
-    $('#sex input, #size input, #service input').unbind().change(function() {
+    $('#sex input, #size input, #service input, #stars input').unbind().change(function() {
 
         // Запускаем валидацию.
         validCheck($(this).parent());
@@ -307,6 +307,7 @@ $(document).ready(function() {
         validCheck($('#sex'));
         validCheck($('#size'));
         validCheck($('#service'));
+        validCheck($('#stars'));
         validImage();
 
         // Если количество полей с классом ошибки больше 0, мы возвращаем false, останавливая отправку данных в невалидной форме.
