@@ -275,18 +275,10 @@ $(document).ready(function() {
     });
 
     // Устанавливаем обработчик при изменении радиокнопок.
-    $('#sex input').unbind().change(function() {
+    $('#sex input, #size input, #service input').unbind().change(function() {
 
         // Запускаем валидацию.
-        validCheck($('#sex'));
-
-    });
-
-    // Устанавливаем обработчик при изменении чекбоксов.
-    $('#size input').unbind().change(function() {
-
-        // Запускаем валидацию.
-        validCheck($('#size'));
+        validCheck($(this).parent());
 
     });
 
@@ -314,6 +306,7 @@ $(document).ready(function() {
         validData($('#telephone'));
         validCheck($('#sex'));
         validCheck($('#size'));
+        validCheck($('#service'));
         validImage();
 
         // Если количество полей с классом ошибки больше 0, мы возвращаем false, останавливая отправку данных в невалидной форме.

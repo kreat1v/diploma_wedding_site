@@ -249,6 +249,7 @@ return [
 		'price' => 'Price',
 		'stock' => 'Promotional price (if any)',
 		'sex' => 'For him or her',
+		'service' => 'Type of service',
 		'brand' => 'Brand',
 		'size' => 'Available sizes',
 		'tel' => 'Phone number',
