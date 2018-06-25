@@ -10,13 +10,24 @@ class ClothesSize extends \App\Entity\Base
 	}
 
 	public function checkFields($data)
-	{}
+	{
+		$count = [];
+		foreach ($data as $value) {
+			if ($value) {
+				$count[] = $value;
+			}
+		}
+
+		if (empty($count)) {
+			throw new \Exception(__('form.field'));
+		}
+	}
 
 	public function getFields()
 	{
 		return [
 			'id',
-			'id_caregory',
+			'id_clothes',
 			's',
 			'm',
 			'l',

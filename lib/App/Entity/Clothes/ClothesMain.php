@@ -35,7 +35,13 @@ class ClothesMain extends \App\Entity\Base
 	}
 
 	public function checkFields($data)
-	{}
+	{
+		foreach ($data as $value) {
+			if (empty($value) && !strlen($value) && $value !== null) {
+				throw new \Exception(__('form.field'));
+			}
+		}
+	}
 
 	public function getFields()
 	{
@@ -120,7 +126,7 @@ class ClothesMain extends \App\Entity\Base
 				JOIN $fieldsSize ON $fieldsMain.id = $fieldsSize.id_clothes
 				$strWhere
 				$strLimit";
-
+				
 		return $this->conn->query($sql);
 	}
 }
