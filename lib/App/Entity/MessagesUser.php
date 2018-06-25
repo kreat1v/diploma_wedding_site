@@ -57,6 +57,7 @@ class MessagesUser extends Base
 				JOIN $fieldsUser ON $fieldsMessagesUser.id_users = $fieldsUser.id
 				WHERE $fieldsMessagesUser.active = $active
 				GROUP BY $fieldsMessagesUser.id_users
+				ORDER BY $fieldsMessagesUser.id DESC
 				$strLimit";
 		return $this->conn->query($sql);
 	}

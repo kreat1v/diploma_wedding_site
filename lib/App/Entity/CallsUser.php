@@ -55,6 +55,7 @@ class CallsUser extends Base
 				FROM $fieldsCallsUser
 				JOIN $fieldsUser ON $fieldsCallsUser.id_users = $fieldsUser.id
 				WHERE $fieldsCallsUser.active = $active
+				ORDER BY $fieldsCallsUser.id DESC
 				$strLimit";
 		return $this->conn->query($sql);
 	}

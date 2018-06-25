@@ -32,11 +32,48 @@ $router = \App\Core\App::getRouter();
 					<?php endforeach; ?>
 				</table>
 			</div>
+
+				<!-- Пагинация. -->
+				<?php if ($data['pagination']): ?>
+				<nav>
+					<ul class="pagination text">
+						<li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+							<a href="<?=$data['pagination']['back'] ? $router->buildUri('admin.feedback.index', [1]) : ''?>">
+								<span>&laquo;</span>
+							</a>
+						</li>
+
+						<li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+							<a href="<?=$data['pagination']['back'] ? $router->buildUri('admin.feedback.index', [$data['pagination']['back']]) : ''?>"><?=__('pagination.previous')?></a>
+						</li>
+
+						<?php foreach ($data['pagination']['middle'] as $key => $value): ?>
+						<li class="<?=$data['page'] == $key ? 'active' : ''?>">
+							<a href="<?=$router->buildUri('admin.feedback.index', [$key])?>"><?=$key?></a>
+						</li>
+						<?php endforeach; ?>
+
+						<li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+							<a href="<?=$data['pagination']['forward'] ? $router->buildUri('admin.feedback.index', [$data['pagination']['forward']]) : ''?>"><?=__('pagination.next')?></a>
+						</li>
+
+						<li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+							<a href="<?=$router->buildUri('admin.feedback.index', [$data['pagination']['last']])?>">
+								<span>&raquo;</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<?php endif; ?>
+
 			<?php else: ?>
+
 			<div class="text">
 				<p><?=__('admin_feedback.mes5')?></p>
 			</div>
+
 			<?php endif; ?>
+
 		<?php endif; ?>
 
 		<?php if (isset($data['message'])): ?>

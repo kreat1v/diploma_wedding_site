@@ -8,6 +8,7 @@ use \App\Entity\MessagesAdmin;
 use \App\Entity\CallsUser;
 use \App\Core\App;
 use \App\Core\Config;
+use \App\Core\Pagination;
 
 class FeedbackController extends \App\Controllers\Base
 {
@@ -78,7 +79,31 @@ class FeedbackController extends \App\Controllers\Base
 
 		} else {
 
-			$this->data['messagesList'] = $this->messagesUserModel->messages();
+			// Пагинация.
+			$page = isset($this->params[0]) ? $this->params[0] : 1;
+			$productsCount = count($this->messagesUserModel->messages());
+
+			$pag = new Pagination();
+			$pagination = $pag->getLinks(
+				$productsCount,
+				Config::get('pagLimit'),
+				$page,
+				Config::get('pagButtonLimit'));
+
+			if (!empty($pagination) && !$pagination['page404']) {
+				$this->data['pagination'] = $pagination;
+			} else {
+				$this->data['pagination'] = null;
+			}
+			$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+			// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+			if (!$pagination['page404']) {
+				$this->data['messagesList'] = $this->messagesUserModel->messages(1, [Config::get('pagLimit'), $offset]);
+				$this->data['page'] = $page;
+			} else {
+				$this->page404();
+			}
 
 		}
 
@@ -295,7 +320,31 @@ class FeedbackController extends \App\Controllers\Base
 
 		} else {
 
-			$this->data['messagesList'] = $this->messagesUserModel->messages(0);
+			// Пагинация.
+			$page = isset($this->params[0]) ? $this->params[0] : 1;
+			$productsCount = count($this->messagesUserModel->messages(0));
+
+			$pag = new Pagination();
+			$pagination = $pag->getLinks(
+				$productsCount,
+				Config::get('pagLimit'),
+				$page,
+				Config::get('pagButtonLimit'));
+
+			if (!empty($pagination) && !$pagination['page404']) {
+				$this->data['pagination'] = $pagination;
+			} else {
+				$this->data['pagination'] = null;
+			}
+			$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+			// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+			if (!$pagination['page404']) {
+				$this->data['messagesList'] = $this->messagesUserModel->messages(0, [Config::get('pagLimit'), $offset]);
+				$this->data['page'] = $page;
+			} else {
+				$this->page404();
+			}
 
 		}
 
@@ -330,8 +379,31 @@ class FeedbackController extends \App\Controllers\Base
 		// Задаем модульное сообщение.
 		App::getSession()->addModal(__('admin_feedback.modal2'));
 
-		// Получаем список активных заявок.
-		$this->data = $this->callsUserModel->calls();
+		// Пагинация.
+		$page = isset($this->params[0]) ? $this->params[0] : 1;
+		$productsCount = count($this->callsUserModel->calls());
+
+		$pag = new Pagination();
+		$pagination = $pag->getLinks(
+			$productsCount,
+			Config::get('pagLimit'),
+			$page,
+			Config::get('pagButtonLimit'));
+
+		if (!empty($pagination) && !$pagination['page404']) {
+			$this->data['pagination'] = $pagination;
+		} else {
+			$this->data['pagination'] = null;
+		}
+		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+		// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+		if (!$pagination['page404']) {
+			$this->data['callsList'] = $this->callsUserModel->calls(1, [Config::get('pagLimit'), $offset]);
+			$this->data['page'] = $page;
+		} else {
+			$this->page404();
+		}
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
@@ -361,7 +433,30 @@ class FeedbackController extends \App\Controllers\Base
 
 	public function archiveRequestsAction()
 	{
-		// Получаем список архивных заявок.
-		$this->data = $this->callsUserModel->calls(0);
+		// Пагинация.
+		$page = isset($this->params[0]) ? $this->params[0] : 1;
+		$productsCount = count($this->callsUserModel->calls(0));
+
+		$pag = new Pagination();
+		$pagination = $pag->getLinks(
+			$productsCount,
+			Config::get('pagLimit'),
+			$page,
+			Config::get('pagButtonLimit'));
+
+		if (!empty($pagination) && !$pagination['page404']) {
+			$this->data['pagination'] = $pagination;
+		} else {
+			$this->data['pagination'] = null;
+		}
+		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+		// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+		if (!$pagination['page404']) {
+			$this->data['callsList'] = $this->callsUserModel->calls(0, [Config::get('pagLimit'), $offset]);
+			$this->data['page'] = $page;
+		} else {
+			$this->page404();
+		}
 	}
 }
