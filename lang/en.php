@@ -276,6 +276,17 @@ return [
 		'tool8' => 'Upload at least one image'
 	],
 
+	'admin_stories' => [
+		'title1' => 'The story editor',
+		'new' => 'New story',
+		'id' => 'History ID',
+		'name' => 'Name',
+		'activity1' => 'Activity History',
+		'activity2' => 'History is active',
+		'view' => 'View',
+		'edit' => 'Edit'
+	],
+
 	'admin_feedback' => [
 		'title1' => 'Active dialogs',
 		'title2' => 'Archived dialogs',

@@ -132,14 +132,11 @@ if(Session::get('id')) {
 	                </div>
 
 	                <div class="buttons">
-	                    <a href="#">
+	                    <a href="<?=$router->buildUri('.about')?>">
 							<span><?=__('header.about')?></span>
 						</a>
 						<?php if($router->getController('true') != 'Login'): ?>
-	                    <a href="#">
-							<span><?=__('header.news')?></span>
-						</a>
-	                    <a href="#">
+	                    <a href="<?=$router->buildUri('.stories')?>">
 							<span><?=__('header.stories')?></span>
 						</a>
 							<?php if (!$session_id):?>

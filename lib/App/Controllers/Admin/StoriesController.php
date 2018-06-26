@@ -2,35 +2,57 @@
 
 namespace App\Controllers\Admin;
 
-use \App\Entity\Category;
-use \App\Entity\News;
-use \App\Entity\Tags;
-use \App\Entity\NewsTag;
+use \App\Entity\Stories\StoriesMain;
+use \App\Entity\Stories\StoriesRu;
+use \App\Entity\Stories\StoriesEn;
 use \App\Core\App;
 use \App\Core\Config;
+use \App\Core\Pagination;
 
-class NewsController extends \App\Controllers\Base
+class StoriesController extends \App\Controllers\Base
 {
-	/** @var Category */
-	private $categoryModel;
-	private $newsModel;
-	private $tagsModel;
-	private $newsTagModel;
+	private $storiesMainModel;
+	private $storiesRuModel;
+	private $storiesEnModel;
 
 	public function __construct($params = [])
 	{
 		parent::__construct($params);
 
-		$this->categoryModel = new Category(App::getConnection());
-		$this->newsModel = new News(App::getConnection());
-		$this->tagsModel = new Tags(App::getConnection());
-		$this->newsTagModel = new NewsTag(App::getConnection());
+		$this->storiesMainModel = new StoriesMain(App::getConnection());
+		$this->storiesRuModel = new StoriesRu(App::getConnection());
+		$this->storiesEnModel = new StoriesEn(App::getConnection());
 	}
 
 	public function indexAction()
 	{
-		$count = count($this->newsModel->list());
-		$this->data = $this->newsModel->getSection($count, 0);
+
+		// Пагинация.
+		$page = isset($this->params[0]) ? $this->params[0] : 1;
+		$productsCount = count($this->storiesMainModel->languageList());
+
+		$pag = new Pagination();
+		$pagination = $pag->getLinks(
+			$productsCount,
+			Config::get('pagLimit'),
+			$page,
+			Config::get('pagButtonLimit'));
+
+		if (!empty($pagination) && !$pagination['page404']) {
+			$this->data['pagination'] = $pagination;
+		} else {
+			$this->data['pagination'] = null;
+		}
+		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+		// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+		if (!$pagination['page404']) {
+			$this->data['page'] = $page;
+			$this->data['stories'] = $this->storiesMainModel->languageList([], [Config::get('pagLimit'), $offset]);
+		} else {
+			$this->page404();
+		}
+
 	}
 
 	public function editAction()

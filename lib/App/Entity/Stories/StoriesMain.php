@@ -1,50 +1,34 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Stories;
 
-class News extends Base
+use \App\Core\Localization;
+
+class StoriesMain extends \App\Entity\Base
 {
-	private $newsTag;
-	private $tags;
-	private $category;
+	private $storiesLangModel;
 
-	private function getNewsTag()
+	private function getStoriesLang()
 	{
-		if (empty($this->newsTag)) {
-			$this->newsTag = new NewsTag($this->conn);
+		if (empty($this->storiesLangModel)) {
+			$langTableName = '\App\Entity\Stories\Stories' . ucfirst(Localization::getLang());
+
+			$this->storiesLangModel = new $langTableName($this->conn);
 		}
 
-		return $this->newsTag;
-	}
-
-	private function getTags()
-	{
-		if (empty($this->tags)) {
-			$this->tags = new Tags($this->conn);
-		}
-
-		return $this->tags;
-	}
-
-	private function getCategory()
-	{
-		if (empty($this->category)) {
-			$this->category = new Category($this->conn);
-		}
-
-		return $this->category;
+		return $this->storiesLangModel;
 	}
 
 	public function getTableName()
 	{
-		return 'news';
+		return 'stories_main';
 	}
 
 	public function checkFields($data)
 	{
 		foreach ($data as $value) {
-			if (empty($value) && !strlen($value)) {
-				throw new \Exception('Form fields can not be empty');
+			if (empty($value) && !strlen($value) && $value !== null) {
+				throw new \Exception(__('form.field'));
 			}
 		}
 	}
@@ -53,15 +37,45 @@ class News extends Base
 	{
 		return [
 			'id',
-			'id_category',
 			'date',
-			'title',
-			'content',
-			'tag',
-			'img_dir',
 			'views',
-			'analytics'
+			'active'
 		];
+	}
+
+	public function languageList($filter = [], $limit = [])
+	{
+		$fields = array_merge($this->getFields(), $this->getStoriesLang()->getFields());
+
+		$fieldsMain = $this->getTableName();
+		$fieldsLang = $this->getStoriesLang()->getTableName();
+
+		// формируем условия запроса
+		$strWhere = 'WHERE 1';
+
+		foreach ($filter as $fieldName => $value) {
+			if (!in_array($fieldName, $fields)) {
+				continue;
+			}
+
+			$value = $this->conn->escape($value);
+			$strWhere .= " AND $fieldName = $value";
+		}
+
+		// данные для пагинации
+		$strLimit = '';
+		if (!empty($limit)) {
+			$strLimit = " LIMIT $limit[0] OFFSET $limit[1]";
+		}
+
+		$sql = "SELECT $fieldsMain.*, $fieldsLang.*
+				FROM $fieldsMain
+				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_stories
+				$strWhere
+				ORDER BY $fieldsMain.id DESC
+				$strLimit";
+
+		return $this->conn->query($sql);
 	}
 
 	public function getSection($limit, $limitStart, $where = null, $value = null)
@@ -154,12 +168,12 @@ class News extends Base
 
 		echo $strWhere;
 
-		$sql = "SELECT $fieldsNews.* 
-				FROM $fieldsNews 
-				JOIN $fieldsNewsTag ON $fieldsNews.id = $fieldsNewsTag.id_news 
-				JOIN $fieldsTags ON $fieldsNewsTag.id_tags = $fieldsTags.id 
-				JOIN $fieldsCategory ON $fieldsNews.id_category = $fieldsCategory.id 
-				WHERE 1 $strWhere 
+		$sql = "SELECT $fieldsNews.*
+				FROM $fieldsNews
+				JOIN $fieldsNewsTag ON $fieldsNews.id = $fieldsNewsTag.id_news
+				JOIN $fieldsTags ON $fieldsNewsTag.id_tags = $fieldsTags.id
+				JOIN $fieldsCategory ON $fieldsNews.id_category = $fieldsCategory.id
+				WHERE 1 $strWhere
 				GROUP BY $fieldsNews.id";
 		return $this->conn->query($sql);
 	}

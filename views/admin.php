@@ -65,7 +65,7 @@ if(Session::get('id')) {
 					<br>
 
 					<li>
-						<a href="#"><?=__('admin_menu.stories')?></a>
+						<a href="<?=$router->buildUri('.stories')?>"><?=__('admin_menu.stories')?></a>
 					</li>
 
 					<br>
