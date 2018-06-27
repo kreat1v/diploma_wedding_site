@@ -36,7 +36,7 @@ $('.textarea').keypress(function(e) {
 $(document).ready(function() {
 
     // Функция улучшения скролла.
-    $(".textarea").niceScroll();
+    // $(".textarea").niceScroll();
 
     // Функция, которая делает активным тултип ошибки.
     function errorOn(context) {
@@ -94,6 +94,7 @@ $(document).ready(function() {
 
     // Устанавливаем обработчик потери фокуса для полей формы данных.
     $('input#title-ru, input#title-en, textarea#first-text-ru, textarea#first-text-en, input#full-title-ru, input#full-title-en, textarea#second-text-ru, textarea#second-text-en')
+        // .unbind()
         .blur(function() {
 
             // Запускаем валидацию.

@@ -6,7 +6,6 @@ $router = \App\Core\App::getRouter();
 $edit = isset($data['edit']) ? true : false;
 
 ?>
-
 <div class="container">
     <div class="category">
 

@@ -41,7 +41,7 @@ $router = \App\Core\App::getRouter();
                     <td></td>
                     <?php endif; ?>
 					<td>
-                        <a class="sm-buttons" href="<?=$router->buildUri('admin.stories.edit', [$value['id_stories']])?>">
+                        <a class="sm-buttons" href="<?=$router->buildUri('stories.edit', [$value['id_stories']])?>">
                             <?=__('admin_stories.edit')?>
                         </a>
                     </td>

@@ -57,72 +57,147 @@ class StoriesController extends \App\Controllers\Base
 
 	public function editAction()
 	{
-		$this->data['categoryList'] = $this->categoryModel->list();
-		$this->data['tagsList'] = $this->tagsModel->list();
+		// Получаем параметры.
+		$params = App::getRouter()->getParams();
 
+		// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+		if (isset($params[0]) && $params[0] > 0) {
+
+			$idStories = $params[0];
+
+			// Получаем основную модель. Если модель пуста - отдаём 404ю страницу.
+			$mainModel = $this->storiesMainModel->list(['id' => $idStories]);
+
+			if (!empty($mainModel)) {
+
+				// Получаем обе языковые модели
+				$ruModel = $this->storiesRuModel->list(['id_stories' => $idStories]);
+				$enModel = $this->storiesEnModel->list(['id_stories' => $idStories]);
+
+				// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
+				if (file_exists(Config::get('storiesImgRoot') . $idStories)) {
+					$galery = array_values(array_diff(scandir(Config::get('storiesImgRoot') . $idStories), ['.', '..']));
+				} else {
+					$galery = false;
+				}
+
+				// Отдаём данные.
+				$this->data['edit']['main'] = $mainModel[0];
+				$this->data['edit']['ru'] = $ruModel[0];
+				$this->data['edit']['en'] = $enModel[0];
+				$this->data['edit']['galery'] = $galery;
+
+			} else {
+
+				$this->page404();
+
+			}
+
+		// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+		} else {
+
+			$idStories = null;
+
+		}
+
+		// Если есть post запрос, обарабатываем и сохраняем полученные данные.
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
-				$id = isset($this->params[0]) ? $this->params[0] : null;
 
-				$this->data['news'] = [
-					'id_category' => $_POST['id_category'],
-					'title' => $_POST['title'],
-					'analytics' => empty($_POST['analytics']) ? 0 : 1,
-					'content' => $_POST['content'],
-					'date' => date('Y-m-d H:i:s'),
-					'new' => true
-				];
-				$this->newsModel->save($this->data['news'], $id);
+				if (isset($_POST['button']) && $_POST['button'] == 'send') {
 
-				if (!$id) {
-					$id = $this->newsModel->getSection(1, 0)[0]['id'];
-				}
+					// Обрабатываем полученный русский текст для сохранения в БД.
+					$contentRu = $_POST['contentRu'];
+					$contentRu = $this->formattingTextForDatabase($contentRu);
 
-				$this->data['tags'] = $_POST['tags'];
-				$this->newsTagModel->saveTags($this->data['tags'], $id);
+					// Формируем массив для сохранения.
+					$this->data['edit']['ru'] = [
+						'title' => $_POST['titleRu'],
+						'content' => $contentRu
+					];
 
-				if ($_FILES['images']['error'][0] == 0) {
-					$news = $this->newsModel->getBy('id', $id);
-					$nameDir = isset($news[0]['img_dir']) ? $news[0]['img_dir'] : null;
+					// Обрабатываем полученный английский текст для сохранения в БД.
+					$contentEn = $_POST['contentEn'];
+					$contentEn = $this->formattingTextForDatabase($contentEn);
 
-					if (!isset($nameDir)) {
-						$nameDir = date('U');
-						$this->saveImages($_FILES['images'], $nameDir);
-						$this->newsModel->save(['img_dir' => "$nameDir"], $id);
-					} else {
-						$this->saveImages($_FILES['images'], $nameDir);
+					// Формируем массив для сохранения.
+					$this->data['edit']['en'] = [
+						'title' => $_POST['titleEn'],
+						'
+						content' => $contentEn
+					];
+
+					// Формируем массив активности категории.
+					$this->data['edit']['main'] = [
+						'active' => !empty($_POST['active']) ? $_POST['active'] : 0
+					];
+
+					// Сохраняем данные.
+					$this->storiesMainModel->save($this->data['edit']['main'], $idStories ? ['id' => $idStories] : []);
+
+					// Если id продукта у нас еще не было - получим его из свежей записи в main таблицу.
+					if (!$idStories) {
+
+						// Получаем последнюю запись main таблицы, а из неё id.
+						$main = $this->storiesMainModel->list([], [1, 0], 'id');
+						$newId = $main[0]['id'];
+
+						// Дополняем модели новыми id.
+						$this->data['edit']['ru']['id_stories'] = $newId;
+						$this->data['edit']['en']['id_stories'] = $newId;
 					}
+
+					$this->storiesRuModel->save($this->data['edit']['ru'], $idStories ? ['id_decor' => $idStories] : []);
+					$this->storiesEnModel->save($this->data['edit']['en'], $idStories ? ['id_decor' => $idStories] : []);
+
+					// Обрабатываем и сохраняем полученные изображения.
+					// Имя директории для сохранения.
+					$dir = Config::get('storiesImgRoot') . ($idStories ? $idStories : $newId);
+
+					// Массив с изображениями.
+					$image = $_FILES['photo'];
+
+					//Обрабатываем в более удобную форму полученные фото.
+					$image = $this->reArrayFiles($image);
+
+					// Сохраняем.
+					$this->saveImage($image, $dir);
+
+					// App::getSession()->addFlash(__('admin_category.mes3'));
+					// App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
 				}
 
-				App::getSession()->addFlash('News has been saved');
-				App::getRouter()->redirect(App::getRouter()->buildUri('index'));
 			} catch (\Exception $exception) {
+
 				App::getSession()->addFlash($exception->getMessage());
+
 			}
 		}
 
-		if (isset($this->params[0]) && $this->params[0] > 0) {
-			$newsId = $this->params[0];
-			$news = $this->newsModel->getBy('id', $newsId);
-
-			$images = array_values(array_diff(scandir(Config::get('gallery') . $news['img_dir']), ['.', '..']));
-			$this->data['gallery'] = $images;
-
-			$newsTag = $this->newsTagModel->list(['id_news' => $newsId]);
-			$tagsId = '';
-			foreach ($newsTag as $value) {
-				$tagsId .= $value['id_tags'];
-				$tagsId .= ', ';
-			}
-			$tagsId = trim($tagsId, ', ');
-
-			$tags = $this->tagsModel->getTags($tagsId);
-
-			$this->data['news'] = $news;
-			$this->data['tags'] = $tags;
-		}
+		// Заменяем текстовые блоки для вывода с помощью нашей функции.
+		$this->data['edit']['ru']['content'] = $this->formattingTextForOutput($this->data['edit']['ru']['content']);
+		$this->data['edit']['en']['content'] = $this->formattingTextForOutput($this->data['edit']['en']['content']);
 	}
 
+	// Функция обработки текста для сохранения в БД.
+	private function formattingTextForDatabase($string)
+	{
+		$string = '<p>' . str_replace(PHP_EOL . PHP_EOL, '</p><p>', $string) . '</p>';
+
+		return $string;
+	}
+
+	// Функция форматирования текстовых блоков - убираем теги абзаца и заменяем их на переносы строки.
+	private function formattingTextForOutput($string)
+	{
+		$string = ltrim($string, '<p>');
+		$string = rtrim($string, '</p>');
+		$string = str_replace('</p><p>', PHP_EOL . PHP_EOL, $string);
+
+		return $string;
+	}
+
+	// Преобразование массива $_FILES в более удобную структуру.
 	private function reArrayFiles($file_post)
 	{
 		$file_ary = [];
@@ -138,59 +213,108 @@ class StoriesController extends \App\Controllers\Base
 		return $file_ary;
 	}
 
-	private function saveImages(array $images, $nameDir)
+	// Сохранение изображений.
+	private function saveImage($imageArray, $nameDir)
 	{
-		try {
-			$files = $this->reArrayFiles($images);
+		foreach ($imageArray as $key => $value) {
 
-			if (!file_exists(Config::get('gallery') . $nameDir)) {
-				mkdir(Config::get('gallery') . $nameDir, 0777);
+			// Проверяем загрузку изображения - если нету ошибок, то продолжаем сохранение.
+			if ($imageArray[$key]['error'] != 0) {
+				continue;
 			}
 
-			foreach ($files as $key => $value) {
-				if (!file_exists($files[$key]['tmp_name'])) {
-					throw new \Exception('Images are not downloaded!');
-				}
-
-				if ($files[$key]['size'] > 1024 * 3 * 1024) {
-					throw new \Exception('The file exceeds 3 megabytes.');
-				}
-
-				if (strcmp(substr($files[$key]['type'], 0, 6), 'image/') != 0) {
-					throw new \Exception('You are trying to download an image!');
-				}
-
-				$file_type = pathinfo($files[$key]['name'], PATHINFO_EXTENSION);
-				$file_path = $nameDir . DS . uniqid('img_') . '.' . $file_type;
-
-				if (!move_uploaded_file($files[$key]['tmp_name'], Config::get('gallery') . $file_path)) {
-					throw new \Exception('Images are not downloaded!');
-				}
+			// Проверка на наличие загружаемого изображения.
+			if (!file_exists($imageArray[$key]['tmp_name'])) {
+				throw new \Exception(__('user_settings.error1'));
 			}
-		} catch (\Exception $exception) {
-			rmdir(Config::get('gallery').$nameDir);
-			App::getSession()->addFlash($exception->getMessage());
+
+			// Проверка на тип файла. Получение расширения изображения.
+			switch(getimagesize($imageArray[$key]['tmp_name'])['mime']) {
+				case 'image/gif':
+					$fileType = '.gif';
+					break;
+				case 'image/jpeg':
+					$fileType = '.jpg';
+					break;
+				case 'image/png':
+					$fileType = '.png';
+					break;
+				default:
+					throw new \Exception(__('user_settings.error2'));
+			}
+
+			// Проверка наличия директории. Если нету таковой - то создание новой.
+			if (!file_exists($nameDir)) {
+				mkdir($nameDir, 0777);
+			}
+
+			// Путь к изображению.
+			$paths = $nameDir . DS . uniqid('img_') . $fileType;
+
+			// Загрузка изображения. Если происходит ошибка - выбрасываем исключение.
+			if (!move_uploaded_file($imageArray[$key]['tmp_name'], $paths)) {
+
+				// Если директория остается пустой - то удаляем директорию.
+				$arrayImages = array_values(array_diff(scandir($nameDir), ['.', '..']));
+
+				if (count($arrayImages) == 0) {
+					rmdir($nameDir);
+				}
+
+				throw new \Exception(__('user_settings.error3'));
+			}
 		}
 	}
 
-//	public function deleteImageAction()
-//	{
-//		$id = isset($this->params[0]) ? $this->params[0] : null;
-//		$idImg = isset($this->params[1]) ? $this->params[1] : null;
-//
-//		if (!$id) {
-//			App::getSession()->addFlash('Missing news id');
-//		} else {
-//			$news = $this->newsModel->getBy('id', $id);
-//			$images = array_values(array_diff(scandir(Config::get('gallery') . $news['img_dir']), ['.', '..']));
-//
-//			foreach ($images as $key => $img) {
-//				if ($key == $idImg) {
-//					unlink(Config::get('gallery') . $news['img_dir'] . DS . $img);
-//				}
-//			}
-//
-//		}
-//		App::getRouter()->redirect(App::getRouter()->buildUri('news.edit',[$id]));
-//	}
+	// Метод удаления изображений.
+	public function deleteImageAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			try {
+
+				// Получаем то, что пришело в POST запросе.
+				$idProduct = $_POST['id'];
+				$category = $_POST['category'];
+				$nameImage = $_POST['name'];
+
+				// Получаем нужную директорию.
+				$imagesPathName = $category . 'ImgRoot';
+				$imagesPath = Config::get($imagesPathName) . $idProduct;
+
+				// Если директория существует - выполняем операции.
+				if (file_exists($imagesPath)) {
+
+					// Удаляем изображение.
+					unlink($imagesPath . DS . $nameImage);
+
+					// Если директория остается пустой - то удаляем и директорию.
+					$arrayImages = array_values(array_diff(scandir($imagesPath), ['.', '..']));
+
+					if (count($arrayImages) == 0) {
+						rmdir($imagesPath);
+					}
+				}
+
+				// Посылаем сигнал об успешности операции.
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
+			} catch (\Exception $exception) {
+
+				// Если была ошибка при удалении - посылаем тект ошибки.
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
+		}
+	}
 }

@@ -69,6 +69,12 @@ Config::set('userImgRoot', ROOT.DS.'public'.DS.'img'.DS.'user'.DS);
 Config::set('userImg', DS.'img'.DS.'user'.DS);
 
 /**
+ * Stories image
+ */
+Config::set('storiesImgRoot', ROOT.DS.'public'.DS.'img'.DS.'stories'.DS);
+Config::set('storiesImg', DS.'img'.DS.'stories'.DS);
+
+/**
 * Decor image
 */
 Config::set('decorImgRoot', ROOT.DS.'public'.DS.'img'.DS.'decor'.DS);

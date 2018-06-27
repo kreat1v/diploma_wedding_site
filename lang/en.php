@@ -278,13 +278,24 @@ return [
 
 	'admin_stories' => [
 		'title1' => 'The story editor',
+		'title2' => 'Editing a story',
+		'title3' => 'Creating a new story',
+		'title4' => 'Name of the story',
+		'title5' => 'Text of history',
+		'title6' => 'A photo',
 		'new' => 'New story',
 		'id' => 'History ID',
 		'name' => 'Name',
 		'activity1' => 'Activity History',
 		'activity2' => 'History is active',
 		'view' => 'View',
-		'edit' => 'Edit'
+		'edit' => 'Edit',
+		'edit' => 'Edit',
+		'save' => 'Save',
+		'ru' => 'Russian language',
+		'en' => 'English',
+		'mes1' => 'To create a new paragraph, press Enter.',
+		'mes2' => 'You can upload from 1 to 7 photos.'
 	],
 
 	'admin_feedback' => [
