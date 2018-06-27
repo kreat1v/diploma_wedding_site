@@ -205,7 +205,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
         <!-- Фильтр товаров. -->
         <div class="filter text">
-            <form method="get" id="filter-clothes">
+            <form method="get" id="filter">
 
                 <div class="sex">
                     <h4><?=__('filter.sex')?></h4>
@@ -217,7 +217,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                     </label>
                 </div>
 
-                <div class="price" id='myform'>
+                <div class="price" data-max="<?=$data['filter']['maxPrice']?>">
                     <h4><?=__('filter.price')?></h4>
                     <label>
                         <?=__('filter.from')?> <input type="number" id="min" value='<?=isset($data['get']['price']) ? $data['get']['price'][0] : ''?>' />
@@ -277,5 +277,5 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 </div>
 
 <script type="text/javascript" src="/js/buttons.js"></script>
-<script type="text/javascript" src="/js/filter-clothes.js"></script>
+<script type="text/javascript" src="/js/filter.js"></script>
 <script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>

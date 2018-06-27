@@ -61,7 +61,7 @@ class ClothesMain extends \App\Entity\Base
 
 	public function getMaxPrice()
 	{
-		$sql = 'SELECT MAX(price) as max FROM ' .  $this->getTableName();
+		$sql = 'SELECT MAX(price) as max FROM ' .  $this->getTableName() . ' WHERE active = 1';
 		return $this->conn->query($sql)[0];
 	}
 
@@ -126,7 +126,7 @@ class ClothesMain extends \App\Entity\Base
 				JOIN $fieldsSize ON $fieldsMain.id = $fieldsSize.id_clothes
 				$strWhere
 				$strLimit";
-				
+
 		return $this->conn->query($sql);
 	}
 }

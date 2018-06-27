@@ -199,10 +199,9 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
         <!-- Фильтр товаров. -->
         <div class="filter text">
-            <form method="get" id="filter-auto">
+            <form method="get" id="filter">
 
-
-                <div class="price" id='myform'>
+                <div class="price" data-max="<?=$data['filter']['maxPrice']?>">
                     <h4><?=__('filter.price')?></h4>
                     <label>
                         <?=__('filter.from')?> <input type="number" id="min" value='<?=isset($data['get']['price']) ? $data['get']['price'][0] : ''?>' />

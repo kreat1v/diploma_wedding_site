@@ -49,7 +49,7 @@ class LeadingMain extends \App\Entity\Base
 
 	public function getMaxPrice()
 	{
-		$sql = 'SELECT MAX(price) as max FROM ' .  $this->getTableName();
+		$sql = 'SELECT MAX(price) as max FROM ' .  $this->getTableName() . ' WHERE active = 1';
 		return $this->conn->query($sql)[0];
 	}
 

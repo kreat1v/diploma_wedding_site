@@ -1,26 +1,13 @@
-// Устанавливаем предел минимального значеня ценового диапазона.
-minStart = 0;
-
-// Устанавливаем минимальное значение слайдера.
-min = minStart;
-
-// Устанавливаем предел максимального значения ценового диапазона.
-$.ajax({
-    url: '/decor/priceFilter',
-    type: 'post',
-
-    success: function(response) {
-        var maxVal = JSON.parse(response);
-        maxFinish = maxVal.max;
-        // Устанавливаем максимальное значение слайдера.
-        max = maxFinish;
-    }
-});
-
 $(document).ready(function() {
 
+    // Получаем GET строку, а так же устанаваливаем минимальные и максимальные значения слайдера.
+    var str = window.location.search,
+        minStart = 0,
+        maxFinish = $('.price').attr('data-max'),
+        min = minStart,
+        max = maxFinish;
+
     // Если есть GET-параметр, то берем минимальные значения слайдера из value полей.
-    var str = window.location.search;
     if (str.indexOf('price') + 1) {
 
         min = +$("#min").val();
@@ -28,7 +15,7 @@ $(document).ready(function() {
 
     }
 
-    // Устаналиваем слайдер.
+    // устаналиваем слайдер
     $("#slider-range").slider({
         range: true,
         min: minStart,
@@ -43,7 +30,7 @@ $(document).ready(function() {
     $("#min").val($("#slider-range").slider("values", 0));
     $("#max").val($("#slider-range").slider("values", 1));
 
-    // Действия при вводе значений на прямую в input.
+    // действия при вводе значений на прямую в input
     $('#min').unbind().change(function() {
 
         if (+$("#min").val() > +$("#max").val() ||
@@ -74,13 +61,12 @@ $(document).ready(function() {
 
     });
 
-    // Действия при нажатии кнопки формы.
-    $('#filter-decor').submit(function() {
+    // действия при нажатии кнопки формы
+    $('#filter').submit(function() {
 
-        // Получаем все значения полей брэнда.
+        // получаем все значения полей брэнда
         var brand = $('div.brands input:checked');
-
-        // И объединяем их.
+        // и объединяем их
         if (!brand.length) {
 
             $('#brand').remove();
@@ -93,7 +79,22 @@ $(document).ready(function() {
 
         }
 
-        // Объединяем значения цен.
+        // получаем все значения полей размера
+        var size = $('div.size input:checked');
+        // и объединяем их
+        if (!size.length) {
+
+            $('#size').remove();
+
+        } else {
+
+            $('#size').val($.map(size, function(e) {
+                return e.value;
+            }).join('-'))
+
+        }
+
+        // объединяем значения цен
         if (+$("#min").val() != minStart ||
             +$("#max").val() != maxFinish &&
             +$("#max").val() != 0) {

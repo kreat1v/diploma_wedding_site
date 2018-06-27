@@ -92,6 +92,7 @@ class AutoController extends Base
 			// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
 			if (!$pagination['page404']) {
 				$this->data['filter']['brand'] = $this->autoMainModel->getBrand();
+				$this->data['filter']['maxPrice'] = $this->autoMainModel->getMaxPrice()['max'];
 				$this->data['title'] = $category['full_title'];
 				$this->data['text'] = $category['second_text'];
 				$this->data['page'] = $page;
@@ -122,15 +123,6 @@ class AutoController extends Base
 			$this->page404();
 		}
 
-	}
-
-	public function priceFilterAction()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$maxVal = $this->autoMainModel->getMaxPrice();
-			echo json_encode($maxVal);
-			die();
-		}
 	}
 
 	public function reviewsAction()
