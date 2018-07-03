@@ -49,6 +49,7 @@ Config::set('salt', 'g5kgat83kd0pbm51d');
  * Pagination
  */
 Config::set('pagLimit', 5);
+Config::set('storiesLimit', 15);
 Config::set('pagButtonLimit', 5);
 
 /**

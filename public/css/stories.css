@@ -1,0 +1,210 @@
+.stories {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stories a {
+    color: #3CA6C7;
+    transition: .5s;
+}
+
+.stories .components {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stories .components .item {
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.stories .components .image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid #3CA6C7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .5s;
+}
+
+.stories .components .image-width img {
+    width: 100%;
+}
+
+.stories .components .image-height img {
+    height: 100%;
+}
+
+.stories a:hover {
+    color: #AD7F00;
+}
+
+.stories a:hover .image {
+    border: 3px solid #AD7F00;
+}
+
+.stories-view {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.stories-view .body {
+    border-radius: 3px;
+    background: #FFF;
+    padding: 30px;
+}
+
+.stories-view .title {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #3CA6C7;
+    width: 500px;
+}
+
+.stories-view .title .avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid #3CA6C7;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stories-view .title .avatar-width img {
+    width: 100%;
+}
+
+.stories-view .title .avatar-height img {
+    height: 100%;
+}
+
+.stories-view .main {
+    width: 500px;
+    margin: 30px auto;
+    text-align: justify;
+}
+
+.stories-view .form {
+    width: 500px;
+    margin: 0 auto;
+    color: #3CA6C7;
+}
+
+.stories-view .form textarea {
+    resize: none;
+}
+
+.stories-view .form label {
+    display: block;
+    width: 500px;
+    margin: 25px auto 0;
+    text-align: center;
+    position: relative;
+}
+
+.stories-view .form label span {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.stories-view .form .input, .stories-view .form .button {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.stories-view .form .input {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    font-size: 16px;
+    border-bottom: 1px solid #3CA6C7;
+    text-align: center;
+}
+
+.stories-view .form .button {
+    width: 500px;
+    margin-top: 40px;
+    color: white;
+    font-size: 15px;
+}
+
+.stories-view .form .count {
+    display: none;
+    position: absolute;
+    right: -25px;
+    top: 60px;
+}
+
+.stories-view .messages {
+    max-width: 500px;
+    max-height: 600px;
+    margin: 30px auto;
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.stories-view .messages .container {
+    display: flex;
+    justify-content: space-between;
+    clear: both;
+    margin: 5px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #3CA6C7;
+}
+
+.stories-view .messages .avt {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 20px;
+}
+
+.stories-view .messages .avt img {
+    width: 100%;
+}
+
+.stories-view .messages span {
+    color: #80E1FF;
+    font-size: 11px;
+}
+
+.stories-view .messages p {
+    color: white;
+    font-size: 14px;
+}
+
+.stories-view .notification {
+    text-align: center;
+}
+
+.stories-view .notification a {
+    text-decoration: none;
+    color: #3CA6C7;
+    font-weight: bold;
+    transition: all 0.5s linear;
+}
+
+.stories-view .notification a:hover {
+    color: #80E1FF;
+}

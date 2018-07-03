@@ -2,12 +2,13 @@
 
 namespace App\Controllers;
 
+use \App\Entity\Stories\StoriesMain;
 use \App\Entity\Comments;
 use \App\Entity\Answers;
 use \App\Entity\Vote;
-use \App\Entity\Stories\StoriesMain;
 use \App\Core\App;
 use \App\Core\Config;
+use \App\Core\Pagination;
 
 class StoriesController extends Base
 
@@ -29,72 +30,179 @@ class StoriesController extends Base
 
 	public function indexAction()
 	{
-		$this->data = $this->storiesMainModel->languageList(['active' => 1]);
+		// Пагинация.
+		$page = isset($this->params[0]) ? $this->params[0] : 1;
+		$productsCount = count($this->storiesMainModel->languageList(['active' => 1]));
+
+		$pag = new Pagination();
+		$pagination = $pag->getLinks(
+			$productsCount,
+			Config::get('storiesLimit'),
+			$page,
+			Config::get('pagButtonLimit'));
+
+		if (!empty($pagination) && !$pagination['page404']) {
+			$this->data['pagination'] = $pagination;
+		} else {
+			$this->data['pagination'] = null;
+		}
+		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+		// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+		if (!$pagination['page404']) {
+
+			// Отправляем данные.
+			$this->data['stories'] = $this->storiesMainModel->languageList(['active' => 1], [Config::get('storiesLimit'), $offset]);
+			$this->data['page'] = $page;
+
+			// Получаем коллекции изображений.
+			foreach ($this->data['stories'] as $key => $value) {
+
+				// Если директория с id истории существует - то находим в ней изображения.
+				if (file_exists(Config::get('storiesImgRoot') . $value['id_stories'])) {
+					$this->data['stories'][$key]['galery'] = array_values(array_diff(scandir(Config::get('storiesImgRoot') . $value['id_stories']), ['.', '..']));
+				} else {
+					$this->data['stories'][$key]['galery'] = false;
+				}
+
+			}
+
+		} else {
+			$this->page404();
+		}
+
 	}
 
 	public function viewAction()
 	{
-		pre($_SERVER['REMOTE_ADDR']);
+		// pre($_SERVER['REMOTE_ADDR']);
 
-		$newsId = $this->params[0];
+		// Получаем параметры.
+		$params = App::getRouter()->getParams();
 
-		// получение новости
-		$news = $this->newsModel->getBy('id', $newsId);
+		// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
+		if (!empty($params)) {
 
-		// проверка - аналитическая статья, или нет
-		if ($news['analytics'] == 1 && !App::getSession()->get('id')) {
-			$arrContent = explode('. ', $news['content']);
-			$content = [];
-			for ($i = 0; $i < 5; $i++) {
-				$content[] = $arrContent[$i];
+			// Получем id истории.
+			$id = $params[0];
+
+			// Получаем данные истории.
+			$stories = $this->storiesMainModel->languageList(['id_stories' => $id]);
+
+			// Получаем коллекцию изображений. Если директория с id истории существует - то находим в ней изображения.
+			if (file_exists(Config::get('storiesImgRoot') . $id)) {
+				$galery = array_values(array_diff(scandir(Config::get('storiesImgRoot') . $id), ['.', '..']));
+			} else {
+				$galery = false;
 			}
-			$content = implode('. ', $content);
 
-			if (!empty($news)) {
-				$this->data['news']['title'] = $news['title'];
-				$this->data['news']['content'] = $content . '.';
-				$this->data['news']['analytics'] = $news['analytics'];
-			}
-		} else {
-			// получение категории
-			$category = $this->categoryModel->getBy('id', $news['id_category']);
+			// Получаем комментарии.
+			$comments = $this->commentsModel->comments(['id_stories' => $id, 'active' => 1], [5, 0]);
 
-			// получение изображений
-			$images = array_values(array_diff(scandir(Config::get('gallery') . $news['img_dir']), ['.', '..']));
-
-			// получение тэгов
-			$newsTag = $this->newsTagModel->list(['id_news' => "$newsId"]);
-			$tagsId = '';
-			foreach ($newsTag as $value) {
-				$tagsId .= $value['id_tags'];
-				$tagsId .= ', ';
-			}
-			$tagsId = trim($tagsId, ', ');
-			$tags = $this->tagsModel->getTags($tagsId);
-
-			// просмотры новости
-			$nowWatching = rand(0, 5);
-			$allWathching = $news['views'] + $nowWatching;
-			$this->newsModel->save(['views' => $allWathching], $newsId);
-
-			// комментарии
-			$comments = $this->commentsModel->getComments('id_news', $newsId);
-			$answers = $this->answersModel->getAnswers($newsId);
-			$vote = $this->voteModel->getVote(App::getSession()->get('id'), $newsId);
-
-			// то, что отдаем
-			if (!empty($news)) {
-				$this->data['news'] = $news;
-				$this->data['gallery'] = $images;
-				$this->data['tags'] = $tags;
-				$this->data['nowWatching'] = $nowWatching;
-				$this->data['category'] = $category;
+			// Отдаём данные.
+			if (!empty($stories) && $stories[0]['active'] == 1) {
+				$this->data['stories'] = $stories[0];
+				$this->data['galery'] = $galery;
 				$this->data['comments'] = $comments;
-				$this->data['answers'] = $answers;
-				$this->data['vote'] = $vote;
 			} else {
 				$this->page404();
 			}
+
+		} else {
+
+			App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
+
 		}
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			try {
+
+				// Получаем id юзера.
+				$id_users = App::getSession()->get('id');
+
+				// Отправка отзыва.
+				if (isset($_POST['button']) && $_POST['button'] == 'send') {
+					$this->data = [
+						'id_stories' => $id,
+						'id_users' => $id_users,
+						'date' => date('Y-m-d H:i:s'),
+						'messages' => $_POST['messages'],
+						'active' => '1'
+					];
+
+					$this->commentsModel->save($this->data);
+
+					App::getSession()->addFlash(__('reviews.mes1'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('stories.view', [$id]));
+				}
+
+			} catch (\Exception $exception) {
+
+				App::getSession()->addFlash($exception->getMessage());
+				App::getRouter()->redirect(App::getRouter()->buildUri('stories.view', [$id]));
+
+			}
+		}
+
+		// $newsId = $this->params[0];
+		//
+		// // получение новости
+		// $news = $this->newsModel->getBy('id', $newsId);
+		//
+		// // проверка - аналитическая статья, или нет
+		// if ($news['analytics'] == 1 && !App::getSession()->get('id')) {
+		// 	$arrContent = explode('. ', $news['content']);
+		// 	$content = [];
+		// 	for ($i = 0; $i < 5; $i++) {
+		// 		$content[] = $arrContent[$i];
+		// 	}
+		// 	$content = implode('. ', $content);
+		//
+		// 	if (!empty($news)) {
+		// 		$this->data['news']['title'] = $news['title'];
+		// 		$this->data['news']['content'] = $content . '.';
+		// 		$this->data['news']['analytics'] = $news['analytics'];
+		// 	}
+		// } else {
+		// 	// получение категории
+		// 	$category = $this->categoryModel->getBy('id', $news['id_category']);
+		//
+		// 	// получение изображений
+		// 	$images = array_values(array_diff(scandir(Config::get('gallery') . $news['img_dir']), ['.', '..']));
+		//
+		// 	// получение тэгов
+		// 	$newsTag = $this->newsTagModel->list(['id_news' => "$newsId"]);
+		// 	$tagsId = '';
+		// 	foreach ($newsTag as $value) {
+		// 		$tagsId .= $value['id_tags'];
+		// 		$tagsId .= ', ';
+		// 	}
+		// 	$tagsId = trim($tagsId, ', ');
+		// 	$tags = $this->tagsModel->getTags($tagsId);
+		//
+		// 	// просмотры новости
+		// 	$nowWatching = rand(0, 5);
+		// 	$allWathching = $news['views'] + $nowWatching;
+		// 	$this->newsModel->save(['views' => $allWathching], $newsId);
+		//
+		// 	// комментарии
+		// 	$comments = $this->commentsModel->getComments('id_news', $newsId);
+		// 	$answers = $this->answersModel->getAnswers($newsId);
+		// 	$vote = $this->voteModel->getVote(App::getSession()->get('id'), $newsId);
+		//
+		// 	// то, что отдаем
+		// 	if (!empty($news)) {
+		// 		$this->data['news'] = $news;
+		// 		$this->data['gallery'] = $images;
+		// 		$this->data['tags'] = $tags;
+		// 		$this->data['nowWatching'] = $nowWatching;
+		// 		$this->data['category'] = $category;
+		// 		$this->data['comments'] = $comments;
+		// 		$this->data['answers'] = $answers;
+		// 		$this->data['vote'] = $vote;
+		// 	} else {
+		// 		$this->page404();
+		// 	}
+		// }
 	}
 }
