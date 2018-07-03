@@ -2,24 +2,17 @@
 
 namespace App\Controllers;
 
-use \App\Entity\Category;
 use \App\Entity\Comments;
 use \App\Entity\Answers;
 use \App\Entity\Vote;
-use \App\Entity\News;
-use \App\Entity\Tags;
-use \App\Entity\NewsTag;
+use \App\Entity\Stories\StoriesMain;
 use \App\Core\App;
 use \App\Core\Config;
 
-class NewsController extends Base
+class StoriesController extends Base
 
 {
-	/** @var Category */
-	private $categoryModel;
-	private $newsModel;
-	private $tagsModel;
-	private $newsTagModel;
+	private $storiesMainModel;
 	private $commentsModel;
 	private $answersModel;
 	private $voteModel;
@@ -28,10 +21,7 @@ class NewsController extends Base
 	{
 		parent::__construct($params);
 
-		$this->categoryModel = new Category(App::getConnection());
-		$this->newsModel = new News(App::getConnection());
-		$this->tagsModel = new Tags(App::getConnection());
-		$this->newsTagModel = new NewsTag(App::getConnection());
+		$this->storiesMainModel = new StoriesMain(App::getConnection());
 		$this->commentsModel = new Comments(App::getConnection());
 		$this->answersModel = new Answers(App::getConnection());
 		$this->voteModel = new Vote(App::getConnection());
@@ -39,11 +29,13 @@ class NewsController extends Base
 
 	public function indexAction()
 	{
-		$this->data = $this->newsModel->list();
+		$this->data = $this->storiesMainModel->languageList(['active' => 1]);
 	}
 
 	public function viewAction()
 	{
+		pre($_SERVER['REMOTE_ADDR']);
+
 		$newsId = $this->params[0];
 
 		// получение новости
@@ -106,4 +98,3 @@ class NewsController extends Base
 		}
 	}
 }
-
