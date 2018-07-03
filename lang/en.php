@@ -295,7 +295,10 @@ return [
 		'ru' => 'Russian language',
 		'en' => 'English',
 		'mes1' => 'To create a new paragraph, press Enter.',
-		'mes2' => 'You can upload from 1 to 7 photos.'
+		'mes2' => 'You can upload from 1 to 7 photos.',
+		'mes3' => 'Your data has been successfully saved.',
+		'tool1' => 'The field can not be empty',
+		'tool2' => 'Upload at least one image'
 	],
 
 	'admin_feedback' => [

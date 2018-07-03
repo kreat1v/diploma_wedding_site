@@ -60,7 +60,7 @@ class StoriesController extends \App\Controllers\Base
 		// Получаем параметры.
 		$params = App::getRouter()->getParams();
 
-		// Если первый параметр 'edit' а также же в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
+		// Если в параметрах есть id услуги - то получаем данные основной модели и языковых моделей.
 		if (isset($params[0]) && $params[0] > 0) {
 
 			$idStories = $params[0];
@@ -93,7 +93,7 @@ class StoriesController extends \App\Controllers\Base
 
 			}
 
-		// Если первый параметр 'new', то id приравниваем к null, так как он на не потребуется.
+		// Иначе id приравниваем к null, так как он нам не потребуется.
 		} else {
 
 			$idStories = null;
@@ -123,12 +123,12 @@ class StoriesController extends \App\Controllers\Base
 					// Формируем массив для сохранения.
 					$this->data['edit']['en'] = [
 						'title' => $_POST['titleEn'],
-						'
-						content' => $contentEn
+						'content' => $contentEn
 					];
 
-					// Формируем массив активности категории.
+					// Формируем массив основных данных.
 					$this->data['edit']['main'] = [
+						'date' => date('Y-m-d H:i:s'),
 						'active' => !empty($_POST['active']) ? $_POST['active'] : 0
 					];
 
@@ -147,8 +147,8 @@ class StoriesController extends \App\Controllers\Base
 						$this->data['edit']['en']['id_stories'] = $newId;
 					}
 
-					$this->storiesRuModel->save($this->data['edit']['ru'], $idStories ? ['id_decor' => $idStories] : []);
-					$this->storiesEnModel->save($this->data['edit']['en'], $idStories ? ['id_decor' => $idStories] : []);
+					$this->storiesRuModel->save($this->data['edit']['ru'], $idStories ? ['id_stories' => $idStories] : []);
+					$this->storiesEnModel->save($this->data['edit']['en'], $idStories ? ['id_stories' => $idStories] : []);
 
 					// Обрабатываем и сохраняем полученные изображения.
 					// Имя директории для сохранения.
@@ -163,8 +163,8 @@ class StoriesController extends \App\Controllers\Base
 					// Сохраняем.
 					$this->saveImage($image, $dir);
 
-					// App::getSession()->addFlash(__('admin_category.mes3'));
-					// App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
+					App::getSession()->addFlash(__('admin_stories.mes3'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
 				}
 
 			} catch (\Exception $exception) {
@@ -174,9 +174,11 @@ class StoriesController extends \App\Controllers\Base
 			}
 		}
 
-		// Заменяем текстовые блоки для вывода с помощью нашей функции.
-		$this->data['edit']['ru']['content'] = $this->formattingTextForOutput($this->data['edit']['ru']['content']);
-		$this->data['edit']['en']['content'] = $this->formattingTextForOutput($this->data['edit']['en']['content']);
+		// Если у нас есть id истории - заменяем текстовые блоки для вывода с помощью нашей функции.
+		if ($idStories) {
+			$this->data['edit']['ru']['content'] = $this->formattingTextForOutput($this->data['edit']['ru']['content']);
+			$this->data['edit']['en']['content'] = $this->formattingTextForOutput($this->data['edit']['en']['content']);
+		}
 	}
 
 	// Функция обработки текста для сохранения в БД.
@@ -274,13 +276,11 @@ class StoriesController extends \App\Controllers\Base
 			try {
 
 				// Получаем то, что пришело в POST запросе.
-				$idProduct = $_POST['id'];
-				$category = $_POST['category'];
+				$idStories = $_POST['id'];
 				$nameImage = $_POST['name'];
 
 				// Получаем нужную директорию.
-				$imagesPathName = $category . 'ImgRoot';
-				$imagesPath = Config::get($imagesPathName) . $idProduct;
+				$imagesPath = Config::get('storiesImgRoot') . $idStories;
 
 				// Если директория существует - выполняем операции.
 				if (file_exists($imagesPath)) {

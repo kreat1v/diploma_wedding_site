@@ -17,7 +17,8 @@ $edit = isset($data['edit']) ? true : false;
             <?php endif; ?>
         </div>
 
-        <form class="form text" id="category-form" method="post">
+        <form class="form text" id="stories-form" method="post" enctype="multipart/form-data">
+
             <fieldset>
                 <legend><?=__('admin_stories.title4')?></legend>
 
@@ -25,7 +26,7 @@ $edit = isset($data['edit']) ? true : false;
                     <span><?=__('admin_stories.ru')?></span>
                     <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$edit ? $data['edit']['ru']['title'] : ''?>">
                     <div class="tooltips-left">
-                        <div><?=__('admin_category.tool1')?></div>
+                        <div><?=__('admin_stories.tool1')?></div>
                     </div>
                 </label>
 
@@ -33,7 +34,7 @@ $edit = isset($data['edit']) ? true : false;
                     <span><?=__('admin_stories.en')?></span>
                     <input class="input" id="title-en" type="text" name="titleEn" value="<?=$edit ? $data['edit']['en']['title'] : ''?>">
                     <div class="tooltips-left">
-                        <div><?=__('admin_category.tool2')?></div>
+                        <div><?=__('admin_stories.tool1')?></div>
                     </div>
                 </label>
             </fieldset>
@@ -45,17 +46,17 @@ $edit = isset($data['edit']) ? true : false;
 
                 <label>
                     <span><?=__('admin_stories.ru')?></span>
-                    <textarea class="textarea" id="first-text-ru" name="contentRu"><?=$edit ? $data['edit']['ru']['content'] : ''?></textarea>
+                    <textarea class="textarea" id="content-ru" name="contentRu"><?=$edit ? $data['edit']['ru']['content'] : ''?></textarea>
                     <div class="tooltips-left">
-                        <div><?=__('admin_category.tool3')?></div>
+                        <div><?=__('admin_stories.tool1')?></div>
                     </div>
                 </label>
 
                 <label>
                     <span><?=__('admin_stories.en')?></span>
-                    <textarea class="textarea" id="first-text-en" name="contentEn"><?=$edit ? $data['edit']['en']['content'] : ''?></textarea>
+                    <textarea class="textarea" id="content-en" name="contentEn"><?=$edit ? $data['edit']['en']['content'] : ''?></textarea>
                     <div class="tooltips-left">
-                        <div><?=__('admin_category.tool3')?></div>
+                        <div><?=__('admin_stories.tool1')?></div>
                     </div>
                 </label>
             </fieldset>
@@ -71,9 +72,8 @@ $edit = isset($data['edit']) ? true : false;
                         <?php foreach ($data['edit']['galery'] as $img): ?>
                         <div class="file-upload"
                                 data-name="<?=$img?>"
-                                data-category="<?=$data['edit']['category']?>"
                                 data-id="<?=$data['edit']['main']['id']?>">
-                            <img class="product-image" style="display: block;" src="<?=Config::get('autoImg') . $data['edit']['main']['id'] . DS . $img?>" />
+                            <img class="product-image" style="display: block;" src="<?=Config::get('storiesImg') . $data['edit']['main']['id'] . DS . $img?>" />
                             <span class="delete-image">
                                 <i class="fas fa-times-circle"></i>
                             </span>
@@ -84,17 +84,17 @@ $edit = isset($data['edit']) ? true : false;
                 </div>
 
                 <div class="tooltips-left image-error">
-                    <div><?=__('admin_product.tool8')?></div>
+                    <div><?=__('admin_stories.tool2')?></div>
                 </div>
 
             </fieldset>
 
             <label>
                 <input type="checkbox" name="active" value="1" class="option-input checkbox" <?=$data['edit']['main']['active'] == 1 ? 'checked' : ''?> />
-                <span><?=__('admin_category.activity2')?></span>
+                <span><?=__('admin_stories.activity2')?></span>
             </label>
 
-            <button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('admin_category.save')?></button>
+            <button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('admin_stories.save')?></button>
         </form>
 
     </div>
