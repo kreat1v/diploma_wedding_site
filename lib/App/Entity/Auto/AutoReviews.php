@@ -45,7 +45,7 @@ class AutoReviews extends \App\Entity\Base
 
 	public function reviews($filter = [], $section = [])
 	{
-		$autoClothesReviews = $this->getTableName();
+		$fieldsAutoReviews = $this->getTableName();
 		$fieldsUser = $this->getUser()->getTableName();
 
 		$where = [];
@@ -57,7 +57,7 @@ class AutoReviews extends \App\Entity\Base
 				}
 
 				$value = $this->conn->escape($value);
-				$where[] = "$autoClothesReviews.$fieldName = $value";
+				$where[] = "$fieldsAutoReviews.$fieldName = $value";
 			}
 
 			if (!empty($where)) {
@@ -73,11 +73,11 @@ class AutoReviews extends \App\Entity\Base
 			$strLimit = ' LIMIT ' . $limit . ' OFFSET ' . $limitStart;
 		}
 
-		$sql = "SELECT $autoClothesReviews.*, $fieldsUser.*
-				FROM $autoClothesReviews
-				JOIN $fieldsUser ON $autoClothesReviews.id_users = $fieldsUser.id
+		$sql = "SELECT $fieldsAutoReviews.*, $fieldsUser.*
+				FROM $fieldsAutoReviews
+				JOIN $fieldsUser ON $fieldsAutoReviews.id_users = $fieldsUser.id
 				WHERE 1 $strWhere
-				ORDER BY $autoClothesReviews.date DESC
+				ORDER BY $fieldsAutoReviews.date DESC
 				$strLimit";
 		return $this->conn->query($sql);
 	}

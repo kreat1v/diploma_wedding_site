@@ -245,5 +245,5 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 </div>
 
 <script type="text/javascript" src="/js/buttons.js"></script>
-<script type="text/javascript" src="/js/filter-auto.js"></script>
+<script type="text/javascript" src="/js/filter.js"></script>
 <script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>
