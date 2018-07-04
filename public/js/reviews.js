@@ -31,7 +31,7 @@ function scrollalert() {
 
                 startLimit = startLimit + 5;
 
-                // Распредялем сообщения на админские и юзера.
+                // Формируем отзывы.
                 data.data.map(function(element) {
                     var name = '';
 

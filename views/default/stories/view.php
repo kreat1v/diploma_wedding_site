@@ -8,7 +8,7 @@ $router = \App\Core\App::getRouter();
 // pre($data);
 
 ?>
-<div class="stories-view">
+<div class="stories-view" data-id="<?=$data['stories']['id_stories']?>">
 
     <div class="gradient-border">
 
@@ -41,6 +41,22 @@ $router = \App\Core\App::getRouter();
                 <?php foreach($data['galery'] as $value): ?>
                     <a href="<?=Config::get('storiesImg') . $data['stories']['id_stories'] . DS . $value?>" style="background-image:url(<?=Config::get('storiesImgWeb') . $data['stories']['id_stories'] . '/' . $value?>)"></a>
                 <?php endforeach; ?>
+
+            </div>
+
+            <div class="panel">
+
+                <div class="like">
+
+                </div>
+
+                <div class="views">
+
+                </div>
+
+                <div class="date">
+
+                </div>
 
             </div>
 
@@ -99,5 +115,6 @@ $router = \App\Core\App::getRouter();
 
 </div>
 
+<script type="text/javascript" src="/js/user-message.js"></script>
 <script type="text/javascript" src="/js/stories.js"></script>
 <script type="text/javascript" src="/js/touchTouch.jquery.js"></script>

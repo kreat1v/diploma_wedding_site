@@ -205,4 +205,38 @@ class StoriesController extends Base
 		// 	}
 		// }
 	}
+
+	public function getCommentsAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			// Получаем начало и конец выборки, а также id продукта.
+			$start = $_POST['start'];
+			$limit = $_POST['limit'];
+			$id_stories = $_POST['id_stories'];
+
+			// Получаем отзывы юзеров.
+			$comments = $this->commentsModel->comments(['id_stories' => $id_stories,'active' => 1], [$limit, $start]);
+
+			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
+			if(!empty($comments)) {
+				foreach ($comments as $key => $value) {
+					$id = $value['id_users'];
+
+					if (!file_exists(Config::get('userImgRoot') . $id)) {
+						$comments[$key]['avatar'] = Config::get('systemImg') . 'user.png';
+					} else {
+						$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
+						$comments[$key]['avatar'] = Config::get('userImg') . $id . DS . $paths[0];
+					}
+				}
+			}
+
+			$arr['data'] = $comments;
+
+			echo json_encode($arr);
+			die();
+
+		}
+	}
 }

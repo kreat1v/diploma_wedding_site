@@ -98,7 +98,7 @@
     text-align: justify;
 }
 
-.stories-view .thumbs {
+.stories-view .thumbs, .stories-view .panel {
     width: 500px;
     margin: 30px auto;
     text-align: center;
@@ -110,7 +110,6 @@
     display: inline-block;
     border: 3px solid #3CA6C7;
     border-radius: 4px;
-    margin: 15px;
     position: relative;
     text-decoration: none;
     background-position: center center;
@@ -118,6 +117,13 @@
     background-size: cover;
     -moz-background-size: cover;
     -webkit-background-size: cover;
+}
+
+.stories-view .panel {
+    height: 50px;
+    border-top: 1px solid #3CA6C7;
+    border-bottom: 1px solid #3CA6C7;
+    border-radius: 10px;
 }
 
 .stories-view .form {
