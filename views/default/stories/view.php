@@ -73,18 +73,68 @@ $router = \App\Core\App::getRouter();
                             ?>
                         </span>
                         <p><?=$value['messages']?></p>
+                        <div class="panels">
+                            <span class="like-comment">
+                                <i class="far fa-heart"></i> 10
+                            </span>
+                            <span class="answ">
+                                <i class="fas fa-reply"></i> <?=count($value['answers'])?>
+                            </span>
+                        </div>
                     </div>
                     <div class="avt">
                         <?php
-                        if (!file_exists(\App\Core\Config::get('userImgRoot') . $value['id'])) {
+                        if (!file_exists(\App\Core\Config::get('userImgRoot') . $value['id_users'])) {
                             $avatar = \App\Core\Config::get('systemImg') . 'user.png';
                         } else {
-                            $paths = array_values(array_diff(scandir(\App\Core\Config::get('userImgRoot') . $value['id']), ['.', '..']));
-                            $avatar = \App\Core\Config::get('userImg') . $value['id'] . DS . $paths[0];
+                            $paths = array_values(array_diff(scandir(\App\Core\Config::get('userImgRoot') . $value['id_users']), ['.', '..']));
+                            $avatar = \App\Core\Config::get('userImg') . $value['id_users'] . DS . $paths[0];
                         }
                         ?>
                         <img src="<?=$avatar?>">
                     </div>
+                </div>
+                <div class="answers">
+                    <div class="form-answ">
+                        <form method="post">
+                            <textarea name="answers"></textarea>
+                            <div class="count-answ">
+                                <span>300</span>
+                            </div>
+                            <input type="hidden" name="id" value="<?=$value['id']?>">
+                            <button class="button" type="submit" name="button" value="answers"><i class="fas fa-reply fa-2x"></i></button>
+                        </form>
+                    </div>
+                    <?php foreach($value['answers'] as $answ): ?>
+                        <div class="container text">
+                            <div>
+                                <span>
+                                    <?php
+                                    echo isset($answ['firstName']) ? $answ['firstName'] : $answ['email'];
+                                    echo ", ";
+                                    echo $answ['date'];
+                                    ?>
+                                </span>
+                                <p><?=$answ['messages']?></p>
+                                <div class="panels">
+                                    <span class="like-answer">
+                                        <i class="far fa-heart"></i> 10
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="avt">
+                                <?php
+                                if (!file_exists(\App\Core\Config::get('userImgRoot') . $answ['id_users'])) {
+                                    $avatar = \App\Core\Config::get('systemImg') . 'user.png';
+                                } else {
+                                    $paths = array_values(array_diff(scandir(\App\Core\Config::get('userImgRoot') . $answ['id_users']), ['.', '..']));
+                                    $avatar = \App\Core\Config::get('userImg') . $answ['id_users'] . DS . $paths[0];
+                                }
+                                ?>
+                                <img src="<?=$avatar?>">
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 <?php endforeach; ?>
 

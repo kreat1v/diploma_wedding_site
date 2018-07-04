@@ -198,6 +198,68 @@
     background-color: #3CA6C7;
 }
 
+.stories-view .messages .container .panels {
+    border-top: 1px solid #80E1FF;
+}
+
+.stories-view .messages .container .panels span {
+    cursor: pointer;
+    color: #80E1FF;
+    font-size: 13px;
+    margin-right: 20px;
+}
+
+.stories-view .messages .container .panels .like-comment:hover {
+    color: #FAB900;
+}
+
+.stories-view .messages .container .panels .answ:hover {
+    text-decoration: underline;
+}
+
+.stories-view .answers {
+    width: 70%;
+    float: right;
+    display: none;
+    position: relative;
+}
+
+.stories-view .answers .count-answ {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+
+.stories-view .form-answ form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    clear: both;
+    margin: 0 5px 5px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #3CA6C7;
+    text-align: left;
+}
+
+.stories-view .form-answ textarea {
+    width: 100%;
+    resize: none;
+    border: 1px solid #80E1FF;
+    outline: none;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.stories-view .form-answ .button {
+    border: none;
+    outline: none;
+    background: none;
+    color: #FFF;
+    cursor: pointer;
+}
+
 .stories-view .messages .avt {
     flex-shrink: 0;
     width: 50px;

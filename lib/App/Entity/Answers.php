@@ -4,61 +4,15 @@ namespace App\Entity;
 
 class Answers extends Base
 {
-	private $user;
-	private $comments;
-	private $news;
+	private $userModel;
 
 	private function getUser()
 	{
-		if (empty($this->user)) {
-			$this->user = new User($this->conn);
+		if (empty($this->userModel)) {
+			$this->userModel = new User($this->conn);
 		}
 
-		return $this->user;
-	}
-
-	private function getComments()
-	{
-		if (empty($this->comments)) {
-			$this->comments = new Comments($this->conn);
-		}
-
-		return $this->comments;
-	}
-
-	private function getNews()
-	{
-		if (empty($this->news)) {
-			$this->news = new News($this->conn);
-		}
-
-		return $this->news;
-	}
-
-	/**
-	 * @param $id новости
-	 *
-	 * @return mixed
-	 */
-	public function getAnswers($id)
-	{
-		$fieldsNews = $this->getNews()->getTableName();
-		$fieldsComments = $this->getComments()->getTableName();
-		$fieldsUser = $this->getUser()->getTableName();
-		$fieldsAnswers = $this->getTableName();
-
-		if (empty($id)) {
-			return null;
-		}
-
-		$sql = "SELECT $fieldsAnswers.*, $fieldsUser.firstName, $fieldsUser.secondName, $fieldsUser.email
-			  	FROM $fieldsAnswers
-				JOIN $fieldsComments ON $fieldsAnswers.id_comments = $fieldsComments.id 
-				JOIN $fieldsUser ON $fieldsAnswers.id_user = $fieldsUser.id 
-				JOIN $fieldsNews ON $fieldsComments.id_news = $fieldsNews.id 
-				WHERE $fieldsNews.id = $id 
-				ORDER BY $fieldsAnswers.id DESC";
-		return $this->conn->query($sql);
+		return $this->userModel;
 	}
 
 	public function getTableName()
@@ -68,8 +22,10 @@ class Answers extends Base
 
 	public function checkFields($data)
 	{
-		if (!is_string($data['messages']) || !strlen($data['messages'])) {
-			throw new \Exception('The message field can not be empty.');
+		foreach ($data as $value) {
+			if (empty($value) && !strlen($value)) {
+				throw new \Exception(__('form.field'));
+			}
 		}
 	}
 
@@ -77,10 +33,41 @@ class Answers extends Base
 	{
 		return [
 			'id',
-			'id_user',
+			'id_users',
 			'id_comments',
 			'date',
 			'messages'
 		];
 	}
+
+	public function answers($filter = [])
+	{
+		$comments = $this->getTableName();
+		$fieldsUser = $this->getUser()->getTableName();
+
+		$where = [];
+		$strWhere = '';
+		if (!empty($filter)) {
+			foreach ($filter as $fieldName => $value) {
+				if (!in_array($fieldName, $this->getFields())) {
+					continue;
+				}
+
+				$value = $this->conn->escape($value);
+				$where[] = "$comments.$fieldName = $value";
+			}
+
+			if (!empty($where)) {
+				$strWhere = ' AND ' . implode(' AND ', $where);
+			}
+		}
+
+		$sql = "SELECT $comments.*, $fieldsUser.firstName, $fieldsUser.secondName, $fieldsUser.email
+				FROM $comments
+				JOIN $fieldsUser ON $comments.id_users = $fieldsUser.id
+				WHERE 1 $strWhere
+				ORDER BY $comments.date DESC";
+		return $this->conn->query($sql);
+	}
+
 }

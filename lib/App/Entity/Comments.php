@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
-
 class Comments extends Base
 {
 	private $userModel;
@@ -73,7 +71,7 @@ class Comments extends Base
 			$strLimit = ' LIMIT ' . $limit . ' OFFSET ' . $limitStart;
 		}
 
-		$sql = "SELECT $comments.*, $fieldsUser.*
+		$sql = "SELECT $comments.*, $fieldsUser.firstName, $fieldsUser.secondName, $fieldsUser.email
 				FROM $comments
 				JOIN $fieldsUser ON $comments.id_users = $fieldsUser.id
 				WHERE 1 $strWhere

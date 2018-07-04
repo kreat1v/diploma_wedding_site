@@ -99,6 +99,11 @@ class StoriesController extends Base
 			// Получаем комментарии.
 			$comments = $this->commentsModel->comments(['id_stories' => $id, 'active' => 1], [5, 0]);
 
+			// Дополняем массив комментариев ответами.
+			foreach ($comments as $key => $value) {
+				$comments[$key]['answers'] =  $this->answersModel->answers(['id_comments' => $value['id']]);
+			}
+
 			// Отдаём данные.
 			if (!empty($stories) && $stories[0]['active'] == 1) {
 				$this->data['stories'] = $stories[0];
@@ -120,8 +125,9 @@ class StoriesController extends Base
 				// Получаем id юзера.
 				$id_users = App::getSession()->get('id');
 
-				// Отправка отзыва.
+				// Отправка комментария.
 				if (isset($_POST['button']) && $_POST['button'] == 'send') {
+
 					$this->data = [
 						'id_users' => $id_users,
 						'id_stories' => $id,
@@ -134,6 +140,23 @@ class StoriesController extends Base
 
 					App::getSession()->addFlash(__('stories.mes1'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('stories.view', [$id]));
+
+				}
+
+				if (isset($_POST['button']) && $_POST['button'] == 'answers') {
+
+					$this->data = [
+						'id_users' => $id_users,
+						'id_comments' => $_POST['id'],
+						'date' => date('Y-m-d H:i:s'),
+						'messages' => $_POST['answers']
+					];
+
+					$this->answersModel->save($this->data);
+
+					App::getSession()->addFlash(__('stories.mes1'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('stories.view', [$id]));
+
 				}
 
 			} catch (\Exception $exception) {
@@ -210,19 +233,42 @@ class StoriesController extends Base
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-			// Получаем начало и конец выборки, а также id продукта.
+			// Получаем начало и конец выборки, а также id истории.
 			$start = $_POST['start'];
 			$limit = $_POST['limit'];
 			$id_stories = $_POST['id_stories'];
 
-			// Получаем отзывы юзеров.
+			// Получаем комментарии юзеров.
 			$comments = $this->commentsModel->comments(['id_stories' => $id_stories,'active' => 1], [$limit, $start]);
 
-			// Если полученный массив не пустой - дополняем его ссылки на фото юзеров.
+			// Если полученный массив не пустой - дополняем его ссылками на фото юзеров и ответами.
 			if(!empty($comments)) {
 				foreach ($comments as $key => $value) {
+
+					// Получим id юзера.
 					$id = $value['id_users'];
 
+					// Получим ответы на комментарий.
+					$answers =  $this->answersModel->answers(['id_comments' => $value['id']]);
+
+					// Если полученный массив не пустой - дополняем его ссылками на фото юзеров.
+					if(!empty($answers)) {
+						foreach ($answers as $keyAns => $valueAns) {
+							$idAns = $valueAns['id_users'];
+
+							if (!file_exists(Config::get('userImgRoot') . $idAns)) {
+								$answers[$keyAns]['avatar'] = Config::get('systemImg') . 'user.png';
+							} else {
+								$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $idAns), ['.', '..']));
+								$answers[$keyAns]['avatar'] = Config::get('userImg') . $idAns . DS . $paths[0];
+							}
+						}
+					}
+
+					// Дополняем массив комментариев ответами.
+					$comments[$key]['answers'] = $answers;
+
+					// Дополняем фото юзеров.
 					if (!file_exists(Config::get('userImgRoot') . $id)) {
 						$comments[$key]['avatar'] = Config::get('systemImg') . 'user.png';
 					} else {
@@ -232,9 +278,7 @@ class StoriesController extends Base
 				}
 			}
 
-			$arr['data'] = $comments;
-
-			echo json_encode($arr);
+			echo json_encode($comments);
 			die();
 
 		}
