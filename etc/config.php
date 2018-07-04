@@ -74,6 +74,7 @@ Config::set('userImg', DS.'img'.DS.'user'.DS);
  */
 Config::set('storiesImgRoot', ROOT.DS.'public'.DS.'img'.DS.'stories'.DS);
 Config::set('storiesImg', DS.'img'.DS.'stories'.DS);
+Config::set('storiesImgWeb', '/img/stories/');
 
 /**
 * Decor image

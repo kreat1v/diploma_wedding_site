@@ -178,6 +178,15 @@ return [
 		'reset' => 'Reset'
 	],
 
+	'stories' => [
+		'comment' => 'Your comment',
+		'send' => 'Send',
+		'mes1' => 'Your comment has been published',
+		'mes2' => 'In order to leave a comment, please ',
+		'mes3' => 'log in',
+		'mes4' => '.',
+	],
+
 	'pagination' => [
 		'previous' => 'Previous',
 		'next' => 'Next'

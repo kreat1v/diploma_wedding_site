@@ -35,7 +35,7 @@ class Comments extends Base
 	{
 		return [
 			'id',
-			'id_user',
+			'id_users',
 			'id_stories',
 			'date',
 			'messages',

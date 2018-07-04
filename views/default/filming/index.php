@@ -133,7 +133,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         <div class="galery">
                             <div class="panels">
                                 <?php foreach ($value['galery'] as $img): ?>
-                                <a href="javascript:void(0)" class="panel">
+                                <a href="<?=\App\Core\Config::get('filmingImg') . $value['id_filming'] . DS . $img?>" class="panel">
                                     <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('filmingImgWeb') . $value['id_filming'] . '/' . $img?>');"></div>
                                 </a>
                                 <?php endforeach; ?>
@@ -216,3 +216,5 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 <script type="text/javascript" src="/js/buttons.js"></script>
 <script type="text/javascript" src="/js/filter.js"></script>
 <script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>
+<script type="text/javascript" src="/js/touchTouch.jquery.js"></script>
+<script type="text/javascript" src="/js/gallery.js"></script>

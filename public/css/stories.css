@@ -98,6 +98,28 @@
     text-align: justify;
 }
 
+.stories-view .thumbs {
+    width: 500px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.stories-view .thumbs a {
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    border: 3px solid #3CA6C7;
+    border-radius: 4px;
+    margin: 15px;
+    position: relative;
+    text-decoration: none;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+}
+
 .stories-view .form {
     width: 500px;
     margin: 0 auto;

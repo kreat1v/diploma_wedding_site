@@ -5,7 +5,7 @@ use App\Core\Config;
 
 $router = \App\Core\App::getRouter();
 
-pre($data);
+// pre($data);
 
 ?>
 <div class="stories-view">
@@ -36,6 +36,14 @@ pre($data);
                 <?=$data['stories']['content']?>
             </div>
 
+            <div class="thumbs">
+
+                <?php foreach($data['galery'] as $value): ?>
+                    <a href="<?=Config::get('storiesImg') . $data['stories']['id_stories'] . DS . $value?>" style="background-image:url(<?=Config::get('storiesImgWeb') . $data['stories']['id_stories'] . '/' . $value?>)"></a>
+                <?php endforeach; ?>
+
+            </div>
+
             <div class="messages" id="messages">
 
                 <?php foreach($data['comments'] as $value): ?>
@@ -48,7 +56,7 @@ pre($data);
                             echo $value['date'];
                             ?>
                         </span>
-                        <p><?=$value['stories']?></p>
+                        <p><?=$value['messages']?></p>
                     </div>
                     <div class="avt">
                         <?php
@@ -70,8 +78,8 @@ pre($data);
             <div class="form text">
                 <form method="post" id="message-form">
                     <label>
-                        <span><?=__('stories.review')?></span>
-                        <textarea class="input" name="stories" id="message"></textarea>
+                        <span><?=__('stories.comment')?></span>
+                        <textarea class="input" name="messages" id="message"></textarea>
                         <div class="count">
                             <span></span>
                         </div>
@@ -92,3 +100,4 @@ pre($data);
 </div>
 
 <script type="text/javascript" src="/js/stories.js"></script>
+<script type="text/javascript" src="/js/touchTouch.jquery.js"></script>

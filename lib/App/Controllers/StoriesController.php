@@ -123,8 +123,8 @@ class StoriesController extends Base
 				// Отправка отзыва.
 				if (isset($_POST['button']) && $_POST['button'] == 'send') {
 					$this->data = [
-						'id_stories' => $id,
 						'id_users' => $id_users,
+						'id_stories' => $id,
 						'date' => date('Y-m-d H:i:s'),
 						'messages' => $_POST['messages'],
 						'active' => '1'
@@ -132,7 +132,7 @@ class StoriesController extends Base
 
 					$this->commentsModel->save($this->data);
 
-					App::getSession()->addFlash(__('reviews.mes1'));
+					App::getSession()->addFlash(__('stories.mes1'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('stories.view', [$id]));
 				}
 

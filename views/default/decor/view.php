@@ -127,7 +127,7 @@ $router = \App\Core\App::getRouter();
                     <div class="galery">
                         <div class="panels">
                             <?php foreach ($data['galery'] as $img): ?>
-                            <a href="javascript:void(0)" class="panel">
+                            <a href="<?=\App\Core\Config::get('decorImg') . $data['product']['id_decor'] . DS . $img?>" class="panel">
                                 <div class="panel__content" style="background-image: url('<?=\App\Core\Config::get('decorImgWeb') . $data['product']['id_decor'] . '/' . $img?>');"></div>
                             </a>
                             <?php endforeach; ?>
@@ -146,3 +146,5 @@ $router = \App\Core\App::getRouter();
 
 <script type="text/javascript" src="/js/buttons.js"></script>
 <script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>
+<script type="text/javascript" src="/js/touchTouch.jquery.js"></script>
+<script type="text/javascript" src="/js/gallery.js"></script>
