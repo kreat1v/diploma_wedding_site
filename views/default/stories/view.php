@@ -5,8 +5,6 @@ use App\Core\Config;
 
 $router = \App\Core\App::getRouter();
 
-// pre($data);
-
 ?>
 <div class="stories-view" data-id="<?=$data['stories']['id_stories']?>">
 
@@ -44,18 +42,26 @@ $router = \App\Core\App::getRouter();
 
             </div>
 
-            <div class="panel">
+            <div class="panel text">
 
-                <div class="like">
-
+                <div class="like" data-item="stories" data-id="<?=$data['stories']['id_stories']?>">
+                    <span class="like-image <?=$data['stories']['like'] ? 'like-off' : ''?>">
+                        <i class="far fa-heart"></i>
+                    </span>
+                    <span class="like-active <?=$data['stories']['like'] ? '' : 'like-off'?>">
+                        <i class="fas fa-heart"></i>
+                    </span>
+                    <span class="like-number <?=$data['stories']['like'] ? 'like-number-active' : ''?>">
+                        <?=$data['likesCount']?>
+                    </span>
                 </div>
 
                 <div class="views">
-
+                    <i class="fas fa-eye"></i> <?=$data['views']?>
                 </div>
 
                 <div class="date">
-
+                    <?=date('d.m.Y', strtotime($data['stories']['date']))?>
                 </div>
 
             </div>
@@ -74,12 +80,25 @@ $router = \App\Core\App::getRouter();
                         </span>
                         <p><?=$value['messages']?></p>
                         <div class="panels">
-                            <span class="like-comment">
-                                <i class="far fa-heart"></i> 10
-                            </span>
-                            <span class="answ">
-                                <i class="fas fa-reply"></i> <?=count($value['answers'])?>
-                            </span>
+                            <div class="like" data-item="comments" data-id="<?=$value['id']?>">
+                                <span class="like-image <?=$value['like'] ? 'like-off' : ''?>">
+                                    <i class="far fa-heart"></i>
+                                </span>
+                                <span class="like-active <?=$value['like'] ? '' : 'like-off'?>">
+                                    <i class="fas fa-heart"></i>
+                                </span>
+                                <span class="like-number <?=$value['like'] ? 'like-number-active' : ''?>">
+                                    <?=$value['likesCount']?>
+                                </span>
+                            </div>
+                            <div class="answ">
+                                <span>
+                                    <i class="fas fa-reply"></i>
+                                </span>
+                                <span>
+                                    <?=count($value['answers'])?>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="avt">
@@ -98,7 +117,7 @@ $router = \App\Core\App::getRouter();
                     <div class="form-answ">
                         <form method="post">
                             <textarea name="answers"></textarea>
-                            <div class="count-answ">
+                            <div class="count-answ text">
                                 <span>300</span>
                             </div>
                             <input type="hidden" name="id" value="<?=$value['id']?>">
@@ -116,11 +135,6 @@ $router = \App\Core\App::getRouter();
                                     ?>
                                 </span>
                                 <p><?=$answ['messages']?></p>
-                                <div class="panels">
-                                    <span class="like-answer">
-                                        <i class="far fa-heart"></i> 10
-                                    </span>
-                                </div>
                             </div>
                             <div class="avt">
                                 <?php

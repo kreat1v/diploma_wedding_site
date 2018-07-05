@@ -5,7 +5,9 @@ namespace App\Controllers;
 use \App\Entity\Stories\StoriesMain;
 use \App\Entity\Comments;
 use \App\Entity\Answers;
-use \App\Entity\Vote;
+use \App\Entity\Views;
+use \App\Entity\LikeStories;
+use \App\Entity\LikeComments;
 use \App\Core\App;
 use \App\Core\Config;
 use \App\Core\Pagination;
@@ -16,7 +18,9 @@ class StoriesController extends Base
 	private $storiesMainModel;
 	private $commentsModel;
 	private $answersModel;
-	private $voteModel;
+	private $viewsModel;
+	private $likeStoriesModel;
+	private $likeCommentsModel;
 
 	public function __construct($params = [])
 	{
@@ -25,7 +29,9 @@ class StoriesController extends Base
 		$this->storiesMainModel = new StoriesMain(App::getConnection());
 		$this->commentsModel = new Comments(App::getConnection());
 		$this->answersModel = new Answers(App::getConnection());
-		$this->voteModel = new Vote(App::getConnection());
+		$this->viewsModel = new Views(App::getConnection());
+		$this->likeStoriesModel = new LikeStories(App::getConnection());
+		$this->likeCommentsModel = new LikeComments(App::getConnection());
 	}
 
 	public function indexAction()
@@ -75,16 +81,17 @@ class StoriesController extends Base
 
 	public function viewAction()
 	{
-		// pre($_SERVER['REMOTE_ADDR']);
-
 		// Получаем параметры.
 		$params = App::getRouter()->getParams();
 
-		// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра товара, иначе делаем переадресацию на страницу всех товаров.
+		// Если в параметрах присутствует id - то собираем и отдаем данные для просмотра истории, иначе делаем переадресацию на страницу всех историй.
 		if (!empty($params)) {
 
 			// Получем id истории.
 			$id = $params[0];
+
+			// Получаем id юзера.
+			$id_users = App::getSession()->get('id');
 
 			// Получаем данные истории.
 			$stories = $this->storiesMainModel->languageList(['id_stories' => $id]);
@@ -96,19 +103,77 @@ class StoriesController extends Base
 				$galery = false;
 			}
 
+			// Получаем лайки истории.
+			$like = $this->likeStoriesModel->list(['id_stories' => $id]);
+
+			// Получаем лайк пользователя данной истории.
+			$userLike = array_search($id_users, array_column($like, 'id_users')) !== false ? true : false;
+
+			// Просмотры истории.
+			// Если нету id юзера, то получим ip адресс для дополнения просмотров, иначе воспользуемся id юзера.
+			if (!$id_users) {
+
+				// Получаем ip адресс клиента.
+				$ip = $_SERVER['REMOTE_ADDR'];
+
+				// Получаем все просмотры истории из БД.
+				$views = $this->viewsModel->list(['id_stories' => $id, 'ip' => ip2long($ip)]);
+
+				// Если ip не найден, до сохраним его в БД.
+				if (!$views) {
+					$this->viewsModel->save([
+						'id_stories' => $id,
+						'ip' => ip2long($ip)
+					]);
+				}
+
+			} else {
+
+				// Получаем все просмотры истории из БД.
+				$views = $this->viewsModel->list(['id_stories' => $id, 'id_users' => $id_users]);
+
+				// Если id юзера не найден, до сохраним его в БД.
+				if (!$views) {
+					$this->viewsModel->save([
+						'id_stories' => $id,
+						'id_users' => $id_users
+					]);
+				}
+
+			}
+
+			// Получаем количество просмотров истории.
+			$viewsCount = count($this->viewsModel->list(['id_stories' => $id]));
+
 			// Получаем комментарии.
 			$comments = $this->commentsModel->comments(['id_stories' => $id, 'active' => 1], [5, 0]);
 
-			// Дополняем массив комментариев ответами.
+			// Дополняем массив комментариев ответами и лайками.
 			foreach ($comments as $key => $value) {
+
+				// Получаем ответы.
 				$comments[$key]['answers'] =  $this->answersModel->answers(['id_comments' => $value['id']]);
+
+				// Получаем лайки комментария.
+				$likeComments = $this->likeCommentsModel->list(['id_comments' => $value['id']]);
+
+				// Получаем лайк пользователя данного комментария.
+				$userLikeComments = array_search($id_users, array_column($likeComments, 'id_users')) !== false ? true : false;
+
+				// Дополняем массив.
+				$comments[$key]['likesCount'] = count($likeComments);
+				$comments[$key]['like'] = $userLikeComments;
+
 			}
 
 			// Отдаём данные.
 			if (!empty($stories) && $stories[0]['active'] == 1) {
 				$this->data['stories'] = $stories[0];
+				$this->data['stories']['like'] = $userLike;
 				$this->data['galery'] = $galery;
 				$this->data['comments'] = $comments;
+				$this->data['views'] = $viewsCount;
+				$this->data['likesCount'] = count($like);
 			} else {
 				$this->page404();
 			}
@@ -121,9 +186,6 @@ class StoriesController extends Base
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
-
-				// Получаем id юзера.
-				$id_users = App::getSession()->get('id');
 
 				// Отправка комментария.
 				if (isset($_POST['button']) && $_POST['button'] == 'send') {
@@ -143,6 +205,7 @@ class StoriesController extends Base
 
 				}
 
+				// Отправка ответа.
 				if (isset($_POST['button']) && $_POST['button'] == 'answers') {
 
 					$this->data = [
@@ -166,69 +229,72 @@ class StoriesController extends Base
 
 			}
 		}
-
-		// $newsId = $this->params[0];
-		//
-		// // получение новости
-		// $news = $this->newsModel->getBy('id', $newsId);
-		//
-		// // проверка - аналитическая статья, или нет
-		// if ($news['analytics'] == 1 && !App::getSession()->get('id')) {
-		// 	$arrContent = explode('. ', $news['content']);
-		// 	$content = [];
-		// 	for ($i = 0; $i < 5; $i++) {
-		// 		$content[] = $arrContent[$i];
-		// 	}
-		// 	$content = implode('. ', $content);
-		//
-		// 	if (!empty($news)) {
-		// 		$this->data['news']['title'] = $news['title'];
-		// 		$this->data['news']['content'] = $content . '.';
-		// 		$this->data['news']['analytics'] = $news['analytics'];
-		// 	}
-		// } else {
-		// 	// получение категории
-		// 	$category = $this->categoryModel->getBy('id', $news['id_category']);
-		//
-		// 	// получение изображений
-		// 	$images = array_values(array_diff(scandir(Config::get('gallery') . $news['img_dir']), ['.', '..']));
-		//
-		// 	// получение тэгов
-		// 	$newsTag = $this->newsTagModel->list(['id_news' => "$newsId"]);
-		// 	$tagsId = '';
-		// 	foreach ($newsTag as $value) {
-		// 		$tagsId .= $value['id_tags'];
-		// 		$tagsId .= ', ';
-		// 	}
-		// 	$tagsId = trim($tagsId, ', ');
-		// 	$tags = $this->tagsModel->getTags($tagsId);
-		//
-		// 	// просмотры новости
-		// 	$nowWatching = rand(0, 5);
-		// 	$allWathching = $news['views'] + $nowWatching;
-		// 	$this->newsModel->save(['views' => $allWathching], $newsId);
-		//
-		// 	// комментарии
-		// 	$comments = $this->commentsModel->getComments('id_news', $newsId);
-		// 	$answers = $this->answersModel->getAnswers($newsId);
-		// 	$vote = $this->voteModel->getVote(App::getSession()->get('id'), $newsId);
-		//
-		// 	// то, что отдаем
-		// 	if (!empty($news)) {
-		// 		$this->data['news'] = $news;
-		// 		$this->data['gallery'] = $images;
-		// 		$this->data['tags'] = $tags;
-		// 		$this->data['nowWatching'] = $nowWatching;
-		// 		$this->data['category'] = $category;
-		// 		$this->data['comments'] = $comments;
-		// 		$this->data['answers'] = $answers;
-		// 		$this->data['vote'] = $vote;
-		// 	} else {
-		// 		$this->page404();
-		// 	}
-		// }
 	}
 
+	public function likeAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			try {
+
+				// Получаем пришедшие данные.
+				$id = $_POST['id'];
+				$item = $_POST['item'];
+
+				// Получаем id юзера.
+				$id_users = App::getSession()->get('id');
+
+				// Формируем названия модели и название id для запроса.
+				$model = 'like' . ucfirst($item) . 'Model';
+				$nameId = 'id_' . $item;
+
+				// Получаем лайк из БД.
+				$like = $this->$model->list([$nameId => $id, 'id_users' => $id_users]);
+
+				// Если лайк не найден, то сохраним его в БД, иначе наоборот удалим его из БД.
+				if (!$like) {
+
+					$this->data = [
+						$nameId => $id,
+						'id_users' => $id_users
+					];
+
+					$this->$model->save($this->data);
+
+					echo json_encode([
+						'result' => 'like'
+					]);
+
+					die();
+
+				} else {
+
+					$id_likes = $like[0]['id'];
+
+					$this->$model->delete($id_likes);
+
+					echo json_encode([
+						'result' => 'dislike'
+					]);
+
+					die();
+				}
+
+			} catch (\Exception $exception) {
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
+		}
+	}
+
+	// Получение части комментариев.
 	public function getCommentsAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -245,7 +311,7 @@ class StoriesController extends Base
 			if(!empty($comments)) {
 				foreach ($comments as $key => $value) {
 
-					// Получим id юзера.
+					// Получим id юзера, оставившего комментарий.
 					$id = $value['id_users'];
 
 					// Получим ответы на комментарий.
@@ -275,6 +341,19 @@ class StoriesController extends Base
 						$paths = array_values(array_diff(scandir(Config::get('userImgRoot') . $id), ['.', '..']));
 						$comments[$key]['avatar'] = Config::get('userImg') . $id . DS . $paths[0];
 					}
+
+					// Получаем id юзера.
+					$id_users = App::getSession()->get('id');
+
+					// Получаем лайки комментария.
+					$likeComments = $this->likeCommentsModel->list(['id_comments' => $value['id']]);
+
+					// Получаем лайк пользователя данного комментария.
+					$userLikeComments = array_search($id_users, array_column($likeComments, 'id_users')) !== false ? true : false;
+
+					// Дополняем массив комментариев лайками.
+					$comments[$key]['likesCount'] = count($likeComments);
+					$comments[$key]['like'] = $userLikeComments;
 				}
 			}
 

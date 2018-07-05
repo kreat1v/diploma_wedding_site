@@ -38,7 +38,6 @@ class StoriesMain extends \App\Entity\Base
 		return [
 			'id',
 			'date',
-			'views',
 			'active'
 		];
 	}

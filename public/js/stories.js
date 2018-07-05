@@ -11,10 +11,10 @@ $(function() {
 // Стартовое число для запроса - позиция, с которой будут извлекаться данные.
 var startLimit = 5;
 
-// Функция подгрузки сообщений.
+// Функция подгрузки комментариев.
 function scrollalert() {
 
-    // Получаем данные прокрутки, а так же имя категории, ссылку на метод и id продукта.
+    // Получаем данные прокрутки, а так же id истории.
     var scrolltop = $('#messages').prop('scrollTop'),
         scrollheight = $('#messages').prop('scrollHeight'),
         windowheight = $('#messages').prop('clientHeight'),
@@ -40,54 +40,76 @@ function scrollalert() {
 
                 startLimit = startLimit + 5;
 
-                // Формируем комментарии.
+                // Формируем комментарии и ответы к ним.
                 data.map(function(element) {
-                    var name = '',
-                        mesAnsw = '';
 
+                    // Вспомогательные переменные.
+                    var name = '',
+                        mesAnsw = '',
+                        styleImageLike = '',
+                        styleActiveImageLike = 'like-off',
+                        styleNumberLike = '';
+
+                    // Получаем имя комментатора.
                     if (element['firstName'] !== null) {
                         name = element['firstName'];
                     } else {
                         name = element['email'];
                     }
 
+                    // Получаем ответы.
                     element.answers.map(function(elementAnsw) {
                         var nameAnsw = '';
 
+                        // Получаем имя комментатора.
                         if (elementAnsw['firstName'] !== null) {
                             nameAnsw = elementAnsw['firstName'];
                         } else {
                             nameAnsw = elementAnsw['email'];
                         }
 
+                        // Составляем строку ответов.
                         mesAnsw += '<div class="container text">' +
                             '<div>' +
                             '<span>' + nameAnsw + ', ' + elementAnsw.date + '</span>' +
                             '<p>' + elementAnsw.messages + '</p>' +
-                            '<div class="panels">' +
-                            '<span class="like-comment">' +
-                            '<i class="far fa-heart"></i> 10' +
-                            '</span>' +
-                            '</div>' +
                             '</div>' +
                             '<div class="avt"><img src="' + elementAnsw.avatar + '"></div>' +
                             '</div>';
 
                     });
 
+                    // Добавляем строки ответов в объект.
                     arrAnsw[element.id] = mesAnsw;
 
+                    // Формируем стили для отображения лайков.
+                    if (element.like) {
+                        styleImageLike = 'like-off';
+                        styleActiveImageLike = '';
+                        styleNumberLike = 'like-number-active';
+                    }
+
+                    // Формируем строку комментариев.
                     mes += '<div class="container text">' +
                         '<div>' +
                         '<span>' + name + ', ' + element.date + '</span>' +
                         '<p>' + element.messages + '</p>' +
                         '<div class="panels">' +
-                        '<span class="like-comment">' +
-                        '<i class="far fa-heart"></i> 10' +
+                        '<div class="like" data-item="comments" data-id="' + element.id + '">' +
+                        '<span class="like-image ' + styleImageLike + '">' +
+                        '<i class="far fa-heart"></i>' +
                         '</span>' +
-                        '<span class="answ">' +
-                        '<i class="fas fa-reply"></i> ' + element.answers.length +
+                        '<span class="like-active ' + styleActiveImageLike + '">' +
+                        '<i class="fas fa-heart"></i>' +
                         '</span>' +
+                        ' <span class="like-number ' + styleNumberLike + '"> ' +
+                        element.likesCount +
+                        '</span>' +
+                        '</div>' +
+                        '<div class="answ">' +
+                        '<span><i class="fas fa-reply"></i></span>' +
+                        '<span> ' + element.answers.length + '</span>' +
+                        '</div>' +
                         '</div>' +
                         '</div>' +
                         '<div class="avt"><img src="' + element.avatar + '"></div>' +
@@ -96,7 +118,7 @@ function scrollalert() {
                         '<div class="form-answ">' +
                         '<form method="post">' +
                         '<textarea name="answers"></textarea>' +
-                        '<div class="count-answ">' +
+                        '<div class="count-answ text">' +
                         '<span>300</span>' +
                         '</div>' +
                         '<input type="hidden" name="id" value="' + element.id + '">' +
@@ -107,7 +129,7 @@ function scrollalert() {
                         '</div>';
                 });
 
-                // Добавляем новую партию сообщений.
+                // Добавляем новую партию комментариев.
                 $('#messages').append(mes);
             }
         });
@@ -116,55 +138,66 @@ function scrollalert() {
 
     // Устанавливаем setTimeout, чтобы периодически проверять положение ползунка, чтобы, при необходимости, извлечь новые элементы.
     setTimeout('scrollalert();', 1500);
+
+    // Обновляем скролл.
+    $('.answers textarea').niceScroll();
 }
 
 
 
-// Ответы на комментарии.
-// Функция получения ответо на комментарии.
-function answers(id) {
+// Лайки.
+$('body').on('click', '.like', function() {
+
+    // Получаем объект, на котором кликнули, а также дополнительные данные.
+    var parent = $(this),
+        item = $(parent).attr('data-item'),
+        id = $(parent).attr('data-id'),
+        likes = $(parent).find('.like-number').text();
 
     $.ajax({
-        url: '/stories/getAnswers',
+        url: '/stories/like',
         type: 'post',
         data: {
-            id_comments: id
+            item: item,
+            id: id
         },
 
+        // В зависимости от события, добавим или удалим лайк.
         success: function(response) {
             var data = JSON.parse(response);
-            mes = '';
 
-            // Формируем комментарии.
-            data.data.map(function(element) {
-                var name = '';
+            if (data.result === 'like') {
 
-                if (element['firstName'] !== null) {
-                    name = element['firstName'];
-                } else {
-                    name = element['email'];
-                }
+                $(parent).find('.like-image').addClass('like-off');
+                $(parent).find('.like-active').removeClass('like-off');
+                $(parent).find('.like-number').text(+likes + 1).addClass('like-number-active');
 
-                mes += '<div class="container text">' +
-                    '<div>' +
-                    '<span>' + name + ', ' + element.date + '</span>' +
-                    '<p>' + element.messages + '</p>' +
-                    '</div>' +
-                    '<div class="avt"><img src="' + element.avatar + '"></div>' +
-                    '</div>';
-            });
+            } else if (data.result === 'dislike') {
 
-            // Добавляем новую партию сообщений.
-            $('.answers').append(mes);
+                $(parent).find('.like-image').removeClass('like-off');
+                $(parent).find('.like-active').addClass('like-off');
+                $(parent).find('.like-number').text(+likes - 1).removeClass('like-number-active');
+
+            } else {
+
+                console.log(data.msg);
+            }
+        },
+
+        error: function(response) {
+
+            console.log('Error!');
+
         }
+
     });
+});
 
-}
 
-// По клику на кнопке редактирования сообщения открываем форму редактирования.
+
+// Ответы.
+// По клику на кнопке ответов открываем список ответов.
 $('body').on('click', '.answ', function() {
-
-    console.log(0);
 
     // Получаем объект, в котором был сделан клик.
     var parent = $(this).parents('.container');
@@ -196,12 +229,14 @@ $(document).ready(function() {
     $('#messages').niceScroll();
     $('.answers textarea').niceScroll();
 
+
+
     // Запускаем нашу функцию подгрузки комментариев.
     scrollalert();
 
 
 
-    // Ограниченное количество символов для контактного текстового поля.
+    // Ограниченное количество символов для фомы ответов.
     // Показываем и скрываем счётчик набранного текста.
     $('body').on('focusin', '.answers textarea', function() {
         $(this).nextAll('.count-answ').fadeIn();

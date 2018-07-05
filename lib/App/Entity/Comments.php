@@ -79,38 +79,4 @@ class Comments extends Base
 				$strLimit";
 		return $this->conn->query($sql);
 	}
-
-	// public function getComments($where, $id)
-	// {
-	// 	$fieldsComments = $this->getTableName();
-	// 	$fieldsUser = $this->getUser()->getTableName();
-	//
-	// 	if (empty($id)) {
-	// 		return null;
-	// 	}
-	//
-	// 	$sql = "SELECT $fieldsComments.*, $fieldsUser.firstName, $fieldsUser.secondName, $fieldsUser.email
-	// 			FROM $fieldsComments
-	// 			JOIN $fieldsUser ON $fieldsComments.id_user = $fieldsUser.id
-	// 			WHERE $fieldsComments.$where = $id
-	// 			ORDER BY $fieldsComments.rating	 DESC";
-	// 	return $this->conn->query($sql);
-	// }
-	//
-	// public function getSection($limit, $limitStart, $where = null, $sort = null)
-	// {
-	// 	if (isset($where)) {
-	// 		$this->conn->escape($where);
-	// 		$strWhere = " WHERE id_user = $where ";
-	// 	}
-	//
-	// 	if (isset($sort)) {
-	// 		$this->conn->escape($sort);
-	// 		$orderBy = " ORDER BY $sort DESC ";
-	// 	}
-	//
-	// 	$sql = 'SELECT * FROM ' . $this->getTableName() . $strWhere . $orderBy . ' LIMIT ' . $limit . ' OFFSET ' . $limitStart;
-	//
-	// 	return $this->conn->query($sql);
-	// }
 }

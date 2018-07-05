@@ -101,12 +101,34 @@
 .stories-view .thumbs, .stories-view .panel {
     width: 500px;
     margin: 30px auto;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stories-view .panel div {
+    font-size: 20px;
+    color: #3CA6C7;
+    margin: 0 30px;
+}
+
+.stories-view .like {
+    cursor: pointer;
+}
+
+.stories-view .like-off {
+    display: none;
+}
+
+.stories-view .like:hover span, .stories-view .like-active, .stories-view .like-number-active {
+    color: #FAB900 !important;
 }
 
 .stories-view .thumbs a {
     width: 150px;
     height: 150px;
+    margin: 15px;
     display: inline-block;
     border: 3px solid #3CA6C7;
     border-radius: 4px;
@@ -202,19 +224,19 @@
     border-top: 1px solid #80E1FF;
 }
 
-.stories-view .messages .container .panels span {
+.stories-view .messages .container .panels div {
     cursor: pointer;
-    color: #80E1FF;
-    font-size: 13px;
     margin-right: 20px;
+    display: inline-block;
 }
 
-.stories-view .messages .container .panels .like-comment:hover {
-    color: #FAB900;
+.stories-view .messages .container .panels span {
+    font-size: 13px;
 }
 
 .stories-view .messages .container .panels .answ:hover {
     text-decoration: underline;
+    color: #80E1FF;
 }
 
 .stories-view .answers {
@@ -228,7 +250,7 @@
     display: none;
     position: absolute;
     right: 10px;
-    top: 5px;
+    top: 0;
 }
 
 .stories-view .form-answ form {
