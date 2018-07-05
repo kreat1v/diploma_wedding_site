@@ -44,6 +44,7 @@ $router = \App\Core\App::getRouter();
 
             <div class="panel text">
 
+                <?php if(Session::get('id') && Session::get('role') == 'user'): ?>
                 <div class="like" data-item="stories" data-id="<?=$data['stories']['id_stories']?>">
                     <span class="like-image <?=$data['stories']['like'] ? 'like-off' : ''?>">
                         <i class="far fa-heart"></i>
@@ -55,6 +56,7 @@ $router = \App\Core\App::getRouter();
                         <?=$data['likesCount']?>
                     </span>
                 </div>
+                <?php endif; ?>
 
                 <div class="views">
                     <i class="fas fa-eye"></i> <?=$data['views']?>
@@ -66,6 +68,7 @@ $router = \App\Core\App::getRouter();
 
             </div>
 
+            <?php if(Session::get('id') && Session::get('role') == 'user'): ?>
             <div class="messages" id="messages">
 
                 <?php foreach($data['comments'] as $value): ?>
@@ -154,7 +157,6 @@ $router = \App\Core\App::getRouter();
 
             </div>
 
-            <?php if(Session::get('id') && Session::get('role') == 'user'): ?>
             <div class="form text">
                 <form method="post" id="message-form">
                     <label>

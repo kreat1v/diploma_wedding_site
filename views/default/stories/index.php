@@ -10,7 +10,7 @@ $router = \App\Core\App::getRouter();
 
     <div class="title text">
 
-        <p>Истории пар, которым мы смогли помочь воплотить в жизнь их свадебную мечту.</p>
+        <p><?=__('stories.title')?></p>
 
     </div>
 

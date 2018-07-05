@@ -180,11 +180,13 @@ return [
 
 	'stories' => [
 		'comment' => 'Your comment',
+		'title' => 'The stories of couples that we were able to help realize their wedding dream. We hope that soon your story will also be included in our archive of memories!',
 		'send' => 'Send',
 		'mes1' => 'Your comment has been published',
-		'mes2' => 'In order to leave a comment, please ',
+		'mes2' => 'In order to be able to participate in the discussion of history, please - ',
 		'mes3' => 'log in',
 		'mes4' => '.',
+		'mes5' => 'Your answer has been published'
 	],
 
 	'pagination' => [

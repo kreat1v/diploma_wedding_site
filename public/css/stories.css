@@ -3,6 +3,11 @@
     margin: 0 auto;
 }
 
+.stories .title {
+    margin: 50px 0;
+    text-align: center;
+}
+
 .stories a {
     color: #3CA6C7;
     transition: .5s;

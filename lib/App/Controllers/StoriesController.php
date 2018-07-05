@@ -217,7 +217,7 @@ class StoriesController extends Base
 
 					$this->answersModel->save($this->data);
 
-					App::getSession()->addFlash(__('stories.mes1'));
+					App::getSession()->addFlash(__('stories.mes5'));
 					App::getRouter()->redirect(App::getRouter()->buildUri('stories.view', [$id]));
 
 				}
