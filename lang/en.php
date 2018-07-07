@@ -212,7 +212,8 @@ return [
 		'stories' => 'Stories',
 		'users' => 'Users',
 		'feedback' => 'Feedback',
-		'moderation' => 'Moderation',
+		'moderationreviews' => 'Moderating reviews of products',
+		'moderationcomments' => 'Moderation of comments of stories',
 		'about' => 'About us',
 		'photo' => 'Photo cover',
 		'contacts' => 'Contacts'
@@ -337,5 +338,39 @@ return [
 		'mes8' => 'There are no archival applications.',
 		'modal1' => 'Are you sure you want to delete this message?',
 		'modal2' => 'Are you sure you want to transfer this application to the archive?'
+	],
+
+	'admin_moderationreviews' => [
+		'title1' => 'Moderate reviews',
+		'title2' => 'Editor reviews',
+		'category' => 'Category',
+		'count' => 'Number of reviews for moderation',
+		'view' => 'View',
+		'id' => 'User ID',
+		'review' => 'Review',
+		'activity1' => 'Review activity',
+		'activity2' => 'Review active',
+		'activity3' => 'Activate',
+		'activity4' => 'Deactivate',
+		'edit' => 'Edit',
+		'save' => 'Save',
+		'mes1' => 'Review successfully edited',
+		'modal' => 'Are you sure you want to deactivate this review?'
+	],
+
+	'admin_moderationcomments' => [
+		'title1' => 'Moderate comments',
+		'title2' => 'РедаComment editorктор комментариев',
+		'id' => 'User ID',
+		'id_stories' => 'History ID',
+		'comments' => 'comment',
+		'activity1' => 'Comment activity',
+		'activity2' => 'Comment is active',
+		'activity3' => 'Activate',
+		'activity4' => 'Deactivate',
+		'edit' => 'Edit',
+		'save' => 'Save',
+		'mes1' => 'Comment was successfully edited',
+		'modal' => 'Are you sure you want to deactivate this comment?'
 	]
 ];

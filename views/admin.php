@@ -83,11 +83,10 @@ if(Session::get('id')) {
                         </ul>
                     </li>
 					<li>
-						<a href="#"><?=__('admin_menu.moderation')?></a>
-						<ul>
-							<li><a href="#">Отзывы о товарах</a></li>
-							<li><a href="#">Комментарии историй</a></li>
-						</ul>
+						<a href="<?=$router->buildUri('.moderationreviews')?>"><?=__('admin_menu.moderationreviews')?></a>
+					</li>
+					<li>
+						<a href="<?=$router->buildUri('.moderationcomments')?>"><?=__('admin_menu.moderationcomments')?></a>
 					</li>
 
 					<br>

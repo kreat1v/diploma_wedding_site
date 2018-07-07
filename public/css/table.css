@@ -22,11 +22,13 @@
 }
 
 .table button {
+    width: 100%;
     border: none;
     outline: none;
     background: none;
     color: #FFF;
     font-size: 15px;
+    padding: 0 20px;
 }
 
 .table button, .table .sm-buttons {
