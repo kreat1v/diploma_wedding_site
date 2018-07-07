@@ -1,52 +1,94 @@
 <?php
+
 $router = \App\Core\App::getRouter();
+
 ?>
 
-    <div class="col-lg-12">
+<div class="container">
+    <div class="category">
 
-        <h2>Users</h2>
+        <div class="title text">
+            <h2><?=__('admin_user.title')?></h2>
+        </div>
 
-        <br />
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Second Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                <th scope="col">Active</th>
-            </tr>
-            </thead>
-            <tbody>
-			<?php foreach ($data as $user): ?>
+        <div class="table text">
+			<table>
                 <tr>
-                    <td><?=$user['id']?></td>
-                    <td><?=$user['firstName']?></td>
-                    <td><?=$user['secondName']?></td>
-                    <td><?=$user['email']?></td>
-                    <td>
-	                    <?=$user['role']?>
-                        <?php if ($user['role'] == 'user'): ?>
-                            <a class="btn btn-sm btn-danger" style="float: right" onclick="return confirmDelete()" href="<?=$router->buildUri('editrole', [$user['id'], 'admin'])?>">Make admin</a>
-                        <?php else: ?>
-                            <a class="btn btn-sm btn-success" style="float: right" onclick="return confirmDelete()" href="<?=$router->buildUri('editrole', [$user['id'], 'user'])?>">Make user</a>
-                        <?php endif; ?>
-                    </td>
-                    <td>
-	                    <?php if ($user['active'] == '1'):
-                            echo 'active';
-                            ?>
-                            <a class="btn btn-sm btn-danger" style="float: right" onclick="return confirmDelete()" href="<?=$router->buildUri('editactive', [$user['id'], 0])?>">Deactivate</a>
-	                    <?php else:
-                            echo 'inactive';
-                            ?>
-                            <a class="btn btn-sm btn-success" style="float: right" onclick="return confirmDelete()" href="<?=$router->buildUri('editactive', [$user['id'], 1])?>">Activate</a>
-	                    <?php endif; ?>
-                    </td>
+                    <th><?=__('admin_user.id')?></th>
+                    <th><?=__('admin_user.first_name')?></th>
+                    <th><?=__('admin_user.second_name')?></th>
+                    <th>E-Mail</th>
+                    <th><?=__('admin_user.tel')?></th>
+                    <th><?=__('admin_user.activity1')?></th>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+				<?php foreach ($data['users'] as $users): ?>
+                    <?php if ($users['role'] == 'admin'): ?>
+                    <?php continue; ?>
+                    <?php else: ?>
+    				<tr>
+    					<td><?=$users['id']?></td>
+    					<td><?=$users['firstName']?></td>
+    					<td><?=$users['secondName']?></td>
+    					<td><?=$users['email']?></td>
+    					<td><?=$users['tel']?></td>
+                        <td>
+                            <button class="sm-buttons text bt-activate"
+                                    type="button"
+                                    name="button"
+                                    value="0"
+                                    <?=$users['active'] ? '' : 'style="display: none;"' ?>
+                                    data-id="<?=$users['id']?>">
+                                <?=__('admin_user.activity3')?>
+                            </button>
+                            <button class="sm-buttons text bt-activate"
+                                    type="button"
+                                    name="button"
+                                    value="1"
+                                    <?=$users['active'] ? 'style="display: none;"' : '' ?>
+                                    data-id="<?=$users['id']?>">
+                                <?=__('admin_user.activity2')?>
+                            </button>
+                        </td>
+    				</tr>
+                    <?php endif; ?>
+				<?php endforeach; ?>
+			</table>
+		</div>
+
+        <!-- Пагинация. -->
+        <?php if ($data['pagination']): ?>
+        <nav>
+            <ul class="pagination text">
+                <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+                    <a href="<?=$data['pagination']['back'] ? $router->buildUri('user.index', [1]) : ''?>">
+                        <span>&laquo;</span>
+                    </a>
+                </li>
+
+                <li class="<?=$data['pagination']['back'] ? '' : 'disabled'?>">
+                    <a href="<?=$data['pagination']['back'] ? $router->buildUri('user.index', [$data['pagination']['back']]) : ''?>"><?=__('pagination.previous')?></a>
+                </li>
+
+                <?php foreach ($data['pagination']['middle'] as $key => $value): ?>
+                <li class="<?=$data['page'] == $key ? 'active' : ''?>">
+                    <a href="<?=$router->buildUri('user.index', [$key])?>"><?=$key?></a>
+                </li>
+                <?php endforeach; ?>
+
+                <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+                    <a href="<?=$data['pagination']['forward'] ? $router->buildUri('user.index', [$data['pagination']['forward']]) : ''?>"><?=__('pagination.next')?></a>
+                </li>
+
+                <li class="<?=$data['pagination']['forward'] ? '' : 'disabled'?>">
+                    <a href="<?=$router->buildUri('user.index', [$data['pagination']['last']])?>">
+                        <span>&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <?php endif; ?>
 
     </div>
+</div>
+
+<script type="text/javascript" src="/js/admin-user.js"></script>

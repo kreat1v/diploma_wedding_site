@@ -72,7 +72,7 @@ if(Session::get('id')) {
 					<br>
 
 					<li>
-						<a href="#"><?=__('admin_menu.users')?></a>
+						<a href="<?=$router->buildUri('.user')?>"><?=__('admin_menu.users')?></a>
 					</li>
                     <li><a href="<?=$router->buildUri('.feedback')?>"><?=__('admin_menu.feedback')?></a>
                         <ul>

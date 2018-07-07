@@ -4,6 +4,8 @@ namespace App\Controllers\Admin;
 
 use App\Entity\User;
 use App\Core\App;
+use App\Core\Pagination;
+use App\Core\Config;
 
 class UserController extends \App\Controllers\Base
 {
@@ -18,39 +20,106 @@ class UserController extends \App\Controllers\Base
 
 	public function indexAction()
 	{
-		$this->data = $this->userModel->list();
-	}
+		// Задаем модульное сообщение.
+		App::getSession()->addModal(__('admin_user.modal'));
 
-	public function editRoleAction() {
-		$id = isset($this->params[0]) ? $this->params[0] : null;
-		$role = isset($this->params[1]) ? $this->params[1] : null;
+		// Пагинация.
+		$page = isset($this->params[0]) ? $this->params[0] : 1;
+		$productsCount = count($this->userModel->list());
 
-		if (!$id || !$role) {
-			App::getSession()->addFlash('Missing user id or role not defined.');
+		$pag = new Pagination();
+		$pagination = $pag->getLinks(
+			$productsCount,
+			Config::get('pagLimit'),
+			$page,
+			Config::get('pagButtonLimit'));
+
+		if (!empty($pagination) && !$pagination['page404']) {
+			$this->data['pagination'] = $pagination;
 		} else {
-			$this->data = [
-				'role' => $role
-			];
-			$this->userModel->save($this->data, $id);
-			App::getSession()->addFlash('Role changed.');
-			App::getRouter()->redirect(App::getRouter()->buildUri('index'));
+			$this->data['pagination'] = null;
+		}
+		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+
+		// Формируем data. Если метка 404й страницы равна false - то отдаём данные.
+		if (!$pagination['page404']) {
+			$this->data['users'] = $this->userModel->list([], [Config::get('pagLimit'), $offset]);
+			$this->data['page'] = $page;
+		} else {
+			$this->page404();
 		}
 	}
 
-	public function editActiveAction() {
-		$id = isset($this->params[0]) ? $this->params[0] : null;
-		$active = $this->params[1];
-//		$active = isset($this->params[1]) ? $this->params[1] : null;
+	public function deactivateAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-		if (!$id) {
-			App::getSession()->addFlash('Missing user id.');
-		} else {
-			$this->data = [
-				'active' => $active
-			];
-			$this->userModel->save($this->data, $id);
-			App::getSession()->addFlash('Activity parameter changed.');
-			App::getRouter()->redirect(App::getRouter()->buildUri('index'));
+			try {
+
+				// Получаем id юзера.
+				$idUser = $_POST['id'];
+
+				$this->data = [
+					'active' => 0
+				];
+
+				// Деактивируем юзера.
+				$this->userModel->save($this->data, ['id' => $idUser]);
+
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
+			} catch (\Exception $exception) {
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
 		}
 	}
+
+	public function activateAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			try {
+
+				// Получаем id юзера.
+				$idUser = $_POST['id'];
+
+				$this->data = [
+					'active' => 1
+				];
+
+				// Активируем юзера.
+				$this->userModel->save($this->data, ['id' => $idUser]);
+
+				echo json_encode([
+					'result' => 'success'
+				]);
+
+				die();
+
+			} catch (\Exception $exception) {
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
+			}
+
+		}
+	}
+
 }

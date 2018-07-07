@@ -372,5 +372,17 @@ return [
 		'save' => 'Save',
 		'mes1' => 'Comment was successfully edited',
 		'modal' => 'Are you sure you want to deactivate this comment?'
+	],
+
+	'admin_user' => [
+		'title' => 'Users',
+		'id' => 'User ID',
+		'first_name' => 'Name',
+		'second_name' => 'Surname',
+		'tel' => 'Phone',
+		'activity1' => 'User activity',
+		'activity2' => 'Activate',
+		'activity3' => 'Deactivate',
+		'modal' => 'Are you sure you want to deactivate this user?'
 	]
 ];
