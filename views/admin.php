@@ -98,7 +98,7 @@ if(Session::get('id')) {
 						<a href="#"><?=__('admin_menu.photo')?></a>
 					</li>
 					<li>
-						<a href="#"><?=__('admin_menu.contacts')?></a>
+						<a href="<?=$router->buildUri('.contacts')?>"><?=__('admin_menu.contacts')?></a>
 					</li>
                 </ul>
             </nav>

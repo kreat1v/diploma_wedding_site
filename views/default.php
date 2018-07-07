@@ -240,30 +240,16 @@ if(Session::get('id')) {
 	        <div class="footer" class="menu">
 	            <div class="menu-list">
 	                <ul>
-	                    <li><a href=""><?=__('footer.about')?></a></li>
+	                    <li><a href="<?=$router->buildUri('.about')?>"><?=__('footer.about')?></a></li>
 	                    <li><a href=""><?=__('footer.communications')?></a></li>
-	                    <li><a href=""><?=__('footer.contacts')?></a></li>
+	                    <li><a href="<?=$router->buildUri('.contacts')?>"><?=__('footer.contacts')?></a></li>
 	                    <li><a href=""><?=__('footer.map')?></a></li>
 	                    <li><a href="<?=Localization::getLang() == 'ru' ? Localization::chooseLang('en') : Localization::chooseLang('ru')?>">
 							<i class="fas fa-globe"></i> <?=__('footer.language')?>
 						</a></li>
 	                </ul>
 	            </div>
-	            <div class="contacts">
-	                <ul>
-	                    <li><a title="<?=__('footer.tel')?>" href="tel: +380950001122">+38 (095) 000 11 22</a></li>
-	                    <li><a title="<?=__('footer.tel')?>" href="tel: +380670001122">+38 (067) 000 11 22</a></li>
-	                    <li><a title="<?=__('footer.mail')?>" href="mailto:kostyakomarov7@gmail.com">kostyakomarov7@gmail.com</a></li>
-	                    <li>&copy К A L E I D O S C O P E - <?=date('Y')?></li>
-	                </ul>
-	            </div>
-	            <div class="social">
-	                <ul>
-	                    <li><a href="https://www.facebook.com"><i class="fab fa-facebook-square fa-2x"></i></a></li>
-	                    <li><a href="https://www.instagram.com"><i class="fab fa-instagram fa-2x"></i></a></li>
-	                    <li><a href="https://telegram.org/"><i class="fab fa-telegram-plane fa-2x"></i></a></li>
-	                </ul>
-	            </div>
+				<?=$data['contacts']?>
 	        </div>
 	    </footer>
 

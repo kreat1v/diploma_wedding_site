@@ -1,43 +1,106 @@
-<?php
+<div class="container">
+    <div class="category">
 
-$router = \App\Core\App::getRouter();
+        <div class="title text">
+            <h2><?=__('admin_contacts.title1')?></h2>
+        </div>
 
-?>
-<div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-12">
-        <h2>History of your messages (all)</h2>
+        <form class="form text" id="contacts-form" method="post">
+
+            <fieldset>
+                <legend><?=__('admin_contacts.title2')?></legend>
+
+                <label>
+                    <span><?=__('admin_contacts.ru')?></span>
+                    <textarea class="input" id="ru_text" name="ru_text"><?=$data['ru_text']?></textarea>
+                    <div class="tooltips-left">
+                        <div><?=__('admin_contacts.tool1')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_contacts.en')?></span>
+                    <textarea class="input" id="en_text" name="en_text"><?=$data['en_text']?></textarea>
+                    <div class="tooltips-left">
+                        <div><?=__('admin_contacts.tool1')?></div>
+                    </div>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend><?=__('admin_contacts.title3')?></legend>
+
+                <p><?=__('admin_contacts.mes1')?></p>
+
+                <label>
+                    <span><?=__('admin_contacts.ru')?></span>
+                    <input class="input" type="text" id="ru_address" name="ru_address" value="<?=$data['ru_address']?>" />
+                    <div class="tooltips-left">
+                        <div><?=__('admin_contacts.tool1')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_contacts.en')?></span>
+                    <input class="input" type="text" id="en_address" name="en_address" value="<?=$data['en_address']?>" />
+                    <div class="tooltips-left">
+                        <div><?=__('admin_contacts.tool1')?></div>
+                    </div>
+                </label>
+
+                <p><?=__('admin_contacts.mes2')?></p>
+
+                <label>
+                    <span>E-mail</span>
+                    <input class="input" type="email" name="email" id="email" value="<?=$data['email']?>" />
+                    <div class="tooltips-left">
+                        <div><?=__('admin_contacts.tool2')?></div>
+                    </div>
+                </label>
+
+                <p><?=__('admin_contacts.mes3')?></p>
+
+                <label>
+                    <span><?=__('admin_contacts.tel')?></span>
+                    <input class="input telephone" id="telephone" type="tel" name="tel1" value="<?=$data['tel1']?>" />
+                    <div class="tooltips-left">
+                        <div><?=__('admin_contacts.tool1')?></div>
+                    </div>
+                </label>
+
+                <label>
+                    <span><?=__('admin_contacts.tel')?></span>
+                    <input class="input telephone" type="tel" name="tel2" value="<?=$data['tel2']?>" />
+                </label>
+
+                <label>
+                    <span><?=__('admin_contacts.tel')?></span>
+                    <input class="input telephone" type="tel" name="tel3" value="<?=$data['tel3']?>" />
+                </label>
+
+                <p><?=__('admin_contacts.mes4')?></p>
+
+                <label>
+                    <span><?=__('admin_contacts.fb')?></span>
+                    <input type="text" name="fb" value="<?=$data['fb']?>" class="input" />
+                </label>
+
+                <label>
+                    <span><?=__('admin_contacts.inst')?></span>
+                    <input type="text" name="instagram" value="<?=$data['instagram']?>" class="input" />
+                </label>
+
+                <label>
+                    <span><?=__('admin_contacts.teleg')?></span>
+                    <input type="text" name="telegram" value="<?=$data['telegram']?>" class="input" />
+                </label>
+            </fieldset>
+
+            <button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('admin_contacts.save')?></button>
+        </form>
+
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12 pt-3">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Date</th>
-                <th scope="col">Message</th>
-            </tr>
-            </thead>
-            <tbody>
-			<?php
-			$count = 1;
-			foreach ($data as $message):
-				?>
-                <tr>
-                    <th scope="row"><?=$count?></th>
-                    <td><?=date('d.m.y H:i', strtotime($message['time']))?></td>
-                    <td>
-                        <?=$message['messages']?>
-                        <a class="btn btn-sm btn-warning" style="float: right; margin-left: 10px" onclick="return confirmDelete()" href="<?=$router->buildUri('delete', [$message['id']])?>">Delete</a>
-                        <a class="btn btn-sm btn-success" style="float: right" href="<?=$router->buildUri('edit', [$message['id']])?>">Edit</a>
-                    </td>
-                </tr>
-				<?php
-				$count++;
-			endforeach;
-			?>
-            </tbody>
-        </table>
-    </div>
-</div>
+<script type="text/javascript" src="/js/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="/js/admin-contacts.js"></script>

@@ -111,6 +111,7 @@ class App
 		);
 		$content = $view->render();
 
+		// Получаем меню (список доступных категорий).
 		Menu::getCategory();
 		$category = new \App\Views\Base(
 			Menu::getData(),
@@ -118,8 +119,19 @@ class App
 		);
 		$menu = $category->render();
 
-		$layout = new \App\Views\Base(
-			['content' => $content, 'category' => $menu],
+		// Получаем контактную информацию.
+		Contacts::getContacts();
+		$contacts = new \App\Views\Base(
+			Contacts::getData(),
+			ROOT.DS.'views'.DS.'contacts.php'
+		);
+		$footer = $contacts->render();
+
+		$layout = new \App\Views\Base([
+			'content' => $content,
+			'category' => $menu,
+			'contacts' => $footer
+			],
 			ROOT.DS.'views'.DS.$route.'.php'
 		);
 

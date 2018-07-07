@@ -189,6 +189,13 @@ return [
 		'mes5' => 'Your answer has been published'
 	],
 
+	'contacts' => [
+		'adr' => 'Our address:',
+		'tel' => 'Contact phone:',
+		'email' => 'E-mail address:',
+		'social' => 'And also you can contact us in social networks'
+	],
+
 	'pagination' => [
 		'previous' => 'Previous',
 		'next' => 'Next'
@@ -391,6 +398,25 @@ return [
 		'title2' => 'Description of your company',
 		'mes' => 'To create a new paragraph, press Enter.',
 		'tool' => 'The field can not be empty',
+		'ru' => 'Russian language',
+		'en' => 'English',
+		'save' => 'Save'
+	],
+
+	'admin_contacts' => [
+		'title1' => 'Editing contact information',
+		'title2' => 'Text description',
+		'title3' => 'Contact Information',
+		'tel' => 'Phone number',
+		'fb' => 'Facebook ID or nickname',
+		'inst' => 'Instagram ID or nickname',
+		'teleg' => 'Telegram ID or nickname',
+		'mes1' => 'Specify your address.',
+		'mes2' => 'Specify a mailbox for communication with you.',
+		'mes3' => 'You can specify up to 3 phone numbers.',
+		'mes4' => 'Fill in the fields of social networks that you think are necessary.',
+		'tool1' => 'The field can not be empty',
+		'tool2' => 'Enter the correct e-mail address',
 		'ru' => 'Russian language',
 		'en' => 'English',
 		'save' => 'Save'

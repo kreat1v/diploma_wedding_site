@@ -62,3 +62,14 @@ footer {
 .center {
     text-align: center;
 }
+
+.link a {
+    text-decoration: none;
+    line-height: 2;
+    color: #AD7F00;
+    transition: all 0.3s;
+}
+
+.link a:hover {
+    color: #FAB900;
+}
