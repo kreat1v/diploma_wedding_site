@@ -384,5 +384,15 @@ return [
 		'activity2' => 'Activate',
 		'activity3' => 'Deactivate',
 		'modal' => 'Are you sure you want to deactivate this user?'
+	],
+
+	'admin_about' => [
+		'title1' => 'Editing the section "About Us"',
+		'title2' => 'Description of your company',
+		'mes' => 'To create a new paragraph, press Enter.',
+		'tool' => 'The field can not be empty',
+		'ru' => 'Russian language',
+		'en' => 'English',
+		'save' => 'Save'
 	]
 ];
