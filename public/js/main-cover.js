@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     // Посылаем запрос на получение имен изображений.
     $.ajax({
-        url: '/admin/cover/getimage',
+        url: '/cover/getimage',
         type: 'post',
 
         // Если все прошло успешно, то добавляем изображения в обложку.
