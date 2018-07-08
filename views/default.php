@@ -253,6 +253,10 @@ if(Session::get('id')) {
 	        </div>
 	    </footer>
 
+		<div id="cart">
+			<span><i class="fas fa-shopping-cart fa-2x"></i></span>
+		</div>
+
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>
 		<script type="text/javascript" src="/js/info-messages.js"></script>

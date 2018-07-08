@@ -1,6 +1,7 @@
 <?php
 
 use \App\Core\Config;
+use \App\Core\Session;
 
 $router = \App\Core\App::getRouter();
 $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
@@ -103,16 +104,17 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         </div>
 
                         <div class="bt">
-                            <?php if(\App\Core\Session::get('id') && \App\Core\Session::get('role') == 'user'): ?>
-                            <form method="post">
-                                <input class="id_products" type="hidden" name="id_products" value="<?=$value['id_decor']?>">
-                                <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
-                                <input class="id_users" type="hidden" name="id_users" value="<?=\App\Core\App::getSession()->get('id')?>">
-                                <button class="sm-buttons text basket-bt" type="button">
-                                    <span><i class="fas fa-shopping-cart fa-lg"></i></span>
-                                    <span><?=__('products.basket')?></span>
-                                </button>
-                            </form>
+                            <?php if(Session::get('id') && Session::get('role') == 'user'): ?>
+                                <?php if(empty(Session::get('cart')['decor'])): ?>
+                                <form method="post">
+                                    <input class="id_products" type="hidden" name="id_products" value="<?=$value['id_decor']?>">
+                                    <input class="category" type="hidden" name="category" value="<?=lcfirst($router->getController(true))?>">
+                                    <button class="sm-buttons text cart-bt" type="button">
+                                        <span><i class="fas fa-shopping-cart fa-lg"></i></span>
+                                        <span><?=__('products.basket')?></span>
+                                    </button>
+                                </form>
+                                <?php endif; ?>
                                 <?php if(!in_array($value['id_decor'] . $data['category'], $data['favorites'])): ?>
                                 <form method="post">
                                     <input class="id_products" type="hidden" name="id_products" value="<?=$value['id_decor']?>">
@@ -236,6 +238,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
 <script type="text/javascript" src="/js/buttons.js"></script>
 <script type="text/javascript" src="/js/filter.js"></script>
-<script type="text/javascript" src="/js/add-favorites-or-basket.js"></script>
+<script type="text/javascript" src="/js/add-favorites.js"></script>
+<script type="text/javascript" src="/js/add-cart.js"></script>
 <script type="text/javascript" src="/js/touchTouch.jquery.js"></script>
 <script type="text/javascript" src="/js/gallery.js"></script>
