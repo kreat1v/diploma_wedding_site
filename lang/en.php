@@ -403,6 +403,15 @@ return [
 		'save' => 'Save'
 	],
 
+	'admin_cover' => [
+		'title1' => 'Loading cover images',
+		'title2' => 'Photo',
+		'mes1' => 'You can upload from 1 to 7 photos.',
+		'mes2' => 'Your data has been successfully saved.',
+		'tool' => 'Upload at least one image',
+		'save' => 'Save'
+	],
+
 	'admin_contacts' => [
 		'title1' => 'Editing contact information',
 		'title2' => 'Text description',
