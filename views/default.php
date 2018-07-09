@@ -263,7 +263,7 @@ if(Session::get('id')) {
 					<div class="cart">
 
 						<div class="title text">
-							<h2>Корзина услуг</h2>
+							<h2><?=__('cart.title1')?></h2>
 						</div>
 
 						<div class="list">
@@ -271,7 +271,7 @@ if(Session::get('id')) {
 						</div>
 
 						<div class="form text cart-order">
-							<a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>">Оформление заказа</a>
+							<a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>"><?=__('cart.order')?></a>
 						</div>
 
 					</div>

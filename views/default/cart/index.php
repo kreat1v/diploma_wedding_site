@@ -10,7 +10,7 @@ $router = \App\Core\App::getRouter();
         <div class="body">
 
             <div class="title text">
-                <h2><?=__('cart.title')?></h2>
+                <h2><?=__('cart.title1')?></h2>
             </div>
 
             <div class="list">

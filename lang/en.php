@@ -56,7 +56,7 @@ return [
 	],
 
 	'cart' => [
-		'title' => 'Cart Services',
+		'title1' => 'Cart Services',
 		'order' => 'Ordering'
 	],
 

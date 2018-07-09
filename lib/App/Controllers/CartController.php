@@ -207,6 +207,59 @@ class CartController extends Base
 
 	public function orderingAction()
 	{
-		
+		// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+		if (App::getRouter()->getController(true) == 'Cart' && App::getSession()->get('role') == 'admin') {
+			$this->page404();
+		}
+
+		// Получаем корзину из сессии.
+		$cart = Session::get('cart') ? Session::get('cart') : [];
+
+		// Формируем цены.
+		$fullPrice = 0;
+		$stockPrice = 0;
+
+		// Проходимся циклом по массиву корзины.
+		foreach ($cart as $key => $value) {
+
+			// Имя модели.
+			$nameCategoty = $key . 'MainModel';
+
+			// Получаем нужные нам модели услуг.
+			$model = $this->$nameCategoty->languageList(['id' => $value['id_products']])[0];
+
+			// Дополняем корзину нужными данными.
+			$cart[$key]['title'] = $model['title'];
+			$cart[$key]['price'] = $model['price'];
+			$cart[$key]['stock'] = $model['stock'];
+
+			// Считаем итоговые стоимости.
+			if ($model['stock']) {
+				$stockPrice += $model['stock'];
+			} else {
+				$stockPrice += $model['price'];
+			}
+
+			$fullPrice += $model['price'];
+
+		}
+
+		// Получаем список активных категорий.
+		$category = $this->categoryMainModel->languageList(['active' => 1]);
+
+		foreach ($category as $key => $value) {
+
+			if (array_key_exists($value['category_name'], $cart)) {
+
+				$cart[$value['category_name']]['category_title'] = $value['title'];
+
+			}
+
+		}
+
+		// Отдаём корзину.
+		$this->data['cart'] = $cart;
+		$this->data['fullPrice'] = $fullPrice;
+		$this->data['stockPrice'] = $stockPrice;
 	}
 }
