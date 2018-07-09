@@ -65,7 +65,7 @@ class AboutController extends \App\Controllers\Base
 	// Функция обработки текста для сохранения в БД.
 	private function formattingTextForDatabase($string)
 	{
-		$string = '<p>' . str_replace(PHP_EOL . PHP_EOL, '</p><p>', $string) . '</p>';
+		$string = '<p>' . str_replace("\r\n", '</p><p>', $string) . '</p>';
 
 		return $string;
 	}
@@ -75,7 +75,7 @@ class AboutController extends \App\Controllers\Base
 	{
 		$string = ltrim($string, '<p>');
 		$string = rtrim($string, '</p>');
-		$string = str_replace('</p><p>', PHP_EOL . PHP_EOL, $string);
+		$string = str_replace('</p><p>', "\n", $string);
 
 		return $string;
 	}

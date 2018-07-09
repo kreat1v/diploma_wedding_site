@@ -90,6 +90,7 @@
     font-size: 15px;
     cursor: pointer;
     color: #AD7F00;
+    transition: all 0.3s;
 }
 
 .cart .list a {
@@ -98,7 +99,7 @@
     transition: all 0.3s;
 }
 
-.cart .list a:hover {
+.cart .list a:hover, .cart .list .delete:hover {
     color: #FAB900;
 }
 

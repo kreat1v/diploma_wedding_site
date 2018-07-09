@@ -175,7 +175,7 @@ class CartController extends Base
 		}
 
 		// Получаем корзину из сессии.
-		$cart = Session::get('cart');
+		$cart = Session::get('cart') ? Session::get('cart') : [];
 
 		// Проходимся циклом по массиву корзины.
 		foreach ($cart as $key => $value) {

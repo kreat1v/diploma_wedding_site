@@ -108,6 +108,7 @@ class StoriesController extends \App\Controllers\Base
 
 					// Обрабатываем полученный русский текст для сохранения в БД.
 					$contentRu = $_POST['contentRu'];
+					var_dump($contentRu);
 					$contentRu = $this->formattingTextForDatabase($contentRu);
 
 					// Формируем массив для сохранения.
@@ -163,8 +164,8 @@ class StoriesController extends \App\Controllers\Base
 					// Сохраняем.
 					$this->saveImage($image, $dir);
 
-					App::getSession()->addFlash(__('admin_stories.mes3'));
-					App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
+					// App::getSession()->addFlash(__('admin_stories.mes3'));
+					// App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
 				}
 
 			} catch (\Exception $exception) {
@@ -184,7 +185,7 @@ class StoriesController extends \App\Controllers\Base
 	// Функция обработки текста для сохранения в БД.
 	private function formattingTextForDatabase($string)
 	{
-		$string = '<p>' . str_replace(PHP_EOL . PHP_EOL, '</p><p>', $string) . '</p>';
+		$string = '<p>' . str_replace("\r\n", '</p><p>', $string) . '</p>';
 
 		return $string;
 	}
@@ -194,7 +195,7 @@ class StoriesController extends \App\Controllers\Base
 	{
 		$string = ltrim($string, '<p>');
 		$string = rtrim($string, '</p>');
-		$string = str_replace('</p><p>', PHP_EOL . PHP_EOL, $string);
+		$string = str_replace('</p><p>', "\n", $string);
 
 		return $string;
 	}
