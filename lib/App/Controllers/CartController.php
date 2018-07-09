@@ -40,11 +40,16 @@ class CartController extends Base
 
 	public function indexAction()
 	{
+		// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+		if (App::getRouter()->getController(true) == 'Cart' && App::getSession()->get('role') == 'admin') {
+			$this->page404();
+		}
+
 		// Получаем список активных категорий.
 		$this->data['category'] = $this->categoryMainModel->languageList(['active' => 1]);
 
 		// Получаем корзину из сессии.
-		$cart = Session::get('cart');
+		$cart = Session::get('cart') ? Session::get('cart') : [];
 
 		// Проходимся циклом по массиву корзины.
 		foreach ($cart as $key => $value) {
@@ -62,8 +67,6 @@ class CartController extends Base
 
 		// Отдаём корзину.
 		$this->data['cart'] = $cart;
-
-		// pre($this->data);
 	}
 
 	public function addCartAction()
@@ -204,6 +207,6 @@ class CartController extends Base
 
 	public function orderingAction()
 	{
-
+		
 	}
 }

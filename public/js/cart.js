@@ -1,3 +1,9 @@
+if ($('.line2').length != 0) {
+
+    $('.cart-order').show();
+
+}
+
 // Открываем содержимое корзины при клике на ней.
 $('#cart').click(function() {
 
@@ -45,6 +51,12 @@ $('#cart').click(function() {
 
             // Добавляем строку в объект корзины.
             $('#cart-main .list ul').append(mes);
+
+            if ($('.line2').length != 0) {
+
+                $('.cart-order').show();
+
+            }
 
             // Показываем корзину.
             $('#cart-main').fadeIn(500);
@@ -97,6 +109,10 @@ $('body').on('click', '.delete', function() {
                 $(context).siblings('.name-product').fadeOut('100');
                 $(context).siblings('.check').slideUp('100');
                 $(context).siblings('.dot').slideDown('100');
+
+                if ($('.line2').length == 0) {
+                    $('.cart-order').fadeOut('100');
+                }
 
             } else {
 

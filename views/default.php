@@ -253,29 +253,31 @@ if(Session::get('id')) {
 	        </div>
 	    </footer>
 
-		<div>
-			<div id="cart">
-				<span><i class="fas fa-shopping-cart fa-2x"></i></span>
-			</div>
+		<?php if (Session::get('role') === 'user' && $router->getController(true) != 'Cart'): ?>
+			<div>
+				<div id="cart">
+					<span><i class="fas fa-shopping-cart fa-2x"></i></span>
+				</div>
 
-			<div id="cart-main">
-				<div class="cart">
+				<div id="cart-main">
+					<div class="cart">
 
-		            <div class="title text">
-		                <h2>Корзина услуг</h2>
-		            </div>
+						<div class="title text">
+							<h2>Корзина услуг</h2>
+						</div>
 
-		            <div class="list">
-						<ul></ul>
-		            </div>
+						<div class="list">
+							<ul></ul>
+						</div>
 
-		            <div class="form text">
-		                <a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>">Оформление заказа</a>
-		            </div>
+						<div class="form text cart-order">
+							<a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>">Оформление заказа</a>
+						</div>
 
+					</div>
 				</div>
 			</div>
-		</div>
+		<?php endif; ?>
 
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>

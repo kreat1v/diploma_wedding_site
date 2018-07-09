@@ -10,7 +10,7 @@ $router = \App\Core\App::getRouter();
         <div class="body">
 
             <div class="title text">
-                <h2>Корзина услуг</h2>
+                <h2><?=__('cart.title')?></h2>
             </div>
 
             <div class="list">
@@ -31,7 +31,7 @@ $router = \App\Core\App::getRouter();
                         <span class="<?=array_key_exists($value['category_name'], $data['cart']) ? 'line2' : 'line'?>">
                             <a class="link" href="<?=$router->buildUri(".$categoryName")?>"><?=$value['title']?></a>
                         </span>
-  
+
                         <?php if (array_key_exists($value['category_name'], $data['cart'])): ?>
                         <span class="name-product">
                             <a class="link" href="<?=$router->buildUri("$categoryName.view", [$data['cart'][$categoryName]['id_products']])?>"><?=$data['cart'][$categoryName]['title']?></a>
@@ -48,9 +48,9 @@ $router = \App\Core\App::getRouter();
 
             </div>
 
-            <div class="form text">
+            <div class="form text cart-order">
 
-                <a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>">Оформление заказа</a>
+                <a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>"><?=__('cart.order')?></a>
 
             </div>
 

@@ -26,14 +26,14 @@
 
 #cart-main {
     display: none;
-    padding: 20px;
-    width: 50%;
+    padding: 30px;
+    width: 40%;
     height: 100%;
     position: fixed;
     right: 0;
     top: 0;
-    background: url('/img/system/corner-right.png') no-repeat 75% #F0F0FF;
-    background-size: cover;
+    background: url('/img/system/corner-right.png') no-repeat 100% #F0F0FF;
+    background-size: 65%;
     box-shadow: 0 0.5em 1.5em 1.5em #F0F0FF;
     z-index: 10000;
 }
@@ -126,6 +126,10 @@
 
 .cart .line2 {
     pointer-events: none;
+}
+
+.cart .cart-order {
+    display: none;
 }
 
 .cart .form a {

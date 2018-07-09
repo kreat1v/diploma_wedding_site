@@ -55,6 +55,11 @@ return [
 		'button' => 'Go to the section'
 	],
 
+	'cart' => [
+		'title' => 'Cart Services',
+		'order' => 'Ordering'
+	],
+
 	'user_menu' => [
 		'index' => 'Profile',
 		'settings' => 'Settings',
