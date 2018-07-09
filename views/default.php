@@ -253,14 +253,35 @@ if(Session::get('id')) {
 	        </div>
 	    </footer>
 
-		<div id="cart">
-			<span><i class="fas fa-shopping-cart fa-2x"></i></span>
+		<div>
+			<div id="cart">
+				<span><i class="fas fa-shopping-cart fa-2x"></i></span>
+			</div>
+
+			<div id="cart-main">
+				<div class="cart">
+
+		            <div class="title text">
+		                <h2>Корзина услуг</h2>
+		            </div>
+
+		            <div class="list">
+						<ul></ul>
+		            </div>
+
+		            <div class="form text">
+		                <a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>">Оформление заказа</a>
+		            </div>
+
+				</div>
+			</div>
 		</div>
 
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>
 		<script type="text/javascript" src="/js/info-messages.js"></script>
 		<script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script>
+		<script type="text/javascript" src="/js/cart.js"></script>
 
 		<script type="text/javascript">
 		$(document).ready(function() {

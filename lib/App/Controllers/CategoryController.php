@@ -3,16 +3,12 @@
 namespace App\Controllers;
 
 use \App\Core\App;
-use \App\Core\Localization;
 use \App\Entity\Category\CategoryMain;
 
 class CategoryController extends Base
 
 {
-	private $language;
-	private $nameModel;
 	private $categoryMainModel;
-	private $categoryLanguageModel;
 
 	public function __construct(array $params = [])
 	{

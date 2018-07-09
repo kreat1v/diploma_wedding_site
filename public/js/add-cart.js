@@ -7,7 +7,7 @@ $('.cart-bt').one('click', function() {
         category = context.prevAll('.category').val();
 
     $.ajax({
-        url: '/clothes/addcart',
+        url: '/cart/addcart',
         type: 'post',
         data: {
             id_products: product,

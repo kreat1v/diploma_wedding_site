@@ -15,7 +15,6 @@
     border-bottom-left-radius: 20px;
     cursor: pointer;
     transition: all 0.1s linear;
-    z-index: 200000;
 }
 
 #cart:hover {
@@ -23,4 +22,114 @@
     background: #AD7F00;
     border: 2px solid #FAB900;
     border-right: none;
+}
+
+#cart-main {
+    display: none;
+    padding: 20px;
+    width: 50%;
+    height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background: url('/img/system/corner-right.png') no-repeat 75% #F0F0FF;
+    background-size: cover;
+    box-shadow: 0 0.5em 1.5em 1.5em #F0F0FF;
+    z-index: 10000;
+}
+
+.cart {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.cart .body {
+    border-radius: 3px;
+    background: #FFF;
+    padding: 30px 100px;
+}
+
+.cart .title {
+    margin: 0 auto;
+    text-align: center;
+    color: #3CA6C7;
+}
+
+.cart .list {
+    margin: 50px auto;
+    position: relative;
+}
+
+.cart .list li {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.cart .list .dot, .cart .list .check {
+    position: absolute;
+    left: 0;
+}
+
+.cart .list .dot {
+    color: #3CA6C7;
+}
+
+.cart .list .check {
+    color: #AD7F00;
+}
+
+.cart .list li span {
+    margin-right: 10px;
+}
+
+.cart .list .inactive {
+    display: none;
+}
+
+.cart .list .delete {
+    font-size: 15px;
+    cursor: pointer;
+    color: #AD7F00;
+}
+
+.cart .list a {
+    text-decoration: none;
+    color: #3CA6C7;
+    transition: all 0.3s;
+}
+
+.cart .list a:hover {
+    color: #FAB900;
+}
+
+.cart .line, .cart .line2 {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart .line:after, .cart .line2:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 9px;
+    width: 0;
+    height: 2px;
+    background-color: #AD7F00;
+    content: "";
+    transition: width 0.7s;
+}
+
+.cart .line2:after {
+    width: 100%;
+}
+
+.cart .line2 {
+    pointer-events: none;
+}
+
+.cart .form a {
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    padding: 0 5px;
 }

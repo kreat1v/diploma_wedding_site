@@ -137,60 +137,6 @@ class ClothesController extends Base
 
 	}
 
-	public function addCartAction()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-			try {
-
-				// Имя категории.
-				$nameCategory = $_POST['category'];
-
-				// Получаем данные.
-				$this->data = [
-					'id_products' => $_POST['id_products'],
-					'category' => $nameCategory
-				];
-
-				// Если массив корзины в сессии не пустой - дополним его данными, иначе создадим его и заполним.
-				if (!empty(Session::get('cart'))) {
-
-					// Получаем данные корзины.
-					$cart = Session::get('cart');
-
-					// Вставляем данные.
-					$cart[$nameCategory] = $this->data;
-
-					// Вставляем все обратно в сессию.
-					Session::set('cart', $cart);
-
-				} else {
-
-					// Создадим массив корзины с данными.
-					Session::set('cart', [$nameCategory => $this->data]);
-
-				}
-
-				echo json_encode([
-					'result' => 'success'
-				]);
-
-				die();
-
-			} catch (\Exception $exception) {
-
-				echo json_encode([
-					'result' => 'error',
-					'msg' => $exception->getMessage()
-				]);
-
-				die();
-
-			}
-
-		}
-	}
-
 	public function addFavoritesAction()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
