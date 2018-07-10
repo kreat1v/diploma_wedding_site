@@ -10,6 +10,9 @@ use App\Entity\Filming\FilmingMain;
 use App\Entity\Leading\LeadingMain;
 use App\Entity\Cake\CakeMain;
 use App\Entity\Hotel\HotelMain;
+use App\Entity\User;
+use App\Entity\Orders;
+use App\Entity\OrdersProducts;
 use App\Core\App;
 use App\Core\Session;
 
@@ -23,6 +26,9 @@ class CartController extends Base
 	private $leadingMainModel;
 	private $cakeMainModel;
 	private $hotelMainModel;
+	private $userModel;
+	private $ordersModel;
+	private $ordersProductsModel;
 
 	public function __construct(array $params = [])
 	{
@@ -36,6 +42,9 @@ class CartController extends Base
 		$this->leadingMainModel = new LeadingMain(App::getConnection());
 		$this->cakeMainModel = new CakeMain(App::getConnection());
 		$this->hotelMainModel = new HotelMain(App::getConnection());
+		$this->userModel = new User(App::getConnection());
+		$this->ordersModel = new Orders(App::getConnection());
+		$this->ordersProductsModel = new OrdersProducts(App::getConnection());
 	}
 
 	public function indexAction()
@@ -215,51 +224,125 @@ class CartController extends Base
 		// Получаем корзину из сессии.
 		$cart = Session::get('cart') ? Session::get('cart') : [];
 
-		// Формируем цены.
-		$fullPrice = 0;
-		$stockPrice = 0;
+		if (!empty($cart)) {
 
-		// Проходимся циклом по массиву корзины.
-		foreach ($cart as $key => $value) {
+			// Формируем цены.
+			$fullPrice = 0;
+			$stockPrice = 0;
 
-			// Имя модели.
-			$nameCategoty = $key . 'MainModel';
+			// Проходимся циклом по массиву корзины.
+			foreach ($cart as $key => $value) {
 
-			// Получаем нужные нам модели услуг.
-			$model = $this->$nameCategoty->languageList(['id' => $value['id_products']])[0];
+				// Имя модели.
+				$nameCategoty = $key . 'MainModel';
 
-			// Дополняем корзину нужными данными.
-			$cart[$key]['title'] = $model['title'];
-			$cart[$key]['price'] = $model['price'];
-			$cart[$key]['stock'] = $model['stock'];
+				// Получаем нужные нам модели услуг.
+				$model = $this->$nameCategoty->languageList(['id' => $value['id_products']])[0];
 
-			// Считаем итоговые стоимости.
-			if ($model['stock']) {
-				$stockPrice += $model['stock'];
-			} else {
-				$stockPrice += $model['price'];
-			}
+				// Дополняем корзину нужными данными.
+				$cart[$key]['title'] = $model['title'];
+				$cart[$key]['price'] = $model['price'];
+				$cart[$key]['stock'] = $model['stock'];
 
-			$fullPrice += $model['price'];
+				// Считаем итоговые стоимости.
+				if ($model['stock']) {
+					$stockPrice += $model['stock'];
+				} else {
+					$stockPrice += $model['price'];
+				}
 
-		}
-
-		// Получаем список активных категорий.
-		$category = $this->categoryMainModel->languageList(['active' => 1]);
-
-		foreach ($category as $key => $value) {
-
-			if (array_key_exists($value['category_name'], $cart)) {
-
-				$cart[$value['category_name']]['category_title'] = $value['title'];
+				$fullPrice += $model['price'];
 
 			}
 
-		}
+			// Получаем список активных категорий.
+			$category = $this->categoryMainModel->languageList(['active' => 1]);
 
-		// Отдаём корзину.
-		$this->data['cart'] = $cart;
-		$this->data['fullPrice'] = $fullPrice;
-		$this->data['stockPrice'] = $stockPrice;
+			// Дополняем наш массив корзины названиями категорий.
+			foreach ($category as $key => $value) {
+
+				if (array_key_exists($value['category_name'], $cart)) {
+
+					$cart[$value['category_name']]['category_title'] = $value['title'];
+
+				}
+
+			}
+
+			// Получаем id юзера.
+			$userId = Session::get('id');
+
+			// Получаем данные юзера.
+			$user = $this->userModel->list(['id' => $userId])[0];
+
+			// Проверка данных пользователя.
+			$userData = true;
+			if (empty($user['firstName']) || empty($user['tel'])) {
+
+				$userData = false;
+
+			}
+
+			// Отдаём корзину.
+			$this->data['cart'] = $cart;
+			$this->data['fullPrice'] = $fullPrice;
+			$this->data['stockPrice'] = $stockPrice;
+			$this->data['userData'] = $userData;
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				try {
+
+					// Получаем оформленный заказ.
+					if (isset($_POST['button']) && $_POST['button'] == 'orders') {
+
+						// Сохраняем тело заказа.
+						$this->data['orders'] = [
+							'date' => date('Y-m-d H:i:s'),
+							'id_users' => $userId,
+							'message' => $_POST['message'] ? $_POST['message'] : null,
+							'payment' => $_POST['payment'],
+							'price' => $stockPrice,
+							'active' => 1
+						];
+
+						$this->ordersModel->save($this->data['orders']);
+
+						// Получаем последнюю запись main таблицы, а из неё id.
+						$orders = $this->ordersModel->list([], [1, 0], 'id');
+						$ordersId = $orders[0]['id'];
+
+						//Сохраняем продукты из заказа.
+						foreach ($cart as $value) {
+
+							$this->data['orders_products'] = [
+								'id_orders' => $ordersId,
+								'id_products' => $value['id_products'],
+								'category' => $value['category']
+							];
+
+							$this->ordersProductsModel->save($this->data['orders_products']);
+
+						}
+
+						// Очищаем корзину.
+						Session::unset('cart');
+
+						App::getSession()->addFlash(__('cart.mes3'));
+						App::getRouter()->redirect(App::getRouter()->buildUri('.'));
+					}
+
+				} catch (\Exception $exception) {
+
+					App::getSession()->addFlash($exception->getMessage());
+					App::getRouter()->redirect(App::getRouter()->buildUri('cart.ordering'));
+
+				}
+			}
+
+		} else {
+
+			App::getRouter()->redirect(App::getRouter()->buildUri('.cart'));
+
+		}
 	}
 }

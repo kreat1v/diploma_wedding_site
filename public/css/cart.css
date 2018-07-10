@@ -132,9 +132,89 @@
     display: none;
 }
 
+.cart .form {
+    color: #3CA6C7;
+}
+
+.cart .form label {
+    position: relative;
+}
+
+.cart .form h2 {
+    margin-bottom: 10px;
+}
+
+.cart .form label {
+    display: block;
+    width: 400px;
+    margin: 25px auto 0;
+    text-align: center;
+}
+
+.cart .form label span {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.cart .form .payment>span {
+    display: block;
+    margin-top: 30px;
+}
+
+.cart .form .payment label {
+    margin: 10px 10px 0;
+    display: inline-block;
+    width: inherit;
+}
+
+.cart .form .input, .cart .form .button {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.cart .form .input {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    font-size: 16px;
+    border-bottom: 1px solid #3CA6C7;
+    text-align: center;
+}
+
+.cart .form .button {
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    margin-top: 40px;
+    color: white;
+    font-size: 15px;
+}
+
+.cart .form textarea {
+    resize: none;
+}
+
 .cart .form a {
     text-decoration: none;
     width: 100%;
     text-align: center;
     padding: 0 5px;
+}
+
+.cart .old-price {
+    text-decoration: line-through;
+    margin: 0 5px;
+}
+
+.cart .notification a {
+    text-decoration: none;
+    color: #3CA6C7;
+    font-weight: bold;
+    transition: all 0.5s linear;
+}
+
+.cart .notification a:hover {
+    color: #80E1FF;
 }

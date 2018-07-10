@@ -57,7 +57,18 @@ return [
 
 	'cart' => [
 		'title1' => 'Cart Services',
-		'order' => 'Ordering'
+		'title2' => 'Ordering',
+		'order1' => 'Checkout',
+		'order2' => 'Checkout',
+		'totals' => 'Total',
+		'message' => 'Message (if there are any wishes)',
+		'way' => 'Payment method',
+		'bank' => 'Bank payment',
+		'terminal' => 'Terminal',
+		'reconciliation' => 'By agreement',
+		'mes1' => 'In order to complete the registration of the order, please - fill in the personal data in',
+		'mes2' => 'the user\'s office',
+		'mes3' => 'Your order is decorated! Our operator will contact you as soon as possible.'
 	],
 
 	'user_menu' => [

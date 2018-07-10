@@ -88,8 +88,8 @@ class App
 			static::getRouter()->redirect(static::getRouter()->buildUri('.user'));
 		}
 
-		// Если контроллер User и сессия не активна, то доступны только страницы с формами входа и регистрации.
-		if (static::getRouter()->getController(true) == 'User' && !static::getSession()->get('id')) {
+		// Если контроллер User или Cart и сессия не активна, то доступны только страницы с формами входа и регистрации.
+		if ((static::getRouter()->getController(true) == 'User' || static::getRouter()->getController(true) == 'Cart') && !static::getSession()->get('id')) {
 			static::getRouter()->redirect(static::getRouter()->buildUri('.login'));
 		}
 

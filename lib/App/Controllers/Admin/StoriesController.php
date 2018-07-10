@@ -164,8 +164,8 @@ class StoriesController extends \App\Controllers\Base
 					// Сохраняем.
 					$this->saveImage($image, $dir);
 
-					// App::getSession()->addFlash(__('admin_stories.mes3'));
-					// App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
+					App::getSession()->addFlash(__('admin_stories.mes3'));
+					App::getRouter()->redirect(App::getRouter()->buildUri('.stories'));
 				}
 
 			} catch (\Exception $exception) {

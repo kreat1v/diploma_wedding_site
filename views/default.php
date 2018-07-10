@@ -271,7 +271,7 @@ if(Session::get('id')) {
 						</div>
 
 						<div class="form text cart-order">
-							<a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>"><?=__('cart.order')?></a>
+							<a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>"><?=__('cart.order1')?></a>
 						</div>
 
 					</div>

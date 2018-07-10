@@ -2,8 +2,6 @@
 
 $router = \App\Core\App::getRouter();
 
-// pre($data);
-
 ?>
 <div class="cart">
 
@@ -12,41 +10,75 @@ $router = \App\Core\App::getRouter();
         <div class="body">
 
             <div class="title text">
-                <h2>Оформление заказа</h2>
+                <h2><?=__('cart.title2')?></h2>
             </div>
 
-            <div class="">
+            <div class="text">
 
                 <ol>
                     <?php foreach($data['cart'] as $value): ?>
-                    <li class="text">
-                        <b><?=$value['category_title']?></b> - <?=$value['title']?> - <?=$value['price']?> <?=$value['stock']?>
+                    <li>
+                        <b><?=$value['category_title']?></b> -
+                        <?=$value['title']?> -
+                        <span class="<?=$value['stock'] ? 'old-price' : ''?>"><?=$value['price']?></span>
+                        <?=$value['stock']?>
                     </li>
                     <?php endforeach; ?>
                 </ol>
 
-                <b>Итог:</b>
-                <?php if ($data['fullPrice'] != $data['stockPrice']): ?>
-                <span>
-                    <?=$data['fullPrice']?>
-                </span>
-                <?php endif; ?>
-                <span>
-                    <?=$data['stockPrice']?>
-                </span>
+                <div class="center">
+                    <b><?=__('cart.totals')?>:</b>
+                    <?php if ($data['fullPrice'] != $data['stockPrice']): ?>
+                    <span class="old-price">
+                        <?=$data['fullPrice']?>
+                    </span>
+                    <?php endif; ?>
+                    <span>
+                        <?=$data['stockPrice']?>
+                    </span>
+                </div>
 
             </div>
 
-            <div class="form text cart-order">
+            <?php if ($data['userData']): ?>
+            <div class="form text">
 
-                <a class="sm-buttons" href="<?=$router->buildUri("cart.ordering")?>"><?=__('cart.order')?></a>
+                <form method="post" id="data-form">
+                    <label>
+                        <span><?=__('cart.message')?></span>
+                        <textarea class="input" name="message" id="message"></textarea>
+                    </label>
+
+                    <div class="payment center">
+                        <span><?=__('cart.way')?></span>
+                        <label>
+                            <input type="radio" name="payment" value="bank" class="option-input radio" checked />
+                            <span><?=__('cart.bank')?></span>
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="terminal" class="option-input radio" />
+                            <span><?=__('cart.terminal')?></span>
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="reconciliation" class="option-input radio" />
+                            <span><?=__('cart.reconciliation')?></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit sm-buttons button text" name="button" value="orders"><?=__('cart.order2')?></button>
+                </form>
 
             </div>
+            <?php else: ?>
+            <div class="notification text center">
+
+				<p><?=__('cart.mes1')?> <a href="<?=$router->buildUri('user.settings')?>"><?=__('cart.mes2')?></a>.</p>
+
+            </div>
+            <?php endif; ?>
 
         </div>
 
     </div>
 
 </div>
-
-<script type="text/javascript" src="/js/cart.js"></script>
