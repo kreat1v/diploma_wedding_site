@@ -34,7 +34,7 @@ $router = \App\Core\App::getRouter();
 					</tr>
 					<?php foreach ($data as $value): ?>
 					<tr>
-						<td><?=$value['date']?></td>
+						<td><?=date('d.m.Y H:i', strtotime($value['date']))?></td>
 						<td><?=$value['message'] ? $value['message'] : '-'?></td>
 						<?php $payment = $value['payment'] ?>
 						<td><?=__("cart.$payment")?></td>

@@ -321,6 +321,19 @@ return [
 		'tool8' => 'Upload at least one image'
 	],
 
+	'admin_orders' => [
+		'title' => 'Orders from users',
+		'date' => 'Date of issue',
+		'contacts' => 'Contacts',
+		'message' => 'User message',
+		'method' => 'Payment method',
+		'services' => 'Purchased services',
+		'price' => 'Total cost',
+		'paid1' => 'Paid',
+		'paid2' => 'Order has been paid',
+		'modal' => 'Did the user pay for this order?'
+	],
+
 	'admin_stories' => [
 		'title1' => 'The story editor',
 		'title2' => 'Editing a story',

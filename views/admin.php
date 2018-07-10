@@ -60,7 +60,7 @@ if(Session::get('id')) {
 						</ul>
 					</li>
 					<li>
-						<a href="#"><?=__('admin_menu.orders')?></a>
+						<a href="<?=$router->buildUri('.orders')?>"><?=__('admin_menu.orders')?></a>
 					</li>
 
 					<br>

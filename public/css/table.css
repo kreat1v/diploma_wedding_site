@@ -34,3 +34,7 @@
 .table button, .table .sm-buttons {
     font-size: 12px;
 }
+
+.table .small {
+    font-size: 11px;
+}
