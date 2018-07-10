@@ -203,7 +203,7 @@ $(document).ready(function() {
                 break;
 
             case 'brand':
-                var title = /^[a-z]+$/iu;
+                var title = /^[a-z\s]+$/iu;
                 if (val != '' && title.test(val)) {
                     errorOff($(context));
                 } else {

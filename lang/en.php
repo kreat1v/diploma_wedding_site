@@ -76,7 +76,7 @@ return [
 		'settings' => 'Settings',
 		'communications' => 'Contact Us',
 		'favorites' => 'My Favorites',
-		'purchases' => 'Paid services'
+		'purchases' => 'Executed Orders'
 	],
 
 	'user_index' => [
@@ -148,6 +148,16 @@ return [
 		'stock' => 'Promotion price',
 		'view' => 'View',
 		'mes' => 'You have not added any items to your favorites yet.'
+	],
+
+	'user_purchases' => [
+		'title' => 'Your issued orders',
+		'date' => 'Date of issue',
+		'message' => 'Your message',
+		'method' => 'Payment method',
+		'services' => 'Purchased services',
+		'price' => 'Total cost',
+		'mes' => 'You have not made any orders yet.'
 	],
 
 	'products' => [

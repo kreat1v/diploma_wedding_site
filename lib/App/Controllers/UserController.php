@@ -7,6 +7,8 @@ use App\Entity\MessagesUser;
 use App\Entity\MessagesAdmin;
 use App\Entity\CallsUser;
 use App\Entity\Favorites;
+use App\Entity\Orders;
+use App\Entity\OrdersProducts;
 use App\Entity\Decor\DecorMain;
 use App\Entity\Clothes\ClothesMain;
 use App\Entity\Auto\AutoMain;
@@ -24,6 +26,8 @@ class UserController extends Base
 	private $messagesAdminModel;
 	private $callsUserModel;
 	private $favoritesModel;
+	private $ordersModel;
+	private $ordersProductsModel;
 	private $decorMainModel;
 	private $clothesMainModel;
 	private $autoMainModel;
@@ -38,6 +42,8 @@ class UserController extends Base
 
 		$this->userModel = new User(App::getConnection());
 		$this->favoritesModel = new Favorites(App::getConnection());
+		$this->ordersModel = new Orders(App::getConnection());
+		$this->ordersProductsModel = new OrdersProducts(App::getConnection());
 		$this->messagesUserModel = new MessagesUser(App::getConnection());
 		$this->messagesAdminModel = new MessagesAdmin(App::getConnection());
 		$this->callsUserModel = new CallsUser(App::getConnection());
@@ -532,6 +538,52 @@ class UserController extends Base
 
 			}
 
+		}
+	}
+
+	public function purchasesAction()
+	{
+		// Получаем данные.
+		if (App::getSession()->get('id')) {
+
+			// Если пользователь - админ, то мы не пускаем его в раздел юзера.
+			if (App::getRouter()->getController(true) == 'User' && App::getSession()->get('role') == 'admin') {
+				$this->page404();
+			}
+
+			// id юзера.
+			$id = App::getSession()->get('id');
+
+			// Получаем заказы юзера.
+			$orders = $this->ordersModel->list(['id_users' => $id]);
+
+			// Дополсняем массив заказов нужными данными.
+			foreach ($orders as $key => $value) {
+
+				// Получаем услуги из заказа.
+				$ordersProducts = $this->ordersProductsModel->list(['id_orders' => $value['id']]);
+
+				// Проходимся циклом по массиву услуг.
+				foreach ($ordersProducts as $key2 => $products) {
+
+					// Имя модели.
+					$nameCategoty = $products['category'] . 'MainModel';
+
+					// Получаем нужные нам модели услуг.
+					$model = $this->$nameCategoty->languageList(['id' => $products['id_products']])[0];
+
+					// Дополняем массив услуг названиями услуг.
+					$ordersProducts[$key2]['title'] = $model['title'];
+
+				}
+
+				// Дополянем масив.
+				$orders[$key]['products'] = $ordersProducts;
+
+			}
+
+			// Отдаём данные.
+			$this->data = $orders;
 		}
 	}
 
