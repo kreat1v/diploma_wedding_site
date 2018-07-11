@@ -287,12 +287,6 @@ if(Session::get('id')) {
 		<script type="text/javascript" src="/js/info-messages.js"></script>
 		<script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script>
 
-		<script type="text/javascript">
-		$(document).ready(function() {
-	        $("html").niceScroll();
-		});
-		</script>
-
 	    <!-- <script type="application/javascript" src="/js/admin.js"></script>
 	    <script type="application/javascript" src="/js/subscription.js"></script>
 	    <script type="application/javascript" src="/js/close.js"></script>

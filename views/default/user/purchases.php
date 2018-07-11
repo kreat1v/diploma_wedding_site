@@ -48,7 +48,7 @@ $router = \App\Core\App::getRouter();
 							</ol>
 						</td>
 						<td><?=$value['price']?></td>
-						<td><?=$value['active'] ? 'Ожидает оплаты' : 'Оплачен'?></td>
+						<td><?=$value['active'] ? __('user_purchases.paid2') : __('user_purchases.paid1')?></td>
 					</tr>
 					<?php endforeach; ?>
 				</table>

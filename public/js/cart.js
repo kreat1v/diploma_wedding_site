@@ -7,13 +7,13 @@ if ($('.line2').length != 0) {
 // Открываем содержимое корзины при клике на ней.
 $('#cart').click(function() {
 
+    var lang = $(this).attr('data-lang'),
+        link = '/' + lang + '/cart/view';
+
     // Посылаем запрос на получение данных.
     $.ajax({
-        url: '/cart/view',
+        url: link,
         type: 'post',
-        data: {
-            name: name
-        },
 
         // Если все прошло успешно, то добавляем данные в отображение корзины.
         success: function(response) {

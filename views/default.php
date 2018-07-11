@@ -253,9 +253,49 @@ if(Session::get('id')) {
 	        </div>
 	    </footer>
 
+		<!-- Боковое меню -->
+		<div>
+			<div id="bar-menu">
+				<span><i class="fas fa-bars fa-2x"></i></span>
+			</div>
+
+			<div id="bar-main">
+				<ul class="link text">
+
+					<li>
+						<a href="<?=$router->buildUri('.about')?>"><?=__('bar-menu.about')?></a>
+					</li>
+					<li>
+						<a href="<?=$router->buildUri('.contacts')?>"><?=__('bar-menu.contacts')?></a>
+					</li>
+
+					<br>
+
+					<li>
+						<a href="<?=$router->buildUri('.stories')?>"><?=__('bar-menu.stories')?></a>
+					</li>
+
+					<br>
+
+					<?=$data['category']?>
+
+					<br>
+
+					<li>
+						<a href="<?=$router->buildUri('.user')?>"><?=__('bar-menu.user')?></a>
+					</li>
+					<li>
+						<a href="<?=$router->buildUri('.cart')?>"><?=__('bar-menu.cart')?></a>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+
+		<!-- Корзина -->
 		<?php if (Session::get('role') === 'user' && $router->getController(true) != 'Cart'): ?>
 			<div>
-				<div id="cart">
+				<div id="cart" data-lang="<?=$router->getLang()?>">
 					<span><i class="fas fa-shopping-cart fa-2x"></i></span>
 				</div>
 
@@ -279,17 +319,20 @@ if(Session::get('id')) {
 			</div>
 		<?php endif; ?>
 
+		<!-- Кнопка вверх -->
+		<div id="back-top">
+			<div>
+				<span><i class="fas fa-chevron-circle-up fa-2x"></i></span>
+			</div>
+		</div>
+
 		<script type="text/javascript" src="/js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/js/search.js"></script>
 		<script type="text/javascript" src="/js/info-messages.js"></script>
 		<script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script>
+		<script type="text/javascript" src="/js/bar-menu.js"></script>
 		<script type="text/javascript" src="/js/cart.js"></script>
-
-		<script type="text/javascript">
-		$(document).ready(function() {
-	        $("html").niceScroll();
-		});
-		</script>
+		<script type="text/javascript" src="/js/back-top.js"></script>
 
 	    <!-- <script type="application/javascript" src="/js/admin.js"></script>
 	    <script type="application/javascript" src="/js/subscription.js"></script>

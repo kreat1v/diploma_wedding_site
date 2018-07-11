@@ -3,7 +3,6 @@
 return [
 	'header' => [
 		'about' => 'About us',
-		'news' => 'News',
 		'stories' => 'Stories',
 		'login' => 'Login'
 	],
@@ -21,6 +20,15 @@ return [
 		'error1' => 'User with such an email does not exist',
 		'error2' => 'Wrong password',
 		'error3' => 'You are blocked by an administrator'
+	],
+
+	'login_hello' => [
+		'night' => 'Goodnight!',
+		'morning' => 'Good morning!',
+		'day' => 'Good afternoon!',
+		'evening' => 'Good evening!',
+		'hi' => 'Hello!',
+		'mes' => 'We\'re glad to see you!',
 	],
 
 	'register' => [
@@ -44,6 +52,15 @@ return [
 
 	'form' => [
 		'field' => 'Form fields can not be empty'
+	],
+
+	'bar-menu' => [
+		'about' => 'About us',
+		'contacts' => 'Contacts',
+		'stories' => 'Stories',
+		'user' => 'User\'s cabinet',
+		'cart' => 'Cart',
+		'title' => 'Site Map'
 	],
 
 	'category' => [
@@ -157,7 +174,9 @@ return [
 		'method' => 'Payment method',
 		'services' => 'Purchased services',
 		'price' => 'Total cost',
-		'mes' => 'You have not made any orders yet.'
+		'mes' => 'You have not made any orders yet.',
+		'paid1' => 'Paid',
+		'paid2' => 'Pending payment'
 	],
 
 	'products' => [

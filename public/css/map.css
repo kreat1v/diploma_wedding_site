@@ -1,0 +1,12 @@
+.map .title {
+    color: #3CA6C7;
+}
+
+.map .map-block {
+    display: inline-block;
+    margin-right: 100px;
+}
+
+.map li {
+    list-style: none;
+}

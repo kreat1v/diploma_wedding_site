@@ -32,23 +32,23 @@ class LoginController extends Base
 					$time = date('H');
 					switch ($time) {
 						case $time < 5:
-							$message = 'Доброй ночи!';
+							$message = __('login_hello.night');
 							break;
 
 						case $time < 12:
-							$message = 'Доброе утро!';
+							$message =  __('login_hello.morning');
 							break;
 
 						case $time < 18:
-							$message = 'Добрый день!';
+							$message =  __('login_hello.day');
 							break;
 
 						case $time < 24:
-							$message = 'Добрый вечер!';
+							$message =  __('login_hello.evening');
 							break;
 
 						default:
-							$message = 'Привет!';
+							$message =  __('login_hello.hi');
 							break;
 					}
 
@@ -59,7 +59,7 @@ class LoginController extends Base
 						App::getSession()->set('name', $user['firstName']);
 					}
 
-					App::getSession()->addFlash("$message Мы рады вас видеть!");
+					App::getSession()->addFlash($message . ' ' .  __('login_hello.mes'));
 
 					if ($user['role'] == 'user') {
 						App::getRouter()->redirect(App::getRouter()->buildUri('.user'));
