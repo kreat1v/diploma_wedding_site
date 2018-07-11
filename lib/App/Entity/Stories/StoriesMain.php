@@ -77,29 +77,22 @@ class StoriesMain extends \App\Entity\Base
 		return $this->conn->query($sql);
 	}
 
-	public function getSection($limit, $limitStart, $where = null, $value = null)
+	public function search($string)
 	{
-		$strWhere = '';
+		$fields = array_merge($this->getFields(), $this->getStoriesLang()->getFields());
 
-		if ($where && $value) {
-			$strWhere = ' WHERE ' . $where . ' = '. $value;
-		}
+		$fieldsMain = $this->getTableName();
+		$fieldsLang = $this->getStoriesLang()->getTableName();
 
-		$sql = 'SELECT * FROM ' . $this->getTableName() . $strWhere . ' ORDER BY id DESC LIMIT ' . $limit . ' OFFSET ' . $limitStart;
+		// Формируем условия запроса.
+		$strWhere = "WHERE $fieldsMain.active = 1 AND $fieldsLang.title LIKE '%$string%'";
+
+		$sql = "SELECT $fieldsMain.*, $fieldsLang.*
+				FROM $fieldsMain
+				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_stories
+				$strWhere
+				ORDER BY $fieldsMain.id DESC";
 
 		return $this->conn->query($sql);
-	}
-
-	// получение определенных новостей из таблицы по id
-	public function getNews(string $id, $limit, $limitStart)
-	{
-		if (empty($id)) {
-			return null;
-		}
-
-		$sql = 'SELECT * FROM ' .  $this->getTableName() . ' WHERE id IN ('. $id .') ORDER BY id DESC LIMIT ' . $limit . ' OFFSET ' . $limitStart;
-		$result = $this->conn->query($sql);
-
-		return isset($result) ? $result : null;
 	}
 }

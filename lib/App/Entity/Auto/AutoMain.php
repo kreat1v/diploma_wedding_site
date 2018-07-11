@@ -104,4 +104,23 @@ class AutoMain extends \App\Entity\Base
 
 		return $this->conn->query($sql);
 	}
+
+	public function search($string)
+	{
+		// Получаем имена таблиц.
+		$fieldsMain = $this->getTableName();
+		$fieldsLang = $this->getAutoLang()->getTableName();
+
+		// Формируем условия запроса.
+		$strWhere = "WHERE $fieldsMain.active = 1 AND $fieldsLang.title LIKE '%$string%'";
+
+		// Формируем сам запрос.
+		$sql = "SELECT $fieldsMain.*, $fieldsLang.*
+				FROM $fieldsMain
+				JOIN $fieldsLang ON $fieldsMain.id = $fieldsLang.id_auto
+				$strWhere
+				ORDER BY $fieldsMain.id DESC";
+
+		return $this->conn->query($sql);
+	}
 }

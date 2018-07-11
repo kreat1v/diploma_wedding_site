@@ -9,29 +9,33 @@ $router = \App\Core\App::getRouter();
     </div>
 
     <div class="map-block">
-        <li>
-            <a href="<?=$router->buildUri('.about')?>"><?=__('bar-menu.about')?></a>
-        </li>
-        <li>
-            <a href="<?=$router->buildUri('.contacts')?>"><?=__('bar-menu.contacts')?></a>
-        </li>
+        <ul>
 
-        <br>
+            <li>
+                <a href="<?=$router->buildUri('.about')?>"><?=__('bar-menu.about')?></a>
+            </li>
+            <li>
+                <a href="<?=$router->buildUri('.contacts')?>"><?=__('bar-menu.contacts')?></a>
+            </li>
 
-        <li>
-            <a href="<?=$router->buildUri('.stories')?>"><?=__('bar-menu.stories')?></a>
-        </li>
+            <br>
 
-        <br>
+            <li>
+                <a href="<?=$router->buildUri('.stories')?>"><?=__('bar-menu.stories')?></a>
+            </li>
 
-        <li>
-            <a href="<?=$router->buildUri('.user')?>"><?=__('bar-menu.user')?></a>
-        </li>
-        <li>
-            <a href="<?=$router->buildUri('.cart')?>"><?=__('bar-menu.cart')?></a>
-        </li>
+            <br>
+
+            <li>
+                <a href="<?=$router->buildUri('.user')?>"><?=__('bar-menu.user')?></a>
+            </li>
+            <li>
+                <a href="<?=$router->buildUri('.cart')?>"><?=__('bar-menu.cart')?></a>
+            </li>
+
+        </ul>
     </div>
-    
+
     <div class="map-block">
         <ul>
             <?php foreach ($data as $value): ?>

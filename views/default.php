@@ -127,9 +127,16 @@ if(Session::get('id')) {
 	            <div class="right-side">
 	                <div class="search" id="search">
 	                    <form>
-	                        <input type="text" />
+	                        <input type="text" id="search-form" />
 	                        <div class="cross"></div>
 	                    </form>
+
+						<div class="result text">
+							<ul></ul>
+							<div class="all">
+								<a href=""><?=__('search.all')?></a>
+							</div>
+						</div>
 	                </div>
 
 	                <div class="buttons">
@@ -243,7 +250,7 @@ if(Session::get('id')) {
 	                    <li><a href="<?=$router->buildUri('.about')?>"><?=__('footer.about')?></a></li>
 	                    <li><a href=""><?=__('footer.communications')?></a></li>
 	                    <li><a href="<?=$router->buildUri('.contacts')?>"><?=__('footer.contacts')?></a></li>
-	                    <li><a href=""><?=__('footer.map')?></a></li>
+	                    <li><a href="<?=$router->buildUri('.map')?>"><?=__('footer.map')?></a></li>
 	                    <li><a href="<?=Localization::getLang() == 'ru' ? Localization::chooseLang('en') : Localization::chooseLang('ru')?>">
 							<i class="fas fa-globe"></i> <?=__('footer.language')?>
 						</a></li>

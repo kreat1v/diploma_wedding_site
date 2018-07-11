@@ -7,6 +7,12 @@ return [
 		'login' => 'Login'
 	],
 
+	'search' => [
+		'all' => 'All results',
+		'title' => 'Searching results',
+		'mes' => 'Unfortunately, we did not find anything ...',
+	],
+
 	'login' => [
 		'email' => 'Email',
 		'password' => 'Password',

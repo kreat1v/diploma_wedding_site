@@ -1213,8 +1213,8 @@ class ProductController extends \App\Controllers\Base
 					if (!empty($mainModel)) {
 
 						// Получаем обе языковые модели
-						$ruModel = $this->hotelRuModel->list(['id_cake' => $idProduct]);
-						$enModel = $this->hotelEnModel->list(['id_cake' => $idProduct]);
+						$ruModel = $this->hotelRuModel->list(['id_hotel' => $idProduct]);
+						$enModel = $this->hotelEnModel->list(['id_hotel' => $idProduct]);
 
 						// Получаем коллекции изображений. Если директория с id товара существует - то находим в ней изображения.
 						if (file_exists(Config::get('hotelImgRoot') . $idProduct)) {

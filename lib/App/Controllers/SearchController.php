@@ -2,157 +2,224 @@
 
 namespace App\Controllers;
 
-use \App\Entity\Category;
-use \App\Entity\News;
-use \App\Entity\Tags;
-use \App\Entity\NewsTag;
-use \App\Entity\Comments;
 use \App\Core\App;
 use \App\Core\Pagination;
 use \App\Core\Config;
+use \App\Entity\Stories\StoriesMain;
+use \App\Entity\Category\CategoryMain;
+use App\Entity\Decor\DecorMain;
+use App\Entity\Clothes\ClothesMain;
+use App\Entity\Auto\AutoMain;
+use App\Entity\Filming\FilmingMain;
+use App\Entity\Leading\LeadingMain;
+use App\Entity\Cake\CakeMain;
+use App\Entity\Hotel\HotelMain;
 
 class SearchController extends Base
 
 {
-	/** @var Category */
-	private $categoryModel;
-	private $newsModel;
-	private $tagsModel;
-	private $newsTagModel;
-	private $commentsModel;
+	private $storiesMainModel;
+	private $categoryMainModel;
+	private $decorMainModel;
+	private $clothesMainModel;
+	private $autoMainModel;
+	private $filmingMainModel;
+	private $leadingMainModel;
+	private $cakeMainModel;
+	private $hotelMainModel;
 
 	public function __construct($params = [])
 	{
 		parent::__construct($params);
 
-		$this->categoryModel = new Category(App::getConnection());
-		$this->newsModel = new News(App::getConnection());
-		$this->tagsModel = new Tags(App::getConnection());
-		$this->newsTagModel = new NewsTag(App::getConnection());
-		$this->commentsModel = new Comments(App::getConnection());
+		$this->storiesMainModel = new StoriesMain(App::getConnection());
+		$this->categoryMainModel = new CategoryMain(App::getConnection());
+		$this->decorMainModel = new DecorMain(App::getConnection());
+		$this->clothesMainModel = new ClothesMain(App::getConnection());
+		$this->autoMainModel = new AutoMain(App::getConnection());
+		$this->filmingMainModel = new FilmingMain(App::getConnection());
+		$this->leadingMainModel = new LeadingMain(App::getConnection());
+		$this->cakeMainModel = new CakeMain(App::getConnection());
+		$this->hotelMainModel = new HotelMain(App::getConnection());
 	}
 
 	public function indexAction()
 	{
-		$this->data = $this->newsModel->list(['active' => 1]);
-	}
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-	public function tagsAction()
-	{
-		$tags = $this->tagsModel->getBy('title', $this->params[0]);
+			// Получаем строку поиска.
+			$string = $_GET['query'];
 
-		$page = $this->params[1];
-		$tagsId = $tags['id'];
-		$newsTag = $this->newsTagModel->list(['id_tags' => "$tagsId"]);
-		$newsCount = count($newsTag);
+			// Если строка не пустая - начинаем поиск.
+			if (strlen($string) > 0) {
 
-		$pag = new Pagination();
-		$pagination = $pag->getLinks(
-			$newsCount,
-			Config::get('pagLimit'),
-			$page,
-			Config::get('pagButtonLimit'));
-		if (!empty($pagination)) {
-			$this->data['pagination'] = $pagination;
-		} else {
-			$this->data['pagination'] = null;
-		}
-		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
+				// Обрабатываем истории.
+				// Получаем истории с нужными заголовками.
+				$stories = $this->storiesMainModel->search($string);
 
-		$newsId = '';
-		foreach ($newsTag as $value) {
-			$newsId .= $value['id_news'];
-			$newsId .= ', ';
-		}
-		$newsId = trim($newsId, ', ');
+				$arrResult = [];
 
-		$news = $this->newsModel->getNews(
-			$newsId,
-			Config::get('pagLimit'),
-			$offset);
+				// Проходимся по ним циклом и дополняем массив ссылками на истории.
+				foreach ($stories as $key => $value) {
 
-		if (!empty($news && $page != 0)) {
-			$this->data['news'] = $news;
-			$this->data['tags'] = $tags;
-		} else {
-			$this->page404();
-		}
-	}
+					// Получаем id истории.
+					$idStories = $value['id_stories'];
 
-	public function searchTagsAction()
-	{
-		$queryString = $_GET['term'];
+					// Дополняем массив ссылкой.
+					$stories[$key]['link'] = App::getRouter()->buildUri('stories.view', [$idStories]);
 
-		if (strlen($queryString) > 0) {
-			$tags = $this->tagsModel->list();
-
-			$arrayTags = array_column($tags, 'title');
-
-			$newTags = [];
-			foreach ($arrayTags as $value) {
-				$pos = strpos($value, $queryString);
-				if ($pos !== false) {
-					$newTags[] = $value;
 				}
+
+				// Наполняем наш итоговый массив.
+				$arrResult['stories'] = $stories;
+
+				// Обрабатываем категории товаров.
+				// Получаем список активных категорий.
+				$category = $this->categoryMainModel->list(['active' => 1]);
+
+				// Проходимся по нему циклом.
+				foreach ($category as $key => $value) {
+
+					// Получаем имя модели.
+					$modelName = $value['category_name'] . 'MainModel';
+
+					// Получаем данные модели.
+					$result = $this->$modelName->search($string);
+
+					// Проходимся по ним циклом и дополняем массив ссылками на услуги.
+					foreach ($result as $key2 => $value2) {
+
+						// Получаем название id.
+						$idString = 'id_' . $value['category_name'];
+
+						// Получаем id услуги.
+						$idResult = $value2[$idString];
+
+						// Получаем имя для ссылки.
+						$link = $value['category_name'];
+
+						// Дополняем массив ссылкой.
+						$result[$key2]['link'] = App::getRouter()->buildUri("$link.view", [$idResult]);
+					}
+
+					// Наполняем наш итоговый массив.
+					$arrResult[$value['category_name']] = $result;
+
+				}
+
+				// Формируем единый массив результатов.
+				$this->data = [];
+
+				foreach($arrResult as $value) {
+
+					$this->data = array_merge($this->data, $value);
+
+				}
+
 			}
-
-			echo json_encode($newTags);
-			die();
-		}
-
-		echo null;
-		die();
-	}
-
-	public function usersAction()
-	{
-		$page = $this->params[1];
-		$userId = $this->params[0];
-		$comments = $this->commentsModel->getComments('id_user', $userId);
-		$commentsCount = count($comments);
-
-		$pag = new Pagination();
-		$pagination = $pag->getLinks(
-			$commentsCount,
-			Config::get('pagLimit'),
-			$page,
-			Config::get('pagButtonLimit'));
-		if (!empty($pagination)) {
-			$this->data['pagination'] = $pagination;
-		} else {
-			$this->data['pagination'] = null;
-		}
-		$offset = $this->data['pagination'] ? $pagination['middle'][$page] : 0;
-
-		$commentsSection = $this->commentsModel->getSection(Config::get('pagLimit'), $offset, $userId, 'date');
-
-		if (!empty($commentsSection && $page != 0)) {
-			$this->data['userComments'] = $comments[0];
-			$this->data['commentsSection'] = $commentsSection;
-		} else {
-			$this->page404();
 		}
 	}
 
-	public function filterAction()
+	public function searchStringAction()
 	{
-		$this->data['category'] = $this->categoryModel->list();
-		$this->data['tags'] = $this->tagsModel->list();
-
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			try {
-				$this->data['data'] = [
-					'dateFrom' => isset($_POST['dateFrom']) ? $_POST['dateFrom'] : '',
-					'dateTo' => isset($_POST['dateTo']) ? $_POST['dateTo'] : '',
-					'tags' => isset($_POST['tags']) ? $_POST['tags'] : '',
-					'category' => isset($_POST['category']) ? $_POST['category'] : ''
-				];
 
-				$this->data['result'] = $this->newsModel->filter($this->data['data']);
+			try {
+
+				// Получаем строку поиска.
+				$string = $_POST['string'];
+
+				// Если строка не пустая - начинаем поиск.
+				if (strlen($string) > 0) {
+
+					// Обрабатываем истории.
+					// Получаем истории с нужными заголовками.
+					$stories = $this->storiesMainModel->search($string);
+
+					$arrResult = [];
+
+					// Проходимся по ним циклом и дополняем массив ссылками на истории.
+					foreach ($stories as $key => $value) {
+
+						// Получаем id истории.
+						$idStories = $value['id_stories'];
+
+						// Дополняем массив ссылкой.
+						$stories[$key]['link'] = App::getRouter()->buildUri('stories.view', [$idStories]);
+
+					}
+
+					// Наполняем наш итоговый массив.
+					$arrResult['stories'] = $stories;
+
+					// Обрабатываем категории товаров.
+					// Получаем список активных категорий.
+					$category = $this->categoryMainModel->list(['active' => 1]);
+
+					// Проходимся по нему циклом.
+					foreach ($category as $key => $value) {
+
+						// Получаем имя модели.
+						$modelName = $value['category_name'] . 'MainModel';
+
+						// Получаем данные модели.
+						$result = $this->$modelName->search($string);
+
+						// Проходимся по ним циклом и дополняем массив ссылками на услуги.
+						foreach ($result as $key2 => $value2) {
+
+							// Получаем название id.
+							$idString = 'id_' . $value['category_name'];
+
+							// Получаем id услуги.
+							$idResult = $value2[$idString];
+
+							// Получаем имя для ссылки.
+							$link = $value['category_name'];
+
+							// Дополняем массив ссылкой.
+							$result[$key2]['link'] = App::getRouter()->buildUri("$link.view", [$idResult]);
+						}
+
+						// Наполняем наш итоговый массив.
+						$arrResult[$value['category_name']] = $result;
+
+					}
+
+					// Формируем единый массив результатов.
+					$this->data = [];
+
+					foreach($arrResult as $value) {
+
+						$this->data = array_merge($this->data, $value);
+
+					}
+
+					// Создаем ссылку на страницу поиска.
+					$link = App::getRouter()->buildUri(".search" . '?query=' . $string);
+
+					// Отдаём данные.
+					echo json_encode([
+						'result' => 'success',
+						'data' => $this->data,
+						'link' => $link
+					]);
+
+					die();
+
+				}
 
 			} catch (\Exception $exception) {
-				App::getSession()->addFlash($exception->getMessage());
+
+				echo json_encode([
+					'result' => 'error',
+					'msg' => $exception->getMessage()
+				]);
+
+				die();
+
 			}
+
 		}
 	}
 }
