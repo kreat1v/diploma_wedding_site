@@ -8,7 +8,7 @@ use \App\Core\App;
 use \App\Core\Config;
 use \App\Core\Pagination;
 
-class ModerationCommentsController extends \App\Controllers\Base
+class ModerationcommentsController extends \App\Controllers\Base
 {
 	private $userModel;
 	private $commentsModel;

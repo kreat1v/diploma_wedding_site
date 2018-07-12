@@ -15,7 +15,7 @@ use \App\Core\App;
 use \App\Core\Config;
 use \App\Core\Pagination;
 
-class ModerationReviewsController extends \App\Controllers\Base
+class ModerationreviewsController extends \App\Controllers\Base
 {
 	private $userModel;
 	private $categoryMainModel;
