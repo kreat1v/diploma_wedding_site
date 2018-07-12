@@ -10,13 +10,7 @@ class Favorites extends Base
 	}
 
 	public function checkFields($data)
-	{
-		// foreach ($data as $value) {
-		// 	if (empty($value) && !strlen($value)) {
-		// 		throw new \Exception('Form fields can not be empty');
-		// 	}
-		// }
-	}
+	{}
 
 	public function getFields()
 	{
