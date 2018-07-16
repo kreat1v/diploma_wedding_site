@@ -426,6 +426,7 @@ return [
 		'count' => 'Number of reviews for moderation',
 		'view' => 'View',
 		'id' => 'User ID',
+		'id_product' => 'Service ID',
 		'review' => 'Review',
 		'activity1' => 'Review activity',
 		'activity2' => 'Review active',

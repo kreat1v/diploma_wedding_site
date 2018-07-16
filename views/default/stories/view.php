@@ -169,6 +169,8 @@ $router = \App\Core\App::getRouter();
     				<button type="submit" class="submit sm-buttons button text" name="button" value="send"><?=__('stories.send')?></button>
                 </form>
             </div>
+            <?php elseif(Session::get('id') && Session::get('role') == 'admin'): ?>
+
             <?php else: ?>
             <div class="notification text">
                 <p><?=__('stories.mes2')?><a href="<?=$router->buildUri('.login')?>"><?=__('stories.mes3')?></a><?=__('stories.mes4')?></p>

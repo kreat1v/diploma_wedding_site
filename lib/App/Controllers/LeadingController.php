@@ -187,7 +187,7 @@ class LeadingController extends Base
 							'id_users' => $id_users,
 							'reviews' => $_POST['reviews'],
 							'date' => date('Y-m-d H:i:s'),
-							'active' => '1'
+							'active' => '0'
 						];
 
 						$this->leadingReviewsModel->save($this->data);

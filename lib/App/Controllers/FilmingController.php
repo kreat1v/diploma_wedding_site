@@ -188,7 +188,7 @@ class FilmingController extends Base
 							'id_users' => $id_users,
 							'reviews' => $_POST['reviews'],
 							'date' => date('Y-m-d H:i:s'),
-							'active' => '1'
+							'active' => '0'
 						];
 
 						$this->filmingReviewsModel->save($this->data);

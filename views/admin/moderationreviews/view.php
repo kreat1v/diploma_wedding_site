@@ -18,6 +18,7 @@ $category = $data['category'];
 			<table>
                 <tr>
                     <th><?=__('admin_moderationreviews.id')?></th>
+                    <th><?=__('admin_moderationreviews.id_product')?></th>
                     <th><?=__('admin_moderationreviews.review')?></th>
                     <th><?=__('admin_moderationreviews.activity1')?></th>
                     <th></th>
@@ -25,6 +26,7 @@ $category = $data['category'];
 				<?php foreach ($data['reviews'] as $review): ?>
 				<tr>
 					<td><?=$review['id_users']?></td>
+					<td><?=$review['id_product']?></td>
                     <td>
                         <?php
                         if (mb_strlen($review['reviews']) <= 50) {
