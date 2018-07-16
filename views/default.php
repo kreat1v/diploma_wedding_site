@@ -203,19 +203,17 @@ if(Session::get('id')) {
 		</main>
 
 		<!-- Модальное окно. -->
-		<?php if (Session::hasModal()): ?>
+		<?php if(Session::get('role') != 'admin'):?>
 		<div class="modal">
 			<div class="modal-content">
 					<div class="modal-close" id="modal-no">
 						<i class="far fa-times-circle"></i>
 					</div>
 					<div>
-						<span>
-							<?=Session::getModal()?>
-						</span>
+						<span><?=__('subscription.mes1')?></span>
 					</div>
 					<div class="modal-button">
-						<button class="text" type="button" id="modal-yes"><i class="fas fa-check"></i></button>
+						<a href="<?=$router->buildUri('.subscription')?>" id="modal-yes"><?=__('subscription.but')?></a>
 					</div>
 			</div>
 		</div>
@@ -318,9 +316,8 @@ if(Session::get('id')) {
 		<script type="text/javascript" src="/js/bar-menu.js"></script>
 		<script type="text/javascript" src="/js/cart.js"></script>
 		<script type="text/javascript" src="/js/back-top.js"></script>
-
-		<!-- <script type="application/javascript" src="/js/jquery.cookie.js"></script> -->
-	    <!-- <script type="application/javascript" src="/js/subscription.js"></script> -->
+		<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	    <script type="text/javascript" src="/js/subscription.js"></script>
 
 	</body>
 

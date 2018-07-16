@@ -37,6 +37,14 @@ return [
 		'mes' => 'We\'re glad to see you!',
 	],
 
+	'subscription' => [
+		'mes1' => 'Do you want to subscribe to our company\'s newsletter and offers?',
+		'mes2' => 'Thank you for subscribing to our newsletter!',
+		'but' => 'Subscribe',
+		'title' => 'Subscribe to newsletter',
+		'send' => 'Send'
+	],
+
 	'register' => [
 		'email' => 'Email',
 		'password' => 'Password',

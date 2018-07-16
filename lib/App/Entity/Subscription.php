@@ -13,7 +13,7 @@ class Subscription extends Base
 	{
 		foreach ($data as $value) {
 			if (empty($value) && !strlen($value)) {
-				throw new \Exception('Form fields can not be empty');
+				throw new \Exception(__('form.field'));
 			}
 		}
 	}
@@ -23,8 +23,7 @@ class Subscription extends Base
 		return [
 			'id',
 			'email',
-			'date',
-			'categories'
+			'date'
 		];
 	}
 }

@@ -1,30 +1,35 @@
-<?php
+<div class="cart">
 
-?>
-<div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-12">
-	    <h1>Newsletter subscription</h1>
-    </div>
+	<div class="gradient-border">
+
+		<div class="body">
+
+            <div class="title text">
+                <h2><?=__('subscription.title')?></h2>
+            </div>
+
+			<div class="form text">
+				<form method="post" id="subscription-form">
+
+					<label>
+						<span><?=__('user_settings.email')?></span>
+						<input type="email" name="email" value="" class="input" id="email" />
+						<div class="tooltips-left">
+							<div><?=__('user_settings.tool3')?></div>
+						</div>
+						<div class="tooltips-left check-email">
+							<div><?=__('user_settings.tool4')?></div>
+						</div>
+					</label>
+
+					<button type="submit" class="submit sm-buttons button text" name="button" value="data"><?=__('subscription.send')?></button>
+
+				</form>
+			</div>
+
+		</div>
+
+	</div>
 </div>
 
-<div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-12">
-        <form method="post">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">News categories</label>
-                <select size="4" class="custom-select" id="inputGroupSelect04" name="category[]" multiple>
-                    <?php foreach ($data['cat'] as $category): ?>
-                    <option name="<?=$category['id']?>" value="<?=$category['title']?>"><?=$category['title']?></option>
-                    <?php endforeach; ?>
-                </select>
-                <small id="emailHelp" class="form-text text-muted">You can select several categories.</small>
-            </div>
-            <button type="submit" class="btn btn-primary">Send</button>
-        </form>
-    </div>
-</div>
+<script type="text/javascript" src="/js/validation-subscription.js"></script>
