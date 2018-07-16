@@ -109,7 +109,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.ru')?></span>
-                        <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$edit ? $data['edit']['ru']['title'] : ''?>">
+                        <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$edit ? htmlspecialchars($data['edit']['ru']['title']) : ''?>">
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool1')?></div>
                         </div>
@@ -117,7 +117,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.en')?></span>
-                        <input class="input" id="title-en" type="text" name="titleEn" value="<?=$edit ? $data['edit']['en']['title'] : ''?>">
+                        <input class="input" id="title-en" type="text" name="titleEn" value="<?=$edit ? htmlspecialchars($data['edit']['en']['title']) : ''?>">
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool1')?></div>
                         </div>
@@ -129,7 +129,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.ru')?></span>
-                        <textarea class="textarea" id="text-ru" name="textRu"><?=$edit ? $data['edit']['ru']['text'] : ''?></textarea>
+                        <textarea class="textarea" id="text-ru" name="textRu"><?=$edit ? htmlspecialchars($data['edit']['ru']['text']) : ''?></textarea>
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool1')?></div>
                         </div>
@@ -137,7 +137,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.en')?></span>
-                        <textarea class="textarea" id="text-en" name="textEn"><?=$edit ? $data['edit']['en']['text'] : ''?></textarea>
+                        <textarea class="textarea" id="text-en" name="textEn"><?=$edit ? htmlspecialchars($data['edit']['en']['text']) : ''?></textarea>
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool1')?></div>
                         </div>
@@ -149,7 +149,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.price')?></span>
-                        <input class="input" id="price" type="text" name="price" value="<?=$edit ? $data['edit']['main']['price'] : ''?>">
+                        <input class="input" id="price" type="text" name="price" value="<?=$edit ? htmlspecialchars($data['edit']['main']['price']) : ''?>">
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool2')?></div>
                         </div>
@@ -157,7 +157,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.stock')?></span>
-                        <input class="input" id="stock" type="text" name="stock" value="<?=$edit ? $data['edit']['main']['stock'] : ''?>">
+                        <input class="input" id="stock" type="text" name="stock" value="<?=$edit ? htmlspecialchars($data['edit']['main']['stock']) : ''?>">
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool7')?></div>
                         </div>
@@ -165,7 +165,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.brand')?></span>
-                        <input class="input" id="brand" type="text" name="brand" value="<?=$edit ? $data['edit']['main']['brand'] : ''?>">
+                        <input class="input" id="brand" type="text" name="brand" value="<?=$edit ? htmlspecialchars($data['edit']['main']['brand']) : ''?>">
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool4')?></div>
                         </div>
@@ -179,7 +179,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.ru')?></span>
-                        <textarea class="input" id="contacts-ru" name="contactsRu"><?=$edit ? $data['edit']['ru']['contacts'] : ''?></textarea>
+                        <textarea class="input" id="contacts-ru" name="contactsRu"><?=$edit ? htmlspecialchars($data['edit']['ru']['contacts']) : ''?></textarea>
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool6')?></div>
                         </div>
@@ -190,7 +190,7 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.en')?></span>
-                        <textarea class="input" id="contacts-en" name="contactsEn"><?=$edit ? $data['edit']['en']['contacts'] : ''?></textarea>
+                        <textarea class="input" id="contacts-en" name="contactsEn"><?=$edit ? htmlspecialchars($data['edit']['en']['contacts']) : ''?></textarea>
                         <div class="tooltips-left">
                             <div><?=__('admin_product.tool6')?></div>
                         </div>
@@ -211,17 +211,17 @@ $edit = isset($data['edit']) ? true : false;
 
                     <label>
                         <span><?=__('admin_product.fb')?></span>
-                        <input type="text" name="fb" value="<?=$edit ? $data['edit']['main']['fb'] : ''?>" class="input" />
+                        <input type="text" name="fb" value="<?=$edit ? htmlspecialchars($data['edit']['main']['fb']) : ''?>" class="input" />
                     </label>
 
                     <label>
                         <span><?=__('admin_product.inst')?></span>
-                        <input type="text" name="inst" value="<?=$edit ? $data['edit']['main']['inst'] : ''?>" class="input" />
+                        <input type="text" name="inst" value="<?=$edit ? htmlspecialchars($data['edit']['main']['inst']) : ''?>" class="input" />
                     </label>
 
                     <label>
                         <span><?=__('admin_product.teleg')?></span>
-                        <input type="text" name="telegram" value="<?=$edit ? $data['edit']['main']['telegram'] : ''?>" class="input" />
+                        <input type="text" name="telegram" value="<?=$edit ? htmlspecialchars($data['edit']['main']['telegram']) : ''?>" class="input" />
                     </label>
                 </fieldset>
 

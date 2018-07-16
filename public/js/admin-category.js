@@ -36,7 +36,7 @@ $('.textarea').keypress(function(e) {
 $(document).ready(function() {
 
     // Функция улучшения скролла.
-    $(".textarea").niceScroll();
+    // $(".textarea").niceScroll();
 
     // Функция, которая делает активным тултип ошибки.
     function errorOn(context) {

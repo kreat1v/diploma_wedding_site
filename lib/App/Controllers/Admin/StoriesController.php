@@ -195,7 +195,7 @@ class StoriesController extends \App\Controllers\Base
 	{
 		$string = ltrim($string, '<p>');
 		$string = rtrim($string, '</p>');
-		$string = str_replace('</p><p>', "\n", $string);
+		$string = str_replace('</p><p></p><p>', "\n\n", $string);
 
 		return $string;
 	}

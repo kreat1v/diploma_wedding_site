@@ -14,7 +14,7 @@
 
                 <label>
                     <span><?=__('admin_about.ru')?></span>
-                    <textarea class="textarea" id="first-text-ru" name="ruText"><?=$data['ru_text']?></textarea>
+                    <textarea class="textarea" id="first-text-ru" name="ruText"><?=htmlspecialchars($data['ru_text'])?></textarea>
                     <div class="tooltips-left">
                         <div><?=__('admin_about.tool')?></div>
                     </div>
@@ -22,7 +22,7 @@
 
                 <label>
                     <span><?=__('admin_about.en')?></span>
-                    <textarea class="textarea" id="first-text-en" name="enText"><?=$data['en_text']?></textarea>
+                    <textarea class="textarea" id="first-text-en" name="enText"><?=htmlspecialchars($data['en_text'])?></textarea>
                     <div class="tooltips-left">
                         <div><?=__('admin_about.tool')?></div>
                     </div>

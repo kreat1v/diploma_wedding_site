@@ -79,14 +79,14 @@ $router = \App\Core\App::getRouter();
 							</div>
 							<label>
 								<span><?=__('user_settings.name')?></span>
-								<input type="text" name="firstName" value="<?=isset($data['info']['firstName']) ? $data['info']['firstName'] : ''?>" class="input" id="first-name" />
+								<input type="text" name="firstName" value="<?=isset($data['info']['firstName']) ? htmlspecialchars($data['info']['firstName']) : ''?>" class="input" id="first-name" />
 								<div class="tooltips-left">
 									<div><?=__('user_settings.tool1')?></div>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.surname')?></span>
-								<input type="text" name="secondName" value="<?=isset($data['info']['secondName']) ? $data['info']['secondName'] : ''?>" class="input" id="second-name" />
+								<input type="text" name="secondName" value="<?=isset($data['info']['secondName']) ? htmlspecialchars($data['info']['secondName']) : ''?>" class="input" id="second-name" />
 								<div class="tooltips-left">
 									<div><?=__('user_settings.tool2')?></div>
 								</div>

@@ -24,7 +24,7 @@ $edit = isset($data['edit']) ? true : false;
 
                 <label>
                     <span><?=__('admin_stories.ru')?></span>
-                    <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$edit ? $data['edit']['ru']['title'] : ''?>">
+                    <input class="input" id="title-ru" type="text" name="titleRu" value="<?=$edit ? htmlspecialchars($data['edit']['ru']['title']) : ''?>">
                     <div class="tooltips-left">
                         <div><?=__('admin_stories.tool1')?></div>
                     </div>
@@ -32,7 +32,7 @@ $edit = isset($data['edit']) ? true : false;
 
                 <label>
                     <span><?=__('admin_stories.en')?></span>
-                    <input class="input" id="title-en" type="text" name="titleEn" value="<?=$edit ? $data['edit']['en']['title'] : ''?>">
+                    <input class="input" id="title-en" type="text" name="titleEn" value="<?=$edit ? htmlspecialchars($data['edit']['en']['title']) : ''?>">
                     <div class="tooltips-left">
                         <div><?=__('admin_stories.tool1')?></div>
                     </div>
@@ -46,7 +46,7 @@ $edit = isset($data['edit']) ? true : false;
 
                 <label>
                     <span><?=__('admin_stories.ru')?></span>
-                    <textarea class="textarea" id="content-ru" name="contentRu"><?=$edit ? $data['edit']['ru']['content'] : ''?></textarea>
+                    <textarea class="textarea" id="content-ru" name="contentRu"><?=$edit ? htmlspecialchars($data['edit']['ru']['content']) : ''?></textarea>
                     <div class="tooltips-left">
                         <div><?=__('admin_stories.tool1')?></div>
                     </div>
@@ -54,7 +54,7 @@ $edit = isset($data['edit']) ? true : false;
 
                 <label>
                     <span><?=__('admin_stories.en')?></span>
-                    <textarea class="textarea" id="content-en" name="contentEn"><?=$edit ? $data['edit']['en']['content'] : ''?></textarea>
+                    <textarea class="textarea" id="content-en" name="contentEn"><?=$edit ? htmlspecialchars($data['edit']['en']['content']) : ''?></textarea>
                     <div class="tooltips-left">
                         <div><?=__('admin_stories.tool1')?></div>
                     </div>
