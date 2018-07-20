@@ -34,8 +34,8 @@
     top: 0;
     overflow: auto;
     overflow-x: hidden;
-    background: url('/img/system/corner-right.png') no-repeat 100% #F0F0FF;
-    background-size: 65%;
+    background: url('/img/system/corner-right.png') no-repeat 120px #F0F0FF;
+    background-size: 100%;
     box-shadow: 0 0.5em 1.5em 1.5em #F0F0FF;
     z-index: 25000;
 }

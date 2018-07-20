@@ -290,6 +290,7 @@ if(Session::get('id')) {
 							</li>
 						</div>
 
+						<?php if ($session_id && Session::get('role') == 'user'):?>
 						<div class="mob-user">
 							<?php foreach (Config::get('userMenu') as $value): ?>
 							<li>
@@ -301,6 +302,7 @@ if(Session::get('id')) {
 						<li>
 							<a href="<?=$router->buildUri('.cart')?>"><?=__('bar-menu.cart')?></a>
 						</li>
+						<?php endif; ?>
 
 					</ul>
 				</div>
@@ -354,24 +356,7 @@ if(Session::get('id')) {
 		<script type="text/javascript" src="/js/back-top.js"></script>
 		<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 	    <script type="text/javascript" src="/js/subscription.js"></script>
-
-		<script type="text/javascript">
-		    $(document).ready(function() {
-				$(".transition").fadeIn(300);
-
-				$("a")
-				.not('.thumbs a, .panels a, .mob-gallery a, a#nextArrow, a#prevArrow')
-				.click(function(event){
-					event.preventDefault();
-					linkLocation = this.href;
-					$(".transition").fadeOut(300, redirectPage);
-				});
-
-				function redirectPage() {
-					window.location = linkLocation;
-				}
-		    });
-		</script>
+	    <script type="text/javascript" src="/js/transition.js"></script>
 
 	</body>
 
