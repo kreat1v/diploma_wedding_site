@@ -7,7 +7,7 @@ $router = \App\Core\App::getRouter();
 
 	<div class="container">
 
-		<div class="menu">
+		<div class="user-menu">
 			<ul>
 				<?php foreach (\App\Core\Config::get('userMenu') as $value): ?>
 				<li class="buttons">

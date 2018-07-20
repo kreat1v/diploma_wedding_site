@@ -71,8 +71,38 @@ $('#cart').click(function() {
 
     });
 
-    // При выходе курсора из области корзины скрываем её.
+    // Скрываем корзину при выходе курсора из её области.
     $('#cart-main').mouseleave(function() {
+
+        $('#cart-main').fadeOut(300);
+
+        // Очищаем объект корзины.
+        setTimeout(function() {
+            $('#cart-main li').remove();
+        }, 300);
+
+    });
+
+    // Скрываем корзину по клику не в области открытой корзины.
+    $(document).mouseup(function(element) {
+
+        var div = $("#cart-main");
+
+        if (!div.is(element.target) && div.has(element.target).length === 0 && div.css('display') === 'block') {
+
+            div.fadeOut(300);
+
+            // Очищаем объект корзины.
+            setTimeout(function() {
+                $('#cart-main li').remove();
+            }, 300);
+
+        }
+
+    });
+
+    // Скрываем корзину по клику на крестик.
+    $('#close-cart').click(function() {
 
         $('#cart-main').fadeOut(300);
 

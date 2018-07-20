@@ -103,6 +103,25 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                                     </p>
                                 </div>
 
+                                <div class="main-contacts">
+                                    <span>
+                                        <?=__('products.contacts')?>:
+                                    </span>
+                                    <p><?=$value['contacts']?></p>
+                                    <ul class="link">
+                                        <li><a href="tel: <?=$value['tel']?>"><i class="fas fa-phone"></i> <?=$value['tel']?></a></li>
+                                        <?php if (isset($value['fb'])): ?>
+                                        <li><a href="<?='https://www.facebook.com/'.$value['fb']?>"><i class="fab fa-facebook-square"></i> Facebook</a></li>
+                                        <?php endif; ?>
+                                        <?php if (isset($value['inst'])): ?>
+                                        <li><a href="<?='https://www.instagram.com/'.$value['inst']?>"><i class="fab fa-instagram"></i> Instagram</a></li>
+                                        <?php endif; ?>
+                                        <?php if (isset($value['telegram'])): ?>
+                                        <li><a href="<?='https://www.telegram.me/'.$value['telegram']?>"><i class="fab fa-telegram-plane"></i> Telegram</a></li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
+
                             </div>
 
                         </div>
@@ -148,6 +167,12 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                             </div>
                         </div>
                         <?php endif; ?>
+
+                        <div class="mob-gallery">
+                            <?php foreach ($value['galery'] as $img): ?>
+                            <a href="<?=\App\Core\Config::get('hotelImg') . $value['id_hotel'] . DS . $img?>" style="background-image: url('<?=\App\Core\Config::get('hotelImgWeb') . $value['id_hotel'] . '/' . $img?>');"></a>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
 
                 </div>
@@ -192,6 +217,11 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
         </div>
 
         <div class="filter text">
+
+            <div id="close-filter">
+                <span><i class="fas fa-times"></i></span>
+            </div>
+
             <form method="get" id="filter">
 
                 <div class="price" data-max="<?=$data['filter']['maxPrice']?>">
@@ -230,7 +260,7 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
                         <input type="submit" value="<?=__('filter.filter')?>" class="sm-buttons text" />
                     </div>
                     <div>
-                        <a class="sm-buttons" href="<?=$router->buildUri('.hotel')?>"><?=__('filter.reset')?></a>
+                        <a class="sm-buttons text" href="<?=$router->buildUri('.hotel')?>"><?=__('filter.reset')?></a>
                     </div>
                 </div>
             </form>
@@ -238,6 +268,10 @@ $filter =  !empty($router->getQuery()) ? '?' . $router->getQuery() : '';
 
     </div>
 
+</div>
+
+<div id="bar-filter">
+    <span><i class="fas fa-filter fa-2x"></i></span>
 </div>
 
 <script type="text/javascript" src="/js/buttons.js"></script>

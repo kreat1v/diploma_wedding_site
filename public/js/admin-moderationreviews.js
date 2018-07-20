@@ -17,7 +17,7 @@ $('.bt-activate').click(function() {
         $('#modal-yes').click(function() {
 
             $.ajax({
-                url: '/admin/moderationReviews/deactivate',
+                url: '/admin/moderationreviews/deactivate',
                 type: 'post',
                 data: {
                     id: id,
@@ -60,7 +60,7 @@ $('.bt-activate').click(function() {
     } else {
 
         $.ajax({
-            url: '/admin/moderationReviews/activate',
+            url: '/admin/moderationreviews/activate',
             type: 'post',
             data: {
                 id: id,

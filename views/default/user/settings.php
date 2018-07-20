@@ -7,7 +7,7 @@ $router = \App\Core\App::getRouter();
 
 	<div class="container">
 
-		<div class="menu">
+		<div class="user-menu">
 			<ul>
 				<?php foreach (\App\Core\Config::get('userMenu') as $value): ?>
 				<li class="buttons">
@@ -80,14 +80,14 @@ $router = \App\Core\App::getRouter();
 							<label>
 								<span><?=__('user_settings.name')?></span>
 								<input type="text" name="firstName" value="<?=isset($data['info']['firstName']) ? htmlspecialchars($data['info']['firstName']) : ''?>" class="input" id="first-name" />
-								<div class="tooltips-left">
+								<div class="tool tooltips-left">
 									<div><?=__('user_settings.tool1')?></div>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.surname')?></span>
 								<input type="text" name="secondName" value="<?=isset($data['info']['secondName']) ? htmlspecialchars($data['info']['secondName']) : ''?>" class="input" id="second-name" />
-								<div class="tooltips-left">
+								<div class="tool tooltips-left">
 									<div><?=__('user_settings.tool2')?></div>
 								</div>
 							</label>
@@ -98,10 +98,10 @@ $router = \App\Core\App::getRouter();
 							<label>
 								<span><?=__('user_settings.email')?></span>
 								<input type="email" name="email" value="<?=isset($data['info']['email']) ? $data['info']['email'] : ''?>" class="input" id="email" />
-								<div class="tooltips-left">
+								<div class="tool tooltips-left">
 									<div><?=__('user_settings.tool3')?></div>
 								</div>
-								<div class="tooltips-left check-email">
+								<div class="tool tooltips-left check-email">
 									<div><?=__('user_settings.tool4')?></div>
 								</div>
 							</label>
@@ -123,14 +123,14 @@ $router = \App\Core\App::getRouter();
 							<label>
 								<span><?=__('user_settings.old_pas')?></span>
 								<input type="password" name="oldPassword" class="input" id="old-password" />
-								<div class="tooltips-left">
+								<div class="tool tooltips-left">
 									<div><?=__('user_settings.tool5')?></div>
 								</div>
 							</label>
 							<label>
 								<span><?=__('user_settings.password')?></span>
 								<input type="password" name="password" class="input" id="password" />
-								<div class="tooltips-left">
+								<div class="tool tooltips-left">
 									<div><?=__('user_settings.tool5')?></div>
 								</div>
 								<div class="help">
@@ -143,7 +143,7 @@ $router = \App\Core\App::getRouter();
 							<label>
 								<span><?=__('user_settings.conf')?></span>
 								<input type="password" name="confirmPassword" class="input" id="confirm-password" />
-								<div class="tooltips-left">
+								<div class="tool tooltips-left">
 									<div><?=__('user_settings.tool7')?></div>
 								</div>
 							</label>

@@ -43,6 +43,7 @@
 .cart {
     max-width: 750px;
     margin: 0 auto;
+    padding: 0 60px;
 }
 
 .cart .body {
@@ -219,4 +220,45 @@
 
 .cart .notification a:hover {
     color: #80E1FF;
+}
+
+#close-cart {
+    display: none;
+}
+
+@media screen and (max-width: 799px) {
+    #cart {
+        width: 25px;
+        height: 25px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        font-size: 5px;
+        bottom: 80px;
+    }
+    #cart-main {
+        width: 100%;
+    }
+    #close-cart {
+        display: block;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: #AD7F00;
+        cursor: pointer;
+    }
+    .cart {
+        padding: 0 40px;
+    }
+    .cart .body {
+        padding: 30px 30px;
+    }
+    .cart .form a {
+        margin: 0 auto;
+        width: 100%;
+    }
+    .cart .form label, .cart .form .button {
+        width: 100%;
+    }
 }

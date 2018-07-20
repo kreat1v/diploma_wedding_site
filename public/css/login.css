@@ -229,13 +229,6 @@
     text-align: center;
 }
 
-.login .forgot-pass {
-    margin-top: 15px;
-    text-align: center;
-    font-size: 12px;
-    color: #cfcfcf;
-}
-
 .login .sign-in {
     transition-timing-function: ease-out;
 }
@@ -260,22 +253,8 @@
 .login .submit {
     margin-top: 40px;
     margin-bottom: 20px;
-}
-
-.login .fb-btn {
-    border: 2px solid #d3dae9;
-    color: #8fa1c7;
-    transition: all 0.5s linear;
-}
-
-.login .fb-btn:hover {
+    font-size: 15px;
     color: #fff;
-    background: #d3dae9;
-}
-
-.login .fb-btn span {
-    font-weight: bold;
-    color: #455a81;
 }
 
 .login .index {
@@ -292,4 +271,54 @@
     right: -25px;
     top: 30px;
     cursor: pointer;
+}
+
+.login .mob-cont {
+    display: none;
+}
+
+@media screen and (max-width: 799px) {
+    .login {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+    .login .cont {
+        display: none;
+    }
+    .login h2 {
+        position: relative;
+        width: 100%;
+        margin: 20px auto;
+        color: #3CA6C7;
+        font-size: 1.2em;
+        display: block;
+    }
+    .login .mob-cont {
+        display: block;
+        position: relative;
+        background: #fff;
+        border-radius: 3px;
+        padding: 30px;
+    }
+    .login .help {
+        position: absolute;
+        right: 50px;
+        top: 0;
+        cursor: pointer;
+        color: #3CA6C7;
+    }
+    .login .tooltips-top {
+        top: 10px;
+    }
+    .login label {
+        width: 100%;
+    }
+    .login button {
+        width: 100%;
+    }
+    .login form:first-child {
+        margin-bottom: 50px;
+    }
 }

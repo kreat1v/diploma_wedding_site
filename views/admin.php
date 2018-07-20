@@ -205,6 +205,7 @@ if(Session::get('id')) {
     	    </header>
 
     		<main>
+
     			<div class="tooltips-main" style="left: 22%">
     				<?php if (Session::hasFlash()):
     					foreach (Session::getFlash() as $message): ?>
@@ -219,7 +220,19 @@ if(Session::get('id')) {
     					<?php endforeach;
     				endif; ?>
     			</div>
-    			<?=$data['content']?>
+
+				<div class="main-content">
+
+					<?=$data['content']?>
+
+				</div>
+
+				<div class="style-message text">
+
+					<p><?=__('admin_menu.style')?></p>
+
+				</div>
+
     		</main>
         </div>
 

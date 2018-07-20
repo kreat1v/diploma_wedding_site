@@ -10,7 +10,7 @@ $router = \App\Core\App::getRouter();
 
     <div class="title text">
 
-        <p><?=__('stories.title')?></p>
+        <?=__('stories.title')?>
 
     </div>
 

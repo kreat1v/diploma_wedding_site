@@ -1,8 +1,14 @@
+body {
+    background: fixed url('/img/system/back.png') center no-repeat;
+}
+
 .admin-menu {
     position: fixed;
     width: 20%;
     height: 100%;
     background-color: #AD7F00;
+    z-index: 20000;
+    box-shadow: 0 0.5em 0.7em 0.7em #979797;
 }
 
 .content {
@@ -155,4 +161,25 @@
 
 .bt a {
     text-decoration: none;
+}
+
+.style-message {
+    display: none;
+}
+
+@media screen and (max-width: 799px) {
+    .main-content {
+        display: none;
+    }
+    .style-message {
+        display: block;
+        text-align: center;
+        width: 350px;
+        margin: 0 auto;
+        padding: 0 10px;
+    }
+    .content {
+        width: 100%;
+        margin: 0;
+    }
 }

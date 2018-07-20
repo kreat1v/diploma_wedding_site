@@ -1,5 +1,6 @@
 .menu {
     max-width: 1200px;
+    padding: 0 60px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -307,4 +308,44 @@
 .menu .buttons {
     font-size: 1.5em;
     display: inline-block;
+}
+
+.menu .mob-login {
+    display: none;
+}
+
+@media screen and (max-width: 799px) {
+    .menu {
+        padding: 0 40px;
+        width: auto !important;
+    }
+    .menu .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 6px);
+        grid-template-rows: repeat(4, 6px);
+        width: 25px;
+        height: 25px;
+    }
+    .menu .logo {
+        margin-bottom: 0.5em;
+    }
+    .menu .byline {
+        width: calc(30px*2.5);
+        font-size: 5px;
+    }
+    .menu .buttons, .menu .search {
+        display: none;
+    }
+    .menu .mob-login {
+        display: inline-block;
+        color: #AD7F00;
+        font-size: 1.5em;
+    }
+    .menu .user-buttons {
+        font-size: 10px;
+    }
+    .menu .user-buttons .avatar {
+        width: 30px;
+        height: 30px;
+    }
 }

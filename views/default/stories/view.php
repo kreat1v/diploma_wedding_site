@@ -30,7 +30,7 @@ $router = \App\Core\App::getRouter();
                 </div>
             </div>
 
-            <div class="main text">
+            <div class="main-text text">
                 <?=$data['stories']['content']?>
             </div>
 
@@ -184,5 +184,5 @@ $router = \App\Core\App::getRouter();
 </div>
 
 <script type="text/javascript" src="/js/user-message.js"></script>
-<script type="text/javascript" src="/js/stories.js"></script>
 <script type="text/javascript" src="/js/touchTouch.jquery.js"></script>
+<script type="text/javascript" src="/js/stories.js"></script>

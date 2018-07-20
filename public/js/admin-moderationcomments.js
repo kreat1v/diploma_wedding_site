@@ -16,7 +16,7 @@ $('.bt-activate').click(function() {
         $('#modal-yes').click(function() {
 
             $.ajax({
-                url: '/admin/moderationComments/deactivate',
+                url: '/admin/moderationcomments/deactivate',
                 type: 'post',
                 data: {
                     id: id
@@ -58,7 +58,7 @@ $('.bt-activate').click(function() {
     } else {
 
         $.ajax({
-            url: '/admin/moderationComments/activate',
+            url: '/admin/moderationcomments/activate',
             type: 'post',
             data: {
                 id: id

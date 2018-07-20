@@ -3,7 +3,7 @@ $('.delete').one('click', function() {
 
     // Получаем кнопку, на которую нажали, родителя, а также значения, которые будем передавать.
     var context = $(this),
-        parent = context.parents('tr'),
+        parent = context.parents('.parent'),
         idFavorites = context.attr('data-idprod');
 
     $.ajax({

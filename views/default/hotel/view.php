@@ -95,6 +95,25 @@ $router = \App\Core\App::getRouter();
                                 </p>
                             </div>
 
+                            <div class="main-contacts">
+                                <span>
+                                    <?=__('products.contacts')?>:
+                                </span>
+                                <p><?=$data['product']['contacts']?></p>
+                                <ul class="link">
+                                    <li><a href="tel: <?=$data['product']['tel']?>"><i class="fas fa-phone"></i> <?=$data['product']['tel']?></a></li>
+                                    <?php if (isset($data['product']['fb'])): ?>
+                                    <li><a href="<?='https://www.facebook.com/'.$data['product']['fb']?>"><i class="fab fa-facebook-square"></i> Facebook</a></li>
+                                    <?php endif; ?>
+                                    <?php if (isset($data['product']['inst'])): ?>
+                                    <li><a href="<?='https://www.instagram.com/'.$data['product']['inst']?>"><i class="fab fa-instagram"></i> Instagram</a></li>
+                                    <?php endif; ?>
+                                    <?php if (isset($data['product']['telegram'])): ?>
+                                    <li><a href="<?='https://www.telegram.me/'.$data['product']['telegram']?>"><i class="fab fa-telegram-plane"></i> Telegram</a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+
                         </div>
 
                     </div>
@@ -140,6 +159,13 @@ $router = \App\Core\App::getRouter();
                         </div>
                     </div>
                     <?php endif; ?>
+
+                    <div class="mob-gallery">
+                        <?php foreach ($data['galery'] as $img): ?>
+                        <a href="<?=\App\Core\Config::get('hotelImg') . $data['product']['id_hotel'] . DS . $img?>" style="background-image: url('<?=\App\Core\Config::get('hotelImgWeb') . $data['product']['id_hotel'] . '/' . $img?>');"></a>
+                        <?php endforeach; ?>
+                    </div>
+
                 </div>
 
             </div>

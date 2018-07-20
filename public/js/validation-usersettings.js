@@ -1,3 +1,44 @@
+// Функция, которая меняет взаимодествие с тултипом а также положение тултипов.
+function windowSize() {
+    if ($(window).width() <= '799') {
+
+        // Показать тултип подсказки при наведении
+        $('.help').on('click', function() {
+
+            $(this).find('.tooltips-top').toggle();
+
+        });
+
+        // Меняем положение тултипов.
+        $('.tool').removeClass('tooltips-left').addClass('tooltips-top');
+
+    } else {
+
+        // Показать тултип подсказки при наведении
+        $('.help').on('mouseenter', function() {
+
+            $(this).find('.tooltips-top').fadeIn();
+
+        });
+
+        // Скрыть тултип подсказки
+        $('.help').on('mouseleave', function() {
+
+            $(this).find('.tooltips-top').fadeOut();
+
+        });
+
+        // Меняем положение тултипов.
+        $('.tool').removeClass('tooltips-top').addClass('tooltips-left');
+
+    }
+}
+
+// Запускаем нашу функцию.
+$(window).on('load resize', windowSize);
+
+
+
 $(document).ready(function() {
 
     // Маска для ввода номера телефона.
@@ -143,20 +184,6 @@ $(document).ready(function() {
 
         // Запускаем валидацию.
         validPassword(this);
-
-    });
-
-    // Показать тултип подсказки при наведении
-    $('.help').mouseenter(function() {
-
-        $(this).find('.tooltips-top').fadeIn();
-
-    });
-
-    // Скрыть тултип подсказки
-    $('.help').mouseleave(function() {
-
-        $(this).find('.tooltips-top').fadeOut();
 
     });
 

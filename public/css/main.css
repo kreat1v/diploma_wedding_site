@@ -2,8 +2,7 @@ body {
     padding: 0;
     margin: 0;
     background-color: #F0F0FF;
-    background: fixed url('/img/system/back.png') center no-repeat #F0F0FF;
-    background-size: 100%;
+    min-width: 350px;
 }
 
 header {
@@ -15,6 +14,11 @@ footer {
     width: 100%;
     border-top: 2px solid #AD7F00;
     margin-top: 100px;
+}
+
+.transition {
+    display: none;
+    background: fixed url('/img/system/back.png') center no-repeat;
 }
 
 .text {
@@ -72,4 +76,13 @@ footer {
 
 .link a:hover {
     color: #FAB900;
+}
+
+@media screen and (max-width: 799px) {
+    .format h1, .format h2 {
+        font-size: 1.5em;
+    }
+    .text {
+        font-size: 1em;
+    }
 }

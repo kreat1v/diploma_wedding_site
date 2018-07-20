@@ -1,3 +1,21 @@
+// Функция, которая меняет положение тултипов.
+function windowSize() {
+    if ($(window).width() <= '799') {
+
+        // Меняем положение тултипов.
+        $('.tool').removeClass('tooltips-left').addClass('tooltips-top');
+
+    } else {
+
+        // Меняем положение тултипов.
+        $('.tool').removeClass('tooltips-top').addClass('tooltips-left');
+
+    }
+}
+
+// Запускаем нашу функцию.
+$(window).on('load resize', windowSize);
+
 $(document).ready(function() {
 
     // Функция, которая делает активным тултип ошибки

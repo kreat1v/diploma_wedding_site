@@ -9,7 +9,10 @@ return [
 
 	'search' => [
 		'all' => 'All results',
-		'title' => 'Searching results',
+		'title1' => 'Searching results',
+		'title2' => 'Search',
+		'query' => 'Enter your request',
+		'send' => 'Send',
 		'mes' => 'Unfortunately, we did not find anything ...',
 	],
 
@@ -21,6 +24,8 @@ return [
 		'mes1' => 'Welcome back,',
 		'mes2' => 'Are you already with us?',
 		'mes3' => 'If you have an account, just sign in. We will be happy to see you!',
+		'mes4' => 'Log in to the system',
+		'mes5' => 'Or sign up',
 		'tool1' => 'Please enter a valid email address',
 		'tool2' => 'Please enter the correct password',
 		'error1' => 'User with such an email does not exist',
@@ -69,6 +74,7 @@ return [
 	],
 
 	'bar-menu' => [
+		'search' => 'Search',
 		'about' => 'About us',
 		'contacts' => 'Contacts',
 		'stories' => 'Stories',
@@ -80,9 +86,9 @@ return [
 	'category' => [
 		'quote' => '<p>We are a kaleidoscope<br /> of emotions at your wedding!</p>',
 		'title' => 'With us you can more',
-		'text' => '<p>This is a demo of a jQuery &ldquo;sticky&rdquo; reading progress bar which I recently developed for Logikcull. It hides when the viewport is too narrow, sticks to the top of the viewport on scroll, displays reading progress by section and also within each section. It can also be used for navigation.</p>
-		<p>The HTML for the progress bar is generated dynamically on pageload based on the elements used to define each section (in this case, H2 headers).</p>
-		<p>The JS could be neater, I\'m sure...!</p>',
+		'text' => '<p>Tomorrow is the wedding ...</p>
+		<p>And today we will help you prepare for it. After all, we know about it all, or almost everything :) So, let\'s begin. </p>
+		<p>You can be sure that your event will be held at the highest level! Surprising is so simple!</p>',
 		'button' => 'Go to the section'
 	],
 
@@ -178,7 +184,8 @@ return [
 		'price' => 'Price',
 		'stock' => 'Promotion price',
 		'view' => 'View',
-		'mes' => 'You have not added any items to your favorites yet.'
+		'mes' => 'You have not added any items to your favorites yet.',
+		'delete' => 'Delete'
 	],
 
 	'user_purchases' => [
@@ -282,7 +289,8 @@ return [
 		'moderationcomments' => 'Moderation of comments of stories',
 		'about' => 'About us',
 		'photo' => 'Photo cover',
-		'contacts' => 'Contacts'
+		'contacts' => 'Contacts',
+		'style' => 'For more convenient use of the administrator\'s office, please use the desktop version of the application.'
 	],
 
 	'admin_category' => [

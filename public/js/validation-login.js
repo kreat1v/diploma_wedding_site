@@ -1,3 +1,48 @@
+// Функция, которая меняет взаимодествие с тултипом а также меню при изменении ширины экрана.
+function windowSize() {
+    if ($(window).width() <= '799') {
+
+        // Показать тултип подсказки при наведении
+        $('.help').on('click', function() {
+
+            $(this).find('.tooltips-top').toggle();
+
+        });
+
+        // Задаём блочный стиль для отображения верхнего меню.
+        $('.menu').css('display', 'block');
+
+    } else {
+
+        // Показать тултип подсказки при наведении
+        $('.help').on('mouseenter', function() {
+
+            $(this).find('.tooltips-top').fadeIn();
+
+        });
+
+        // Скрыть тултип подсказки
+        $('.help').on('mouseleave', function() {
+
+            $(this).find('.tooltips-top').fadeOut();
+
+        });
+
+        // Задаём нужные параметры для верхнего меню.
+        $('.menu').css({
+            'display': 'flex',
+            'width': '750px',
+            'padding': '0'
+        });
+
+    }
+}
+
+// Запускаем нашу функцию.
+$(window).on('load resize', windowSize);
+
+
+
 $(document).ready(function() {
 
     // Устанавливаем обработчик потери фокуса для всех полей наших форм
@@ -114,20 +159,6 @@ $(document).ready(function() {
         $('.not_error').removeClass('not_error');
 
         $('.tooltips-left, .tooltips-right').fadeOut();
-
-    });
-
-    // Показать тултип подсказки при наведении
-    $('.help').mouseenter(function() {
-
-        $(this).find('.tooltips-top').fadeIn();
-
-    });
-
-    // Скрыть тултип подсказки
-    $('.help').mouseleave(function() {
-
-        $(this).find('.tooltips-top').fadeOut();
 
     });
 

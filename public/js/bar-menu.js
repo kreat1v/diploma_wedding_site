@@ -11,4 +11,24 @@ $('#bar-menu').click(function() {
 
     });
 
+    // Скрываем меню по клику не в области открытого меню.
+    $(document).mouseup(function(element) {
+
+        var div = $("#bar-main");
+
+        if (!div.is(element.target) && div.has(element.target).length === 0 && div.css('display') === 'block') {
+
+            div.fadeOut(300);
+
+        }
+
+    });
+
+    // Скрываем меню при клике на крестик.
+    $('#close-menu').click(function() {
+
+        $('#bar-main').fadeOut(300);
+
+    });
+
 });

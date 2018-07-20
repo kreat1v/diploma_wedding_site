@@ -38,3 +38,32 @@
 .table .small {
     font-size: 11px;
 }
+
+.mob-table {
+    display: none;
+}
+
+@media screen and (max-width: 799px) {
+    .table table {
+        display: none;
+    }
+    .mob-table {
+        display: block;
+        font-size: 15px;
+    }
+    .mob-table div {
+        background: rgba(250, 185, 0, 0.2);
+        padding: 30px;
+        border-top: 2px solid #AD7F00;
+        width: 100%;
+        display: block;
+    }
+    .mob-table div:last-child {
+        border-bottom: 2px solid #AD7F00;
+    }
+    .mob-table div a {
+        text-decoration: none;
+        padding: 0 20px;
+        text-align: center;
+    }
+}

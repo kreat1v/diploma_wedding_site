@@ -218,3 +218,14 @@
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
+
+@media screen and (max-width: 799px) {
+    .menu {
+        width: 350px;
+        margin: 0 auto;
+        padding: 0 10px;
+    }
+    .admin-menu, .menu .lang {
+        display: none;
+    }
+}

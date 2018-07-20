@@ -6,7 +6,7 @@ $router = \App\Core\App::getRouter();
 <div class="user">
 	<div class="container">
 
-		<div class="menu">
+		<div class="user-menu">
 			<ul>
 				<?php foreach (\App\Core\Config::get('userMenu') as $value): ?>
 				<li class="buttons">
@@ -32,7 +32,7 @@ $router = \App\Core\App::getRouter();
 						<th></th>
 					</tr>
 					<?php foreach ($data as $key => $value): ?>
-					<tr>
+					<tr class="parent">
 						<td><?=$value['title']?></td>
 						<td><?=$value['price']?></td>
 						<td><?=isset($value['stock']) ? $value['stock'] : '-'?></td>
@@ -47,6 +47,26 @@ $router = \App\Core\App::getRouter();
 					</tr>
 					<?php endforeach; ?>
 				</table>
+			</div>
+
+			<div class="mob-table text">
+				<?php foreach ($data as $key => $value): ?>
+					<div class="parent">
+						<p><b><?=__('user_favorites.name')?>: </b><?=$value['title']?></p>
+						<p><b><?=__('user_favorites.price')?>: </b><?=$value['price']?></p>
+						<p><b><?=__('user_favorites.stock')?>: </b><?=isset($value['stock']) ? $value['stock'] : '-'?></p>
+						<p>
+							<a class="sm-buttons" href="<?=$router->buildUri("$value[category].view", [$value['id']])?>">
+								<?=__('user_favorites.view')?>
+							</a>
+						</p>
+						<p>
+							<span class="sm-buttons delete" data-idprod="<?=$key?>">
+								<?=__('user_favorites.delete')?>
+							</span>
+						</p>
+					</div>
+				<?php endforeach; ?>
 			</div>
 			<?php else: ?>
 			<div class="text">

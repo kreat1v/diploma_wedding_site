@@ -1,6 +1,7 @@
 .user {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 60px;
 }
 
 .user .container {
@@ -8,7 +9,7 @@
     align-items: flex-start;
 }
 
-.user .menu {
+.user .user-menu {
     position: sticky;
     top: 0;
     width: 20%;
@@ -18,7 +19,7 @@
     margin-right: 5%;
 }
 
-.user .menu ul {
+.user .user-menu ul {
     list-style: none;
     padding: 0;
 }
@@ -33,10 +34,10 @@
 }
 
 .user .info .body, .user .info .avatar-select {
-    overflow: hidden;
     position: relative;
     border-radius: 3px;
     background: #FFF;
+    padding: 30px 0;
 }
 
 .user .info .body>div, .user .info .avatar-crop>div, .user .info .avatar-select>div {
@@ -78,10 +79,6 @@
     color: #3CA6C7;
 }
 
-.user .info .form label {
-    position: relative;
-}
-
 .user .info .form h2 {
     margin-bottom: 10px;
 }
@@ -91,6 +88,7 @@
     width: 400px;
     margin: 25px auto 0;
     text-align: center;
+    position: relative;
 }
 
 .user .info .form label span {
@@ -238,4 +236,57 @@
 
 .user .favorites .delete:hover {
     color: #FAB900;
+}
+
+@media screen and (max-width: 999px) {
+    .user-menu .buttons {
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 799px) {
+    .user {
+        padding: 0 40px;
+    }
+    .user-menu {
+        display: none;
+    }
+    .user .info {
+        width: 100%;
+        text-align: center;
+    }
+    .user .info .form .button, .user .info .form label {
+        width: 100%;
+    }
+    .user .info .form .help {
+        right: 0px;
+        top: 30px;
+    }
+    .user .tooltips-top {
+        top: 10px;
+    }
+    .user .info .messages .mes-user, .user .info .messages .mes-admin {
+        position: relative;
+    }
+    .user .info .messages .avt {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        border: 2px solid #3CA6C7;
+    }
+    .user .info .messages .mes-user .avt {
+        left: -42px;
+        top: -17px;
+    }
+    .user .info .messages .mes-admin .avt {
+        right: -42px;
+        top: -17px;
+    }
+    .user .favorites .delete {
+        color: #fff;
+        text-align: center;
+    }
+    .user .favorites .delete:hover {
+        color: #fff;
+    }
 }

@@ -24,9 +24,7 @@ $router = \App\Core\App::getRouter();
 							<div><?=__('login.tool2')?></div>
 						</div>
 					</label>
-					<!-- <p class="forgot-pass">Forgot password?</p> -->
-					<button type="submit" class="submit sm-buttons" name="button" value="login"><?=__('login.login')?></button>
-					<button type="button" class="fb-btn"><?=__('login.fb')?> <span>facebook</span></button>
+					<button type="submit" class="submit sm-buttons text" name="button" value="login"><?=__('login.login')?></button>
 				</form>
 			</div>
 
@@ -79,11 +77,77 @@ $router = \App\Core\App::getRouter();
 								<div><?=__('register.tool5')?></div>
 							</div>
 						</label>
-						<button type="submit" class="submit sm-buttons" name="button" value="register"><?=__('register.register')?></button>
-						<button type="button" class="fb-btn"><?=__('register.fb')?> <span>facebook</span></button>
+						<button type="submit" class="submit sm-buttons text" name="button" value="register"><?=__('register.register')?></button>
 					</form>
 				</div>
 			</div>
+
+		</div>
+
+		<div class="mob-cont">
+
+
+			<form method="post" id="login-form">
+
+				<h2><?=__('login.mes4')?></h2>
+
+				<label>
+					<span><?=__('login.email')?></span>
+					<input type="email" name="email" id="login-email" />
+					<div class="tooltips-top">
+						<div><?=__('login.tool1')?></div>
+					</div>
+				</label>
+				<label>
+					<span><?=__('login.password')?></span>
+					<input type="password" name="password" id="login-password" />
+					<div class="tooltips-top">
+						<div><?=__('login.tool2')?></div>
+					</div>
+				</label>
+				<button type="submit" class="submit sm-buttons text" name="button" value="login"><?=__('login.login')?></button>
+
+			</form>
+
+
+			<form method="post" id="register-form">
+
+				<h2><?=__('login.mes5')?></h2>
+
+				<label>
+					<span><?=__('register.email')?></span>
+					<input type="email" name="email" id="register-email" />
+					<div class="tooltips-top">
+						<div><?=__('register.tool1')?></div>
+					</div>
+					<div class="tooltips-top check-email">
+						<div><?=__('register.tool2')?></div>
+					</div>
+				</label>
+				<label>
+					<span><?=__('register.password')?></span>
+					<input type="password" name="password" id="register-password" />
+					<div class="tooltips-top">
+						<div><?=__('register.tool3')?></div>
+					</div>
+					<div class="help">
+						<div class="tooltips-top">
+							<div><?=__('register.tool4')?></div>
+						</div>
+						<i class="far fa-question-circle"></i>
+					</div>
+				</label>
+				<label>
+					<span><?=__('register.conf')?></span>
+					<input type="password" name="confirm_password" id="register-confpassword" />
+					<div class="tooltips-top">
+						<div><?=__('register.tool5')?></div>
+					</div>
+				</label>
+				<button type="submit" class="submit sm-buttons text" name="button" value="register"><?=__('register.register')?></button>
+
+			</form>
+
 		</div>
 
 	</div>

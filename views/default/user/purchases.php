@@ -6,7 +6,7 @@ $router = \App\Core\App::getRouter();
 <div class="user">
 	<div class="container">
 
-		<div class="menu">
+		<div class="user-menu">
 			<ul>
 				<?php foreach (\App\Core\Config::get('userMenu') as $value): ?>
 				<li class="buttons">
@@ -52,6 +52,28 @@ $router = \App\Core\App::getRouter();
 					</tr>
 					<?php endforeach; ?>
 				</table>
+			</div>
+
+			<div class="mob-table text">
+				<?php foreach ($data as $value): ?>
+				<div>
+					<p><b><?=__('user_purchases.date')?>: </b><?=date('d.m.Y H:i', strtotime($value['date']))?></p>
+					<p><b><?=__('user_purchases.message')?>: </b><?=$value['message'] ? $value['message'] : '-'?></p>
+					<?php $payment = $value['payment'] ?>
+					<p><b><?=__('user_purchases.method')?>: </b><?=__("cart.$payment")?></p>
+					<p><b><?=__('user_purchases.services')?>: </b>
+						<ol>
+							<?php foreach ($value['products'] as $products): ?>
+							<li>
+								<?=$products['title']?>
+							</li>
+							<?php endforeach; ?>
+						</ol>
+					</p>
+					<p><b><?=__('user_purchases.price')?>: </b><?=$value['price']?></p>
+					<p><?=$value['active'] ? __('user_purchases.paid2') : __('user_purchases.paid1')?></p>
+				</div>
+				<?php endforeach; ?>
 			</div>
 			<?php else: ?>
 			<div class="text">

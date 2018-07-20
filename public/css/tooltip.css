@@ -1,7 +1,7 @@
 .tooltips-left, .tooltips-right, .tooltips-top {
     position: absolute;
     display: none;
-    z-index: 999 !important;
+    z-index: 30000 !important;
 }
 
 .tooltips-left div, .tooltips-right div, .tooltips-top div {
@@ -104,4 +104,10 @@
     border-top-right-radius: 6px;
     background: #8c6804;
     opacity: 1;
+}
+
+@media screen and (max-width: 799px) {
+    .tooltips-main .tooltips {
+        width: 240px;
+    }
 }

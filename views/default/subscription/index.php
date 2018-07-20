@@ -14,10 +14,10 @@
 					<label>
 						<span><?=__('user_settings.email')?></span>
 						<input type="email" name="email" value="" class="input" id="email" />
-						<div class="tooltips-left">
+						<div class="tool tooltips-left">
 							<div><?=__('user_settings.tool3')?></div>
 						</div>
-						<div class="tooltips-left check-email">
+						<div class="tool tooltips-left check-email">
 							<div><?=__('user_settings.tool4')?></div>
 						</div>
 					</label>
@@ -30,6 +30,7 @@
 		</div>
 
 	</div>
+
 </div>
 
 <script type="text/javascript" src="/js/validation-subscription.js"></script>

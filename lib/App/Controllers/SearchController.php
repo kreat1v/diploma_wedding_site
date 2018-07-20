@@ -47,8 +47,14 @@ class SearchController extends Base
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
+			$string = '';
+
 			// Получаем строку поиска.
-			$string = $_GET['query'];
+			if (isset($_GET['query'])) {
+
+				$string = $_GET['query'];
+
+			}
 
 			// Если строка не пустая - начинаем поиск.
 			if (strlen($string) > 0) {

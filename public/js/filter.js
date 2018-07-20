@@ -1,3 +1,40 @@
+// Боковой фильтр.
+$('#bar-filter').click(function() {
+
+    // Показываем меню.
+    $('.sections .filter').fadeIn(500);
+
+    // При выходе курсора из области меню скрываем его.
+    $('.sections .filter').mouseleave(function() {
+
+        $('.sections .filter').fadeOut(300);
+
+    });
+
+    // Скрываем меню по клику не в области открытого меню.
+    $(document).mouseup(function(element) {
+
+        var div = $(".sections .filter");
+
+        if (!div.is(element.target) && div.has(element.target).length === 0 && div.css('display') === 'block') {
+
+            div.fadeOut(300);
+
+        }
+
+    });
+
+    // Скрываем меню при клике на крестик.
+    $('#close-filter').click(function() {
+
+        $('.sections .filter').fadeOut(300);
+
+    });
+
+});
+
+
+
 $(document).ready(function() {
 
     // Получаем GET строку, а так же устанаваливаем минимальные и максимальные значения слайдера.
